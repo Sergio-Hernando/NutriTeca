@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:food_macros/core/di/di.dart' as app_di;
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  final sp = await SharedPreferences.getInstance();
+  app_di.initDi(instance: sp);
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      routerConfig: appRoutes,
+      debugShowCheckedModeBanner: false,
+      title: 'FoodMacros',
     );
   }
 }

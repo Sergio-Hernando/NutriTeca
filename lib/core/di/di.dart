@@ -1,4 +1,6 @@
 import 'package:food_macros/core/network/dio_http_client.dart';
+import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/routes/app_routes.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_event.dart';
@@ -20,11 +21,12 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          SplashBloc()..add(const SplashEvent.unSplashInMilliseconds(3000)),
+          SplashBloc()..add(const SplashEvent.unSplashInMilliseconds(2000)),
       child: MaterialApp.router(
         routerConfig: appRoutes,
         debugShowCheckedModeBanner: false,
         title: 'FoodMacros',
+        theme: AppTheme.mainTheme,
       ),
     );
   }

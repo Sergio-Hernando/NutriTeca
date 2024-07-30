@@ -6,16 +6,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        backgroundColor: AppColors.primaryBlack,
+    return Scaffold(
+        backgroundColor: AppColors.background,
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text('Home',
-                    style:
-                        TextStyle(color: AppColors.primaryWhite, fontSize: 32))
+                Text(
+                  'Home',
+                  style: Theme.of(context).textTheme.displayLarge,
+                )
               ],
             ),
           ),

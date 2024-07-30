@@ -7,24 +7,28 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.primaryBlack,
+    return Scaffold(
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
+              const Image(
                 image: AssetImage(AppAssets.mainLogo),
               ),
               Text(
                 'FOODMACROS',
-                style: TextStyle(color: AppColors.primaryWhite, fontSize: 32),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
-              Text(
-                'La aplicación perfecta para controlar lo que comes y mucho más',
-                style: TextStyle(color: AppColors.primaryWhite, fontSize: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  'La aplicación perfecta para controlar lo que comes y mucho más',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
               )
             ],
           ),

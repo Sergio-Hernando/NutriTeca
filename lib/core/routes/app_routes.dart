@@ -34,7 +34,19 @@ GoRouter appRoutes = GoRouter(
                   GoRoute(
                     path: 'home',
                     builder: (context, state) => const HomeScreen(),
-                  )
+                  ),
+                  /* GoRoute(
+                        path: 'search',
+                        builder: (context, state) => const SearchScreen(),
+                      ),
+                      GoRoute(
+                        path: 'addProduct',
+                        builder: (context, state) => const AddProductScreen(),
+                      ),
+                      GoRoute(
+                        path: 'recipes',
+                        builder: (context, state) => const RecipesScreen(),
+                      ), */
                 ])
           ])
     ]);

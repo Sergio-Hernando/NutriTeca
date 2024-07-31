@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_assets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/presentation/widgets/app_bar.dart';
-import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,10 +11,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final additivesList = [AppAssets.additive1, AppAssets.additive2];
 
-    return ScaffoldWithBottomNav(
+    return Scaffold(
         appBar: const CustomAppBar(),
-        background: AppColors.foreground,
-        child: SafeArea(
+        backgroundColor: AppColors.foreground,
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

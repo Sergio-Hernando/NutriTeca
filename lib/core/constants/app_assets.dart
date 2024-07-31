@@ -6,6 +6,6 @@ class AppAssets {
   static const mainLogo = '${_logos}logo_food_macros.png';
 
   //Images
-  static const aditive1 = '${_images}E202.png';
-  static const aditive2 = '${_images}E621.png';
+  static const additive1 = '${_images}E202.png';
+  static const additive2 = '${_images}E621.png';
 }

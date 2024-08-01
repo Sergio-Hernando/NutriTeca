@@ -1,47 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/widgets/app_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class ScaffoldWithBottomNav extends StatefulWidget {
-  final Widget child;
-  final CustomAppBar appBar;
-  final Color background;
+  final StatefulNavigationShell navigationShell;
 
-  const ScaffoldWithBottomNav(
-      {super.key,
-      required this.child,
-      required this.appBar,
-      required this.background});
+  const ScaffoldWithBottomNav({
+    super.key,
+    required this.navigationShell,
+  });
 
   @override
-  _ScaffoldWithBottomNavState createState() => _ScaffoldWithBottomNavState();
+  ScaffoldWithBottomNavState createState() => ScaffoldWithBottomNavState();
 }
 
-class _ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
+class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
   int _selectedIndex = 0;
 
-  static final List<String> _routes = [
-    AppRoutesPath.home,
-    AppRoutesPath.search,
-    AppRoutesPath.addProduct,
-    AppRoutesPath.recipes,
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    context.go(_routes[index]);
+  void _goBranch(int index) {
+    widget.navigationShell.goBranch(
+      index,
+      initialLocation: index == widget.navigationShell.currentIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.appBar,
-      backgroundColor: widget.background,
-      body: widget.child,
+      appBar: CustomAppBar(goHome: () {
+        setState(() {
+          _selectedIndex = 0;
+        });
+        _goBranch(0);
+      }),
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: widget.navigationShell,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
@@ -49,7 +46,12 @@ class _ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.foreground,
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          _goBranch(_selectedIndex);
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

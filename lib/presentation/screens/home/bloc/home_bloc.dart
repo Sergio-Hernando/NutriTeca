@@ -18,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchHomeEventToState(
       HomeEvent event, Emitter<HomeState> emit) async {
+    _repository;
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
   }
 }

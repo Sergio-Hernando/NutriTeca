@@ -3,8 +3,10 @@ import 'package:food_macros/core/constants/app_assets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Function() goHome;
   const CustomAppBar({
     super.key,
+    required this.goHome,
   });
 
   @override
@@ -15,9 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: const Image(
           image: AssetImage(AppAssets.mainLogo),
         ),
-        onPressed: () {
-          //Add logic to navigate to home
-        },
+        onPressed: goHome,
       ),
       actions: <Widget>[
         IconButton(

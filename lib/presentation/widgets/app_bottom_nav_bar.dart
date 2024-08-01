@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/presentation/widgets/app_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class ScaffoldWithBottomNav extends StatefulWidget {
@@ -27,6 +28,12 @@ class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(goHome: () {
+        setState(() {
+          _selectedIndex = 0;
+        });
+        _goBranch(0);
+      }),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

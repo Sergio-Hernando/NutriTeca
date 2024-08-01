@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
+import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,28 +19,32 @@ final GlobalKey<NavigatorState> _shellRecipesNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellRecipes');
 
 GoRouter appRoutes = GoRouter(
-    initialLocation: AppRoutesPath.home,
+    initialLocation: AppRoutesPath.main,
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: kDebugMode,
     routes: [
-      /// MainWrapper
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return ScaffoldWithBottomNav(
-            navigationShell: navigationShell,
-          );
-        },
-        branches: <StatefulShellBranch>[
-          /// Brach Home
-          StatefulShellBranch(
-            navigatorKey: _shellHomeNavigatorKey,
-            routes: <RouteBase>[
-              GoRoute(
-                path: AppRoutesPath.home,
-                name: "Home",
-                builder: (BuildContext context, GoRouterState state) =>
-                    const HomeScreen(),
-/*                 routes: [
+      GoRoute(
+          path: AppRoutesPath.main,
+          builder: (context, state) => const SplashController(),
+          routes: [
+            /// MainWrapper
+            StatefulShellRoute.indexedStack(
+              builder: (context, state, navigationShell) {
+                return ScaffoldWithBottomNav(
+                  navigationShell: navigationShell,
+                );
+              },
+              branches: <StatefulShellBranch>[
+                /// Brach Home
+                StatefulShellBranch(
+                  navigatorKey: _shellHomeNavigatorKey,
+                  routes: <RouteBase>[
+                    GoRoute(
+                      path: 'home',
+                      name: "Home",
+                      builder: (BuildContext context, GoRouterState state) =>
+                          const HomeScreen(),
+                      /* routes: [
                   GoRoute(
                     path: 'subHome',
                     name: 'subHome',
@@ -52,20 +57,20 @@ GoRouter appRoutes = GoRouter(
                     ),
                   ),
                 ], */
-              ),
-            ],
-          ),
+                    ),
+                  ],
+                ),
 
-          /// Brach Setting
-          StatefulShellBranch(
-            navigatorKey: _shellSearchNavigatorKey,
-            routes: <RouteBase>[
-              GoRoute(
-                path: AppRoutesPath.search,
-                name: "Settings",
-                builder: (BuildContext context, GoRouterState state) =>
-                    const SearchScreen(),
-                /* routes: [
+                /// Brach Setting
+                StatefulShellBranch(
+                  navigatorKey: _shellSearchNavigatorKey,
+                  routes: <RouteBase>[
+                    GoRoute(
+                      path: 'search',
+                      name: "Settings",
+                      builder: (BuildContext context, GoRouterState state) =>
+                          const SearchScreen(),
+                      /* routes: [
                   GoRoute(
                     path: "subSetting",
                     name: "subSetting",
@@ -84,10 +89,10 @@ GoRouter appRoutes = GoRouter(
                     },
                   ),
                 ], */
-              ),
-            ],
-          ),
-          /* /// Brach Setting
+                    ),
+                  ],
+                ),
+                /* /// Brach Setting
           StatefulShellBranch(
             navigatorKey: _shellAddProductNavigatorKey,
             routes: <RouteBase>[
@@ -119,8 +124,8 @@ GoRouter appRoutes = GoRouter(
             ],
           ), */
 
-          /// Brach Add Product
-          /* StatefulShellBranch(
+                /// Brach Add Product
+                /* StatefulShellBranch(
             navigatorKey: _shellRecipesNavigatorKey,
             routes: <RouteBase>[
               GoRoute(
@@ -150,6 +155,7 @@ GoRouter appRoutes = GoRouter(
               ),
             ],
           ), */
-        ],
-      ),
+              ],
+            ),
+          ])
     ]);

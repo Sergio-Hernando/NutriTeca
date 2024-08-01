@@ -39,7 +39,7 @@ class AppTheme {
   // Definición del tema
   static final ThemeData mainTheme = ThemeData(
     primaryColor: AppColors.foreground,
-    backgroundColor: AppColors.background,
+    scaffoldBackgroundColor: AppColors.background,
     textTheme: const TextTheme(
       displayLarge: titleTextStyle,
       displayMedium: splashTextStyle,

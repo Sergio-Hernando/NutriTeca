@@ -3,7 +3,6 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
 import 'package:food_macros/presentation/screens/search/widgets/search_bar.dart';
-import 'package:food_macros/presentation/widgets/app_bar.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -48,7 +47,6 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
       backgroundColor: AppColors.foreground,
       body: Column(
         children: [

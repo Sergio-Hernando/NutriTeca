@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
+import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
@@ -92,16 +93,17 @@ GoRouter appRoutes = GoRouter(
                     ),
                   ],
                 ),
-                /* /// Brach Setting
-          StatefulShellBranch(
-            navigatorKey: _shellAddProductNavigatorKey,
-            routes: <RouteBase>[
-              GoRoute(
-                path: AppRoutesPath.addProduct,
-                name: "Add Product",
-                builder: (BuildContext context, GoRouterState state) =>
-                    const AddProductScreen(),
-                /* routes: [
+
+                /// Brach Add Product
+                StatefulShellBranch(
+                  navigatorKey: _shellAddProductNavigatorKey,
+                  routes: <RouteBase>[
+                    GoRoute(
+                      path: 'addProduct',
+                      name: "Add Product",
+                      builder: (BuildContext context, GoRouterState state) =>
+                          const AddProductScreen(),
+                      /* routes: [
                   GoRoute(
                     path: "subSetting",
                     name: "subSetting",
@@ -120,9 +122,9 @@ GoRouter appRoutes = GoRouter(
                     },
                   ),
                 ], */
-              ),
-            ],
-          ), */
+                    ),
+                  ],
+                ),
 
                 /// Brach Add Product
                 /* StatefulShellBranch(

@@ -18,15 +18,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     data = [
-      _ChartData('Arroz', 12),
-      _ChartData('Pan', 15),
-      _ChartData('Agua', 30),
-      _ChartData('Pasta', 6.4),
-      _ChartData('Tomate', 14),
-      _ChartData('Tortitas', 76),
-      _ChartData('Caldo', 25),
-      _ChartData('Leche', 38),
-      _ChartData('Patata', 4),
+      _ChartData('Arroz', 1000),
+      _ChartData('Pan', 600),
+      _ChartData('Agua', 8000),
+      _ChartData('Pasta', 1000),
+      _ChartData('Tomate', 600),
+      _ChartData('Tortitas', 120),
+      _ChartData('Caldo', 2000),
+      _ChartData('Leche', 6000),
+      _ChartData('Patata', 5000),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SfCartesianChart(
                     primaryXAxis: const CategoryAxis(),
                     primaryYAxis: const NumericAxis(
-                        minimum: 0, maximum: 100, interval: 10),
+                        minimum: 0, maximum: 5000, interval: 500),
                     tooltipBehavior: _tooltip,
                     series: <CartesianSeries<_ChartData, String>>[
                       BarSeries<_ChartData, String>(

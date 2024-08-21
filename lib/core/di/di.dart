@@ -10,6 +10,7 @@ import 'package:food_macros/data/repositories/data_source_contracts/ingredients_
 import 'package:food_macros/data/repositories/data_source_contracts/monthly_spent_data_source_contract.dart';
 import 'package:food_macros/data/repositories/data_source_contracts/recipe_data_source_contract.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
+import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:get_it/get_it.dart';

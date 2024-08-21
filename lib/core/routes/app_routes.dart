@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
+import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
@@ -16,6 +19,8 @@ final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
 final GlobalKey<NavigatorState> _shellAddProductNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAddProduct');
+final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellAddProductBloc');
 final GlobalKey<NavigatorState> _shellRecipesNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellRecipes');
 
@@ -98,12 +103,22 @@ GoRouter appRoutes = GoRouter(
                 StatefulShellBranch(
                   navigatorKey: _shellAddProductNavigatorKey,
                   routes: <RouteBase>[
-                    GoRoute(
-                      path: 'addProduct',
-                      name: "Add Product",
-                      builder: (BuildContext context, GoRouterState state) =>
-                          const AddProductScreen(),
-                      /* routes: [
+                    ShellRoute(
+                        navigatorKey: _shellAddProductBlocNavigatorKey,
+                        builder: (context, state, child) {
+                          return BlocProvider(
+                              create: (context) => AddProductBloc(
+                                  repositoryContract: uiModulesDi()),
+                              child: child);
+                        },
+                        routes: [
+                          GoRoute(
+                            path: 'addProduct',
+                            name: "Add Product",
+                            builder:
+                                (BuildContext context, GoRouterState state) =>
+                                    const AddProductScreen(),
+                            /* routes: [
                   GoRoute(
                     path: "subSetting",
                     name: "subSetting",
@@ -122,7 +137,8 @@ GoRouter appRoutes = GoRouter(
                     },
                   ),
                 ], */
-                    ),
+                          ),
+                        ])
                   ],
                 ),
 

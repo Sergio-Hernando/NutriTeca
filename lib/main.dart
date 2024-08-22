@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/core/routes/app_routes.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_event.dart';
@@ -10,13 +11,19 @@ import 'package:food_macros/core/di/di.dart' as app_di;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sp = await SharedPreferences.getInstance();
-  app_di.initDi(instance: sp);
+  final db = DatabaseHandler();
+  app_di.initDi(instance: sp, dbInstance: db);
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

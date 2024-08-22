@@ -49,6 +49,9 @@ class AddProductForm extends StatelessWidget {
             : 'El formulario no se ha enviado';
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(message)));
+        _controllers.forEach((key, controller) {
+          controller.clear();
+        });
       },
       builder: (context, state) {
         return SingleChildScrollView(

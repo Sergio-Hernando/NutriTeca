@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
@@ -29,7 +31,7 @@ class CustomCard extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(imagePath),
+                backgroundImage: MemoryImage(base64Decode(imagePath)),
                 radius: 30,
               ),
               const SizedBox(width: 16),

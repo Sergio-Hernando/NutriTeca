@@ -33,17 +33,17 @@ class DatabaseHandler {
         name TEXT NOT NULL,
         supermarket TEXT NOT NULL,
         image_base64 TEXT,
-        calories REAL NOT NULL,
-        fats REAL NOT NULL,
-        fats_saturated REAL,
-        fats_polyunsaturated REAL,
-        fats_monounsaturated REAL,
-        fats_trans REAL,
-        carbohydrates REAL NOT NULL,
-        fiber REAL,
-        sugar REAL,
-        proteins REAL NOT NULL,
-        salt REAL
+        calories INTEGER NOT NULL,
+        fats INTEGER NOT NULL,
+        fats_saturated INTEGER,
+        fats_polyunsaturated INTEGER,
+        fats_monounsaturated INTEGER,
+        fats_trans INTEGER,
+        carbohydrates INTEGER NOT NULL,
+        fiber INTEGER,
+        sugar INTEGER,
+        proteins INTEGER NOT NULL,
+        salt INTEGER
       );
     ''');
 
@@ -61,7 +61,7 @@ class DatabaseHandler {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_recipe INTEGER,
         id_aliment INTEGER,
-        quantity REAL NOT NULL,
+        quantity INTEGER NOT NULL,
         FOREIGN KEY (id_recipe) REFERENCES recipe(id) ON DELETE CASCADE,
         FOREIGN KEY (id_aliment) REFERENCES aliment(id) ON DELETE CASCADE
       );
@@ -73,7 +73,7 @@ class DatabaseHandler {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_aliment INTEGER,
         date DATE NOT NULL,
-        quantity REAL NOT NULL,
+        quantity INTEGER NOT NULL,
         FOREIGN KEY (id_aliment) REFERENCES aliment(id) ON DELETE CASCADE
       );
     ''');

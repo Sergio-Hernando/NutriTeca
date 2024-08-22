@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/types/screen_status.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
 import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
 import 'package:food_macros/presentation/screens/search/widgets/search_bar.dart';
 
@@ -12,87 +18,82 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  final List<Map<String, dynamic>> _allUsers = [
-    {"id": 1, "name": "Andy", "age": 29},
-    {"id": 2, "name": "Aragon", "age": 40},
-    {"id": 3, "name": "Bob", "age": 5},
-    {"id": 4, "name": "Barbara", "age": 35},
-    {"id": 5, "name": "Candy", "age": 21},
-    {"id": 6, "name": "Colin", "age": 55},
-    {"id": 7, "name": "Audra", "age": 30},
-    {"id": 8, "name": "Banana", "age": 14},
-    {"id": 9, "name": "Caversky", "age": 100},
-    {"id": 10, "name": "Becky", "age": 32},
-  ];
-
-  List<Map<String, dynamic>> _foundUsers = [];
+  List<AlimentEntity> _foundAliments = [];
 
   @override
   void initState() {
     super.initState();
-    _foundUsers = _allUsers;
+    context.read<SearchBloc>().add(const SearchEvent.fetchAllAlimentsList());
   }
 
-  void _updateResults(List<Map<String, dynamic>> results) {
+  void _updateResults(List<AlimentEntity> results) {
     setState(() {
-      _foundUsers = results;
+      _foundAliments = results;
     });
   }
 
-  void _onPressed(int id) {
-    // Define your action when the icon is pressed
-    print('Icon pressed for user ID: $id');
-  }
+  void _onPressed(AlimentEntity aliment) {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.foreground,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      body: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if (state.screenStatus.isLoading()) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.screenStatus.isError()) {
+            return const Center(child: Text('Error loading data'));
+          } else {
+            _foundAliments = state.aliments;
+
+            return Column(
               children: [
-                Expanded(
-                  child: CustomSearchBar(
-                    allItems: _allUsers,
-                    onResults: _updateResults,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.tune),
-                  iconSize: AppTheme.titleFontSize,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _foundUsers.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: ListView.builder(
-                      itemCount: _foundUsers.length,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () => _onPressed(_foundUsers[index]['id']),
-                        child: CustomCard(
-                          imagePath:
-                              'assets/images/E202.png', // Replace with actual image paths
-                          text: _foundUsers[index]['name'],
-                          icon: Icons.chevron_right,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: CustomSearchBar(
+                          allItems: _foundAliments,
+                          onResults: _updateResults,
                         ),
                       ),
-                    ),
-                  )
-                : Text(
-                    'No results found',
-                    style: AppTheme.bodyTextStyle
-                        .copyWith(color: AppColors.secondary),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.tune),
+                        iconSize: AppTheme.titleFontSize,
+                      ),
+                    ],
                   ),
-          ),
-        ],
+                ),
+                Expanded(
+                  child: _foundAliments.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ListView.builder(
+                            itemCount: _foundAliments.length,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () => _onPressed(_foundAliments[index]),
+                              child: CustomCard(
+                                imagePath: _foundAliments[index].imageBase64,
+                                text: _foundAliments[index].name,
+                                icon: Icons.chevron_right,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Text(
+                          'No results found',
+                          style: AppTheme.bodyTextStyle
+                              .copyWith(color: AppColors.secondary),
+                        ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

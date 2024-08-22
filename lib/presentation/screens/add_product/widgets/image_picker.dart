@@ -91,8 +91,8 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
           controller: widget.controller,
           validator: widget.validator,
           decoration: InputDecoration(
-            labelText: 'Imagen del producto',
-            labelStyle: AppTheme.descriptionTextStyle,
+            hintText: 'Imagen del producto',
+            hintStyle: AppTheme.descriptionTextStyle,
             filled: true,
             fillColor: AppColors.secondaryAccent,
             border: OutlineInputBorder(

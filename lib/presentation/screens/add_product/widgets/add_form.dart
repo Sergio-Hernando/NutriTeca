@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_event.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_state.dart';
+import 'package:food_macros/presentation/screens/add_product/widgets/advanced_fields.dart';
+import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/image_picker.dart';
 
 class AddProductForm extends StatelessWidget {
@@ -15,91 +15,28 @@ class AddProductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _supermarketController =
-        TextEditingController();
-    final TextEditingController _imageController = TextEditingController();
-    final TextEditingController _caloriesController = TextEditingController();
-    final TextEditingController _fatsController = TextEditingController();
-    final TextEditingController _fatsSaturatedController =
-        TextEditingController();
-    final TextEditingController _fatsPolyunsaturatedController =
-        TextEditingController();
-    final TextEditingController _fatsMonounsaturatedController =
-        TextEditingController();
-    final TextEditingController _fatsTransController = TextEditingController();
-    final TextEditingController _carbohydratesController =
-        TextEditingController();
-    final TextEditingController _fiberController = TextEditingController();
-    final TextEditingController _sugarController = TextEditingController();
-    final TextEditingController _proteinsController = TextEditingController();
-    final TextEditingController _saltController = TextEditingController();
-
-    InputDecoration _inputDecoration(String label) {
-      return InputDecoration(
-        hintText: label,
-        hintStyle: AppTheme.descriptionTextStyle,
-        filled: true,
-        fillColor: AppColors.secondaryAccent,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      );
-    }
-
-    String? _requiredValidator(String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Este campo es obligatorio';
-      }
-      return null;
-    }
-
-    int? _parseToInt(String text) {
-      try {
-        return int.tryParse(text) ?? 0;
-      } catch (e) {
-        return null;
-      }
-    }
+    final _controllers = _buildControllers();
 
     void _submitForm() {
       if (_formKey.currentState?.validate() ?? false) {
-        final name = _nameController.text;
-        final image = _imageController.text;
-        final supermarket = _supermarketController.text;
-        final calories = _parseToInt(_caloriesController.text);
-        int? fats = _parseToInt(_fatsController.text);
-        int? fatsSaturated = _parseToInt(_fatsSaturatedController.text);
-        int? fatsPolyunsaturated =
-            _parseToInt(_fatsPolyunsaturatedController.text);
-        int? fatsMonounsaturated =
-            _parseToInt(_fatsMonounsaturatedController.text);
-        int? fatsTrans = _parseToInt(_fatsTransController.text);
-        int? carbohydrates = _parseToInt(_carbohydratesController.text);
-        int? fiber = _parseToInt(_fiberController.text);
-        int? sugar = _parseToInt(_sugarController.text);
-        int? proteins = _parseToInt(_proteinsController.text);
-        int? salt = _parseToInt(_saltController.text);
-
         final aliment = AlimentRequestEntity(
-            name: name,
-            imageBase64: image,
-            supermarket: supermarket,
-            calories: calories ?? 0,
-            fats: fats ?? 0,
-            fatsSaturated: fatsSaturated ?? 0,
-            fatsPolyunsaturated: fatsPolyunsaturated ?? 0,
-            fatsMonounsaturated: fatsMonounsaturated ?? 0,
-            fatsTrans: fatsTrans ?? 0,
-            carbohydrates: carbohydrates ?? 0,
-            fiber: fiber ?? 0,
-            sugar: sugar ?? 0,
-            proteins: proteins ?? 0,
-            salt: salt ?? 0);
+          name: _controllers['name']!.text,
+          imageBase64: _controllers['image']!.text,
+          supermarket: _controllers['supermarket']!.text,
+          calories: _parseToInt(_controllers['calories']!.text) ?? 0,
+          fats: _parseToInt(_controllers['fats']!.text) ?? 0,
+          fatsSaturated: _parseToInt(_controllers['fatsSaturated']!.text) ?? 0,
+          fatsPolyunsaturated:
+              _parseToInt(_controllers['fatsPolyunsaturated']!.text) ?? 0,
+          fatsMonounsaturated:
+              _parseToInt(_controllers['fatsMonounsaturated']!.text) ?? 0,
+          fatsTrans: _parseToInt(_controllers['fatsTrans']!.text) ?? 0,
+          carbohydrates: _parseToInt(_controllers['carbohydrates']!.text) ?? 0,
+          fiber: _parseToInt(_controllers['fiber']!.text) ?? 0,
+          sugar: _parseToInt(_controllers['sugar']!.text) ?? 0,
+          proteins: _parseToInt(_controllers['proteins']!.text) ?? 0,
+          salt: _parseToInt(_controllers['salt']!.text) ?? 0,
+        );
 
         context.read<AddProductBloc>().add(AddProductEvent.addProduct(aliment));
       }
@@ -107,15 +44,11 @@ class AddProductForm extends StatelessWidget {
 
     return BlocConsumer<AddProductBloc, AddProductState>(
       listener: (context, state) {
-        if (state.screenStatus.isSuccess()) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Formulario enviado')),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('El formulario no se ha enviado')),
-          );
-        }
+        final message = state.screenStatus.isSuccess()
+            ? 'Formulario enviado'
+            : 'El formulario no se ha enviado';
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
       },
       builder: (context, state) {
         return SingleChildScrollView(
@@ -126,87 +59,48 @@ class AddProductForm extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: _inputDecoration('Nombre del producto'),
+                  CustomTextField(
+                    controller: _controllers['name']!,
+                    label: 'Nombre del producto',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _supermarketController,
-                    decoration: _inputDecoration('Supermercado'),
+                  CustomTextField(
+                    controller: _controllers['supermarket']!,
+                    label: 'Supermercado',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   ImagePickerTextField(
-                      validator: _requiredValidator,
-                      controller: _imageController),
-                  TextFormField(
-                    controller: _caloriesController,
-                    decoration: _inputDecoration('Calorías'),
+                    validator: _requiredValidator,
+                    controller: _controllers['image']!,
+                  ),
+                  CustomTextField(
+                    controller: _controllers['calories']!,
+                    label: 'Calorías',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _fatsController,
-                    decoration: _inputDecoration('Grasas'),
+                  CustomTextField(
+                    controller: _controllers['fats']!,
+                    label: 'Grasas',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _carbohydratesController,
-                    decoration: _inputDecoration('Carbohidratos'),
+                  CustomTextField(
+                    controller: _controllers['carbohydrates']!,
+                    label: 'Carbohidratos',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _proteinsController,
-                    decoration: _inputDecoration('Proteínas'),
+                  CustomTextField(
+                    controller: _controllers['proteins']!,
+                    label: 'Proteínas',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-
-                  // Añadir el ExpansionTile aquí
-                  ExpansionTile(
-                    title: const Text('Avanzado'),
-                    children: [
-                      TextFormField(
-                        controller: _fatsSaturatedController,
-                        decoration: _inputDecoration('Grasas Saturadas'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _fatsPolyunsaturatedController,
-                        decoration: _inputDecoration('Grasas Poliinsaturadas'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _fatsMonounsaturatedController,
-                        decoration: _inputDecoration('Grasas Monoinsaturadas'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _fatsTransController,
-                        decoration: _inputDecoration('Grasas Trans'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _fiberController,
-                        decoration: _inputDecoration('Fibra'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _sugarController,
-                        decoration: _inputDecoration('Azúcares'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _saltController,
-                        decoration: _inputDecoration('Sal'),
-                      ),
-                    ],
-                  ),
-
+                  AdvancedFields(controllers: _controllers),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
@@ -225,5 +119,39 @@ class AddProductForm extends StatelessWidget {
         );
       },
     );
+  }
+
+  Map<String, TextEditingController> _buildControllers() {
+    return {
+      'name': TextEditingController(),
+      'supermarket': TextEditingController(),
+      'image': TextEditingController(),
+      'calories': TextEditingController(),
+      'fats': TextEditingController(),
+      'fatsSaturated': TextEditingController(),
+      'fatsPolyunsaturated': TextEditingController(),
+      'fatsMonounsaturated': TextEditingController(),
+      'fatsTrans': TextEditingController(),
+      'carbohydrates': TextEditingController(),
+      'fiber': TextEditingController(),
+      'sugar': TextEditingController(),
+      'proteins': TextEditingController(),
+      'salt': TextEditingController(),
+    };
+  }
+
+  int? _parseToInt(String text) {
+    try {
+      return int.tryParse(text) ?? 0;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  String? _requiredValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+    return null;
   }
 }

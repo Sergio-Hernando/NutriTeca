@@ -28,51 +28,61 @@ class DatabaseHandler {
   Future<void> _createTables(Database db) async {
     // Crear tabla Alimento
     await db.execute('''
-      CREATE TABLE alimento(
+      CREATE TABLE aliment(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        imagen_base64 TEXT,
-        calorias REAL NOT NULL,
-        grasas REAL NOT NULL,
-        carbohidratos REAL NOT NULL,
-        proteinas REAL NOT NULL
+        name TEXT NOT NULL,
+        supermarket TEXT NOT NULL,
+        image_base64 TEXT,
+        calories REAL NOT NULL,
+        fats REAL NOT NULL,
+        fats_saturated REAL,
+        fats_polyunsaturated REAL,
+        fats_monounsaturated REAL,
+        fats_trans REAL,
+        carbohydrates REAL NOT NULL,
+        fiber REAL,
+        sugar REAL,
+        proteins REAL NOT NULL,
+        salt REAL
       );
     ''');
 
     // Crear tabla Receta
     await db.execute('''
-      CREATE TABLE receta(
+      CREATE TABLE recipe(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL
+        name TEXT NOT NULL
       );
     ''');
 
     // Crear tabla Receta_Alimento (tabla intermedia)
     await db.execute('''
-      CREATE TABLE receta_alimento(
+      CREATE TABLE recipe_aliment(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_receta INTEGER,
-        id_alimento INTEGER,
-        cantidad REAL NOT NULL,
-        FOREIGN KEY (id_receta) REFERENCES Receta(id) ON DELETE CASCADE,
-        FOREIGN KEY (id_alimento) REFERENCES Alimento(id) ON DELETE CASCADE
+        id_recipe INTEGER,
+        id_aliment INTEGER,
+        quantity REAL NOT NULL,
+        FOREIGN KEY (id_recipe) REFERENCES recipe(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_aliment) REFERENCES aliment(id) ON DELETE CASCADE
       );
     ''');
 
     // Crear tabla Gasto
     await db.execute('''
-      CREATE TABLE gasto(
+      CREATE TABLE spent(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_alimento INTEGER,
-        fecha DATE NOT NULL,
-        cantidad REAL NOT NULL,
-        FOREIGN KEY (id_alimento) REFERENCES Alimento(id) ON DELETE CASCADE
+        id_aliment INTEGER,
+        date DATE NOT NULL,
+        quantity REAL NOT NULL,
+        FOREIGN KEY (id_aliment) REFERENCES aliment(id) ON DELETE CASCADE
       );
     ''');
   }
 
-  Future<void> closeDatabase() async {
-    final db = await database;
-    db.close();
+  Future<void> close() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
   }
 }

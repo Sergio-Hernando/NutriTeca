@@ -10,14 +10,14 @@ class RecipeDataSource implements RecipeDataSourceContract {
   @override
   Future<int> createRecipe(RecipeRemoteEntity recipe) async {
     final db = await dbHandler.database;
-    return db.insert('receta', recipe.toMap());
+    return db.insert('recipe', recipe.toMap());
   }
 
   @override
   Future<RecipeRemoteEntity?> getRecipe(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
-      'receta',
+      'recipe',
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -32,7 +32,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   @override
   Future<List<RecipeRemoteEntity>> getAllRecipes() async {
     final db = await dbHandler.database;
-    final maps = await db.query('receta');
+    final maps = await db.query('recipe');
 
     return maps.map((map) => RecipeRemoteEntity.fromMap(map)).toList();
   }
@@ -41,7 +41,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   Future<int> updateRecipe(RecipeRemoteEntity recipe) async {
     final db = await dbHandler.database;
     return db.update(
-      'receta',
+      'recipe',
       recipe.toMap(),
       where: 'id = ?',
       whereArgs: [recipe.id],
@@ -52,7 +52,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   Future<int> deleteRecipe(int id) async {
     final db = await dbHandler.database;
     return db.delete(
-      'receta',
+      'recipe',
       where: 'id = ?',
       whereArgs: [id],
     );

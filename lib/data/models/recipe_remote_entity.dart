@@ -1,20 +1,20 @@
 class RecipeRemoteEntity {
   final int? id;
-  final String nombre;
+  final String name;
 
-  RecipeRemoteEntity({this.id, required this.nombre});
+  RecipeRemoteEntity({this.id, required this.name});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nombre': nombre,
+      'name': name,
     };
   }
 
   factory RecipeRemoteEntity.fromMap(Map<String, dynamic> map) {
     return RecipeRemoteEntity(
       id: map['id'],
-      nombre: map['nombre'],
+      name: map['name'],
     );
   }
 }

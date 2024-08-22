@@ -8,17 +8,17 @@ class IngredientsRecipeRepository {
   IngredientsRecipeRepository(this._ingredientsRecipeDataSourceContract);
 
   Future<void> createIngredientsRecipe(
-      int recetaId, Map<int, int> alimentosConCantidades) async {
-    // `alimentosConCantidades` es un mapa donde la clave es el `id` del alimento y el valor es la cantidad.
+      int recipeId, Map<int, int> alimentsConCantidades) async {
+    // `alimentsConCantidades` es un mapa donde la clave es el `id` del aliment y el valor es la quantity.
 
-    for (final entry in alimentosConCantidades.entries) {
-      final alimentoId = entry.key;
-      final cantidad = entry.value;
+    for (final entry in alimentsConCantidades.entries) {
+      final alimentId = entry.key;
+      final quantity = entry.value;
 
       final relacion = IngredientsRecipeRemoteEntity(
-        idAlimento: alimentoId,
-        idReceta: recetaId,
-        cantidad: cantidad,
+        idAlimento: alimentId,
+        idReceta: recipeId,
+        quantity: quantity,
       );
 
       await _ingredientsRecipeDataSourceContract

@@ -24,28 +24,6 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
-  final DatabaseHandler _databaseHelper = DatabaseHandler();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    _databaseHelper.closeDatabase();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      _databaseHelper.closeDatabase();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

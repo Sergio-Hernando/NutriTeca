@@ -2,30 +2,30 @@ class IngredientsRecipeRemoteEntity {
   final int? id;
   final int idAlimento;
   final int idReceta;
-  final int cantidad;
+  final int quantity;
 
   IngredientsRecipeRemoteEntity({
     this.id,
     required this.idAlimento,
     required this.idReceta,
-    required this.cantidad,
+    required this.quantity,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'id_alimento': idAlimento,
-      'id_receta': idReceta,
-      'cantidad': cantidad,
+      'id_aliment': idAlimento,
+      'id_recipe': idReceta,
+      'quantity': quantity,
     };
   }
 
   factory IngredientsRecipeRemoteEntity.fromMap(Map<String, dynamic> map) {
     return IngredientsRecipeRemoteEntity(
       id: map['id'],
-      idAlimento: map['id_alimento'],
-      idReceta: map['id_receta'],
-      cantidad: map['cantidad'],
+      idAlimento: map['id_aliment'],
+      idReceta: map['id_recipe'],
+      quantity: map['quantity'],
     );
   }
 }

@@ -10,14 +10,14 @@ class AlimentDataSource implements AlimentDataSourceContract {
   @override
   Future<int> createAliment(AlimentRemoteEntity aliment) async {
     final db = await dbHandler.database;
-    return db.insert('alimento', aliment.toMap());
+    return db.insert('aliment', aliment.toMap());
   }
 
   @override
   Future<AlimentRemoteEntity?> getAliment(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
-      'alimento',
+      'aliment',
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -32,7 +32,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   @override
   Future<List<AlimentRemoteEntity>> getAllAliments() async {
     final db = await dbHandler.database;
-    final maps = await db.query('alimento');
+    final maps = await db.query('aliment');
 
     return maps.map((map) => AlimentRemoteEntity.fromMap(map)).toList();
   }
@@ -41,7 +41,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   Future<int> updateAliment(AlimentRemoteEntity aliment) async {
     final db = await dbHandler.database;
     return db.update(
-      'alimento',
+      'aliment',
       aliment.toMap(),
       where: 'id = ?',
       whereArgs: [aliment.id],
@@ -52,7 +52,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   Future<int> deleteAliment(int id) async {
     final db = await dbHandler.database;
     return db.delete(
-      'alimento',
+      'aliment',
       where: 'id = ?',
       whereArgs: [id],
     );

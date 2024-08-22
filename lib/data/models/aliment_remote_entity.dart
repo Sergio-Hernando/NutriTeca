@@ -1,43 +1,79 @@
 class AlimentRemoteEntity {
   final int? id;
-  final String nombre;
-  final String imagen_base64;
-  final int calorias;
-  final int grasas;
-  final int carbohidratos;
-  final int proteinas;
+  final String name;
+  final String imageBase64;
+  final String supermarket;
+  final int calories;
+
+  final int fats;
+  final int? fatsSaturated;
+  final int? fatsPolyunsaturated;
+  final int? fatsMonounsaturated;
+  final int? fatsTrans;
+
+  final int carbohydrates;
+  final int? fiber;
+  final int? sugar;
+
+  final int proteins;
+
+  final int? salt;
 
   AlimentRemoteEntity({
     this.id,
-    required this.nombre,
-    required this.imagen_base64,
-    required this.calorias,
-    required this.grasas,
-    required this.carbohidratos,
-    required this.proteinas,
+    required this.name,
+    required this.imageBase64,
+    required this.supermarket,
+    required this.calories,
+    required this.fats,
+    this.fatsSaturated,
+    this.fatsPolyunsaturated,
+    this.fatsMonounsaturated,
+    this.fatsTrans,
+    required this.carbohydrates,
+    this.fiber,
+    this.sugar,
+    required this.proteins,
+    this.salt,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nombre': nombre,
-      'imagen_base64': imagen_base64,
-      'calorias': calorias,
-      'grasas': grasas,
-      'carbohidratos': carbohidratos,
-      'proteinas': proteinas,
+      'name': name,
+      'image_base64': imageBase64,
+      'supermarket': supermarket,
+      'calories': calories,
+      'fats': fats,
+      'fats_saturated': fatsSaturated,
+      'fats_polyunsaturated': fatsPolyunsaturated,
+      'fats_monounsaturated': fatsMonounsaturated,
+      'fats_trans': fatsTrans,
+      'carbohydrates': carbohydrates,
+      'fiber': fiber,
+      'sugar': sugar,
+      'proteins': proteins,
+      'salt': salt,
     };
   }
 
   factory AlimentRemoteEntity.fromMap(Map<String, dynamic> map) {
     return AlimentRemoteEntity(
       id: map['id'],
-      nombre: map['nombre'],
-      imagen_base64: map['id'],
-      calorias: map['calorias'],
-      grasas: map['grasas'],
-      carbohidratos: map['carbohidratos'],
-      proteinas: map['proteinas'],
+      name: map['name'],
+      imageBase64: map['image_base64'],
+      supermarket: map['supermarket'],
+      calories: map['calories'],
+      fats: map['fats'],
+      fatsSaturated: map['fats_saturated'],
+      fatsPolyunsaturated: map['fats_polyunsaturated'],
+      fatsMonounsaturated: map['fats_monounsaturated'],
+      fatsTrans: map['fats_trans'],
+      carbohydrates: map['carbohydrates'],
+      fiber: map['fiber'],
+      sugar: map['sugar'],
+      proteins: map['proteins'],
+      salt: map['salt'],
     );
   }
 }

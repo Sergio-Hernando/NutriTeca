@@ -12,14 +12,14 @@ class IngredientsRecipeDataSource
   Future<int> createIngredientsRecipe(
       IngredientsRecipeRemoteEntity entity) async {
     final db = await dbHandler.database;
-    return db.insert('receta_alimento', entity.toMap());
+    return db.insert('recipe_aliment', entity.toMap());
   }
 
   @override
   Future<IngredientsRecipeRemoteEntity?> getIngredientsRecipe(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
-      'receta_alimento',
+      'recipe_aliment',
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -34,7 +34,7 @@ class IngredientsRecipeDataSource
   @override
   Future<List<IngredientsRecipeRemoteEntity>> getAllIngredientsRecipe() async {
     final db = await dbHandler.database;
-    final maps = await db.query('receta_alimento');
+    final maps = await db.query('recipe_aliment');
 
     return maps
         .map((map) => IngredientsRecipeRemoteEntity.fromMap(map))
@@ -46,7 +46,7 @@ class IngredientsRecipeDataSource
       IngredientsRecipeRemoteEntity entity) async {
     final db = await dbHandler.database;
     return db.update(
-      'receta_alimento',
+      'recipe_aliment',
       entity.toMap(),
       where: 'id = ?',
       whereArgs: [entity.id],
@@ -57,7 +57,7 @@ class IngredientsRecipeDataSource
   Future<int> deleteIngredientsRecipe(int id) async {
     final db = await dbHandler.database;
     return db.delete(
-      'receta_alimento',
+      'recipe_aliment',
       where: 'id = ?',
       whereArgs: [id],
     );

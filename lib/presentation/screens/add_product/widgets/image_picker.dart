@@ -3,12 +3,15 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:permission_handler/permission_handler.dart';
 
 class ImagePickerTextField extends StatefulWidget {
   final FormFieldValidator<String> validator;
-  const ImagePickerTextField({Key? key, required this.validator})
+  final TextEditingController controller;
+  const ImagePickerTextField(
+      {Key? key, required this.validator, required this.controller})
       : super(key: key);
 
   @override
@@ -16,7 +19,6 @@ class ImagePickerTextField extends StatefulWidget {
 }
 
 class ImagePickerTextFieldState extends State<ImagePickerTextField> {
-  final TextEditingController _controller = TextEditingController();
   File? _image;
 
   Future<void> _requestPermissions() async {
@@ -32,11 +34,14 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
       if (pickedFile != null) {
         setState(() {
           _image = File(pickedFile.path);
-          _controller.text = pickedFile.path;
         });
+
+        final bytes = await _image!.readAsBytes();
+        final base64Image = base64Encode(bytes);
+
+        widget.controller.text = base64Image;
       }
     } catch (e) {
-      // Manejo de excepciones
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al seleccionar imagen: $e')),
       );
@@ -54,7 +59,7 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
+                title: const Text('Cámara'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _requestPermissions();
@@ -63,7 +68,7 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
               ),
               ListTile(
                 leading: const Icon(Icons.image),
-                title: const Text('Gallery'),
+                title: const Text('Galería'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _requestPermissions();
@@ -83,7 +88,7 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          controller: _controller,
+          controller: widget.controller,
           validator: widget.validator,
           decoration: InputDecoration(
             labelText: 'Imagen del producto',
@@ -103,18 +108,23 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
         _image != null
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: Image.file(
-                  _image!,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Image.file(
+                    _image!,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )
-            : Container(),
+            : Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Container(),
+              ),
       ],
     );
   }

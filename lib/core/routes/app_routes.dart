@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,8 +80,10 @@ GoRouter appRoutes = GoRouter(
                         navigatorKey: _shellSearchBlocNavigatorKey,
                         builder: (context, state, child) {
                           return BlocProvider(
-                            create: (context) =>
-                                SearchBloc(repositoryContract: uiModulesDi()),
+                            create: (context) => SearchBloc(
+                                repositoryContract: uiModulesDi(),
+                                alimentAddedController:
+                                    uiModulesDi<StreamController<void>>()),
                             child: child,
                           );
                         },
@@ -124,7 +128,9 @@ GoRouter appRoutes = GoRouter(
                         builder: (context, state, child) {
                           return BlocProvider(
                               create: (context) => AddProductBloc(
-                                  repositoryContract: uiModulesDi()),
+                                  repositoryContract: uiModulesDi(),
+                                  alimentAddedController:
+                                      uiModulesDi<StreamController<void>>()),
                               child: child);
                         },
                         routes: [

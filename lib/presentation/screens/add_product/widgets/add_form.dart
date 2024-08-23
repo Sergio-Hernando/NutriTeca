@@ -44,14 +44,20 @@ class AddProductForm extends StatelessWidget {
 
     return BlocConsumer<AddProductBloc, AddProductState>(
       listener: (context, state) {
-        final message = state.screenStatus.isSuccess()
-            ? 'Formulario enviado'
-            : 'El formulario no se ha enviado';
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(message)));
-        _controllers.forEach((key, controller) {
-          controller.clear();
-        });
+        final messages = {
+          const ScreenStatus.success(): 'Formulario enviado',
+          const ScreenStatus.error(): 'El formulario no se ha enviado',
+        };
+
+        final message = messages[state.screenStatus];
+        if (message != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message)),
+          );
+          _controllers.forEach((key, controller) {
+            controller.clear();
+          });
+        }
       },
       builder: (context, state) {
         return SingleChildScrollView(
@@ -75,7 +81,6 @@ class AddProductForm extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   ImagePickerTextField(
-                    validator: _requiredValidator,
                     controller: _controllers['image']!,
                   ),
                   CustomTextField(

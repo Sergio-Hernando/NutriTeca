@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
@@ -7,10 +9,13 @@ import 'package:food_macros/presentation/screens/add_product/bloc/add_product_st
 
 class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   final AlimentRepositoryContract _repository;
+  final StreamController<void> _alimentAddedController;
 
   AddProductBloc({
     required AlimentRepositoryContract repositoryContract,
+    required StreamController<void> alimentAddedController,
   })  : _repository = repositoryContract,
+        _alimentAddedController = alimentAddedController,
         super(AddProductState.initial()) {
     on<AddProductEvent>((event, emit) async {
       await event.when(
@@ -23,9 +28,11 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final data = await _repository.createAliment(aliment);
 
-    emit(state.copyWith(
-        screenStatus: (data == 1)
-            ? const ScreenStatus.success()
-            : const ScreenStatus.error()));
+    if (data == 0) {
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+    } else {
+      _alimentAddedController.add(null);
+      emit(state.copyWith(screenStatus: const ScreenStatus.success()));
+    }
   }
 }

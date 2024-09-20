@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/core/network/dio_http_client.dart';
 import 'package:food_macros/data/data_source/aliment_data_source.dart';
@@ -12,6 +14,7 @@ import 'package:food_macros/data/repositories/data_source_contracts/recipe_data_
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';

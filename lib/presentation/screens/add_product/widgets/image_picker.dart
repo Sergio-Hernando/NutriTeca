@@ -8,10 +8,8 @@ import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImagePickerTextField extends StatefulWidget {
-  final FormFieldValidator<String> validator;
   final TextEditingController controller;
-  const ImagePickerTextField(
-      {Key? key, required this.validator, required this.controller})
+  const ImagePickerTextField({Key? key, required this.controller})
       : super(key: key);
 
   @override
@@ -89,7 +87,6 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
       children: [
         TextFormField(
           controller: widget.controller,
-          validator: widget.validator,
           decoration: InputDecoration(
             hintText: 'Imagen del producto',
             hintStyle: AppTheme.descriptionTextStyle,

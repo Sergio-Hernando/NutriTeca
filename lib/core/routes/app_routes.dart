@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
@@ -17,6 +20,8 @@ final GlobalKey<NavigatorState> _shellHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
+final GlobalKey<NavigatorState> _shellSearchBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellSearchBloc');
 final GlobalKey<NavigatorState> _shellAddProductNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAddProduct');
 final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =
@@ -71,12 +76,26 @@ GoRouter appRoutes = GoRouter(
                 StatefulShellBranch(
                   navigatorKey: _shellSearchNavigatorKey,
                   routes: <RouteBase>[
-                    GoRoute(
-                      path: 'search',
-                      name: "Settings",
-                      builder: (BuildContext context, GoRouterState state) =>
-                          const SearchScreen(),
-                      /* routes: [
+                    ShellRoute(
+                        navigatorKey: _shellSearchBlocNavigatorKey,
+                        builder: (context, state, child) {
+                          return BlocProvider(
+                            create: (context) => SearchBloc(
+                                repositoryContract: uiModulesDi(),
+                                alimentAddedController:
+                                    uiModulesDi<StreamController<void>>()),
+                            child: child,
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            path: 'search',
+                            name: "Settings",
+                            builder:
+                                (BuildContext context, GoRouterState state) =>
+                                    const SearchScreen(),
+
+                            /* routes: [
                   GoRoute(
                     path: "subSetting",
                     name: "subSetting",
@@ -95,7 +114,8 @@ GoRouter appRoutes = GoRouter(
                     },
                   ),
                 ], */
-                    ),
+                          ),
+                        ]),
                   ],
                 ),
 
@@ -108,7 +128,9 @@ GoRouter appRoutes = GoRouter(
                         builder: (context, state, child) {
                           return BlocProvider(
                               create: (context) => AddProductBloc(
-                                  repositoryContract: uiModulesDi()),
+                                  repositoryContract: uiModulesDi(),
+                                  alimentAddedController:
+                                      uiModulesDi<StreamController<void>>()),
                               child: child);
                         },
                         routes: [

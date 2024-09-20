@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  final List<Map<String, dynamic>> allItems;
-  final void Function(List<Map<String, dynamic>>) onResults;
+  final List<AlimentEntity> allItems;
+  final void Function(List<AlimentEntity>) onResults;
 
   const CustomSearchBar(
       {required this.allItems, required this.onResults, Key? key})
@@ -13,7 +14,7 @@ class CustomSearchBar extends StatefulWidget {
 }
 
 class CustomSearchBarState extends State<CustomSearchBar> {
-  List<Map<String, dynamic>> _foundItems = [];
+  List<AlimentEntity> _foundItems = [];
 
   @override
   void initState() {
@@ -22,13 +23,13 @@ class CustomSearchBarState extends State<CustomSearchBar> {
   }
 
   void _runFilter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
+    List<AlimentEntity> results = [];
     if (enteredKeyword.isEmpty) {
       results = _foundItems;
     } else {
       results = _foundItems
           .where((item) =>
-              item["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+              item.name.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
     }
     widget.onResults(results);

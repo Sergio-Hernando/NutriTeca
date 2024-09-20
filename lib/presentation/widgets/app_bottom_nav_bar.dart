@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/presentation/widgets/app_bar.dart';
@@ -73,4 +75,35 @@ class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
       ),
     );
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      final shouldExit = await _showExitConfirmation(context);
+      return shouldExit;
+    });
+  }
+}
+
+// Método para mostrar una confirmación para salir de la app
+Future<bool> _showExitConfirmation(BuildContext context) async {
+  return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Salir de la aplicación"),
+          content: const Text("¿Estás seguro de que quieres salir?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () => exit(0),
+              child: const Text("Salir"),
+            ),
+          ],
+        ),
+      ) ??
+      false;
 }

@@ -34,9 +34,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final data = await _repository.getAllAliments();
 
     emit(state.copyWith(
-      screenStatus: data.isNotEmpty
-          ? const ScreenStatus.success()
-          : const ScreenStatus.error(),
+      screenStatus: const ScreenStatus.success(),
       aliments: data,
     ));
   }

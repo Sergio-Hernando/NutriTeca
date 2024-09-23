@@ -7,6 +7,7 @@ import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
@@ -94,26 +95,26 @@ GoRouter appRoutes = GoRouter(
                             builder:
                                 (BuildContext context, GoRouterState state) =>
                                     const SearchScreen(),
-
-                            /* routes: [
-                  GoRoute(
-                    path: "subSetting",
-                    name: "subSetting",
-                    pageBuilder: (context, state) {
-                      return CustomTransitionPage<void>(
-                        key: state.pageKey,
-                        child: const SubSettingsView(),
-                        transitionsBuilder: (
-                          context,
-                          animation,
-                          secondaryAnimation,
-                          child,
-                        ) =>
-                            FadeTransition(opacity: animation, child: child),
-                      );
-                    },
-                  ),
-                ], */
+                            routes: [
+                              GoRoute(
+                                path: "filters",
+                                name: "Filters",
+                                pageBuilder: (context, state) {
+                                  return CustomTransitionPage<void>(
+                                    key: state.pageKey,
+                                    child: const FilterScreen(),
+                                    transitionsBuilder: (
+                                      context,
+                                      animation,
+                                      secondaryAnimation,
+                                      child,
+                                    ) =>
+                                        FadeTransition(
+                                            opacity: animation, child: child),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ]),
                   ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
 import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
 import 'package:food_macros/presentation/screens/search/widgets/search_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -61,7 +63,7 @@ class SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => context.push(AppRoutesPath.filters),
                         icon: const Icon(Icons.tune),
                         iconSize: AppTheme.titleFontSize,
                       ),

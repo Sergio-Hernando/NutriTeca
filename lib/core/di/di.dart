@@ -7,10 +7,10 @@ import 'package:food_macros/data/data_source/ingredients_recipe_data_source.dart
 import 'package:food_macros/data/data_source/monthly_spent_data_source.dart';
 import 'package:food_macros/data/data_source/recipe_data_source.dart';
 import 'package:food_macros/data/repositories/aliment_repository.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/aliment_data_source_contract.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/ingredients_recipe_data_source_contract.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/monthly_spent_data_source_contract.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/recipe_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/ingredients_recipe_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';

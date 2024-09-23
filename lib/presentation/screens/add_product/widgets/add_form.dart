@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
@@ -112,12 +113,13 @@ class AddProductForm extends StatelessWidget {
                   ElevatedButton(
                     onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32.0, vertical: 12.0),
-                    ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32.0, vertical: 12.0),
+                        backgroundColor: AppColors.secondaryAccent,
+                        foregroundColor: Colors.white),
                     child: const Text('Submit'),
                   ),
                 ],

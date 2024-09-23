@@ -3,6 +3,8 @@ class AppRoutesPath {
   static String home = '/home';
 
   static String search = '/search';
+  static String filters = '$search/filters';
+
   static String addProduct = '/addProduct';
   static String recipes = '/recipes';
 }

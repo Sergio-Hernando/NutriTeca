@@ -63,7 +63,18 @@ class SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => context.push(AppRoutesPath.filters),
+                        onPressed: () async {
+                          final filteredAliments = await context.push(
+                            AppRoutesPath.filters,
+                            extra: _foundAliments,
+                          ) as List<AlimentEntity>?;
+
+                          if (filteredAliments != null) {
+                            setState(() {
+                              _foundAliments = filteredAliments;
+                            });
+                          }
+                        },
                         icon: const Icon(Icons.tune),
                         iconSize: AppTheme.titleFontSize,
                       ),

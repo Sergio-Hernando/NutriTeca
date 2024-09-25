@@ -78,45 +78,37 @@ GoRouter appRoutes = GoRouter(
                   navigatorKey: _shellSearchNavigatorKey,
                   routes: <RouteBase>[
                     ShellRoute(
-                        navigatorKey: _shellSearchBlocNavigatorKey,
-                        builder: (context, state, child) {
-                          return BlocProvider(
-                            create: (context) => SearchBloc(
-                                repositoryContract: uiModulesDi(),
-                                alimentAddedController:
-                                    uiModulesDi<StreamController<void>>()),
-                            child: child,
-                          );
-                        },
-                        routes: [
-                          GoRoute(
-                            path: 'search',
-                            name: "Settings",
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    const SearchScreen(),
-                            routes: [
-                              GoRoute(
-                                path: "filters",
-                                name: "Filters",
-                                pageBuilder: (context, state) {
-                                  return CustomTransitionPage<void>(
-                                    key: state.pageKey,
-                                    child: const FilterScreen(),
-                                    transitionsBuilder: (
-                                      context,
-                                      animation,
-                                      secondaryAnimation,
-                                      child,
-                                    ) =>
-                                        FadeTransition(
-                                            opacity: animation, child: child),
-                                  );
-                                },
-                              ),
-                            ],
+                      navigatorKey: _shellSearchBlocNavigatorKey,
+                      builder: (context, state, child) {
+                        return BlocProvider(
+                          create: (context) => SearchBloc(
+                            repositoryContract: uiModulesDi(),
+                            alimentAddedController:
+                                uiModulesDi<StreamController<void>>(),
                           ),
-                        ]),
+                          child: child,
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          path: 'search',
+                          name: "Search",
+                          builder:
+                              (BuildContext context, GoRouterState state) =>
+                                  const SearchScreen(),
+                          routes: [
+                            GoRoute(
+                              path: "filters",
+                              name: "Filters",
+                              parentNavigatorKey: _rootNavigatorKey,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      const FilterScreen(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
 

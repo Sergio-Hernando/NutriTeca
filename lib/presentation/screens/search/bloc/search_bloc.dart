@@ -19,22 +19,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       await event.when(
         fetchAllAlimentsList: () =>
             _fetchAllAlimentsListEventToState(event, emit),
-        filterAliments: (
-          highFats,
-          highProteins,
-          highCarbohydrates,
-          highCalories,
-          supermarket,
-        ) =>
-            _filterAlimentsListEventToState(
-          event,
-          emit,
-          highFats,
-          highProteins,
-          highCarbohydrates,
-          highCalories,
-          supermarket,
-        ),
       );
     });
 
@@ -53,37 +37,5 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       screenStatus: const ScreenStatus.success(),
       aliments: data,
     ));
-  }
-
-  Future<void> _filterAlimentsListEventToState(
-    SearchEvent event,
-    Emitter<SearchState> emit,
-    bool? highFats,
-    bool? highProteins,
-    bool? highCarbohydrates,
-    bool? highCalories,
-    String? supermarket,
-  ) async {
-    emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
-    final filteredAliments = state.aliments.where((aliment) {
-      if (supermarket != null && aliment.supermarket != supermarket) {
-        return false;
-      }
-      if (highFats == true && aliment.fats < 10) {
-        return false;
-      }
-      if (highProteins == true && aliment.proteins < 10) {
-        return false;
-      }
-      if (highCarbohydrates == true && aliment.carbohydrates < 10) {
-        return false;
-      }
-      if (highCalories == true && aliment.calories < 100) {
-        return false;
-      }
-      return true;
-    }).toList();
-
-    emit(state.copyWith(aliments: filteredAliments));
   }
 }

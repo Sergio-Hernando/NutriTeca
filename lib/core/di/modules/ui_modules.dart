@@ -17,4 +17,5 @@ void _uiModulesInit() {
   uiModulesDi.registerFactory(() => SearchBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController: uiModulesDi()));
+  uiModulesDi.registerFactory(() => FiltersBloc());
 }

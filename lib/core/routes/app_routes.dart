@@ -7,9 +7,11 @@ import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/filters/bloc/filters_bloc.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
@@ -85,7 +87,7 @@ GoRouter appRoutes = GoRouter(
                             repositoryContract: uiModulesDi(),
                             alimentAddedController:
                                 uiModulesDi<StreamController<void>>(),
-                          ),
+                          )..add(const SearchEvent.fetchAllAlimentsList()),
                           child: child,
                         );
                       },
@@ -102,8 +104,13 @@ GoRouter appRoutes = GoRouter(
                               name: "Filters",
                               parentNavigatorKey: _rootNavigatorKey,
                               builder:
-                                  (BuildContext context, GoRouterState state) =>
-                                      const FilterScreen(),
+                                  (BuildContext context, GoRouterState state) {
+                                // Aquí se envuelve FilterScreen con BlocProvider para inyectar FiltersBloc
+                                return BlocProvider(
+                                  create: (context) => FiltersBloc(),
+                                  child: const FilterScreen(),
+                                );
+                              },
                             ),
                           ],
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/filters/bloc/filters_event.dart';
 import 'package:food_macros/presentation/screens/filters/bloc/filters_state.dart';
 
@@ -7,38 +8,28 @@ class FiltersBloc extends Bloc<FiltersEvent, FiltersState> {
   FiltersBloc() : super(FiltersState.initial()) {
     on<FiltersEvent>((event, emit) async {
       await event.when(
-        filterAliments: (
-          highFats,
-          highProteins,
-          highCarbohydrates,
-          highCalories,
-          supermarket,
-        ) =>
-            _filterAlimentsListEventToState(
-          event,
-          emit,
-          highFats,
-          highProteins,
-          highCarbohydrates,
-          highCalories,
-          supermarket,
-        ),
+        filterAliments: (highFats, highProteins, highCarbohydrates,
+                highCalories, supermarket, aliments) =>
+            _filterAlimentsListEventToState(event, emit, highFats, highProteins,
+                highCarbohydrates, highCalories, supermarket, aliments),
       );
     });
   }
 
   Future<void> _filterAlimentsListEventToState(
-    FiltersEvent event,
-    Emitter<FiltersState> emit,
-    bool? highFats,
-    bool? highProteins,
-    bool? highCarbohydrates,
-    bool? highCalories,
-    String? supermarket,
-  ) async {
+      FiltersEvent event,
+      Emitter<FiltersState> emit,
+      bool? highFats,
+      bool? highProteins,
+      bool? highCarbohydrates,
+      bool? highCalories,
+      String? supermarket,
+      List<AlimentEntity>? aliments) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
-    final filteredAliments = state.aliments.where((aliment) {
-      if (supermarket != null && aliment.supermarket != supermarket) {
+    final filteredAliments = aliments!.where((aliment) {
+      if (supermarket != null &&
+          supermarket.isNotEmpty &&
+          aliment.supermarket != supermarket) {
         return false;
       }
       if (highFats == true && aliment.fats < 10) {

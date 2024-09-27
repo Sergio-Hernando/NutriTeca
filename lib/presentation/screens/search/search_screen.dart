@@ -6,7 +6,6 @@ import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
-import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
 import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
 import 'package:food_macros/presentation/screens/search/widgets/search_bar.dart';
@@ -20,21 +19,27 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  List<AlimentEntity> _foundAliments = [];
+  List<AlimentEntity> _foundAliments = []; // Lista de resultados de búsqueda
+  List<AlimentEntity> _allAliments = []; // Lista completa de alimentos
 
-  @override
-  void initState() {
-    super.initState();
-    context.read<SearchBloc>().add(const SearchEvent.fetchAllAlimentsList());
-  }
-
+  // Actualizar los resultados de la barra de búsqueda
   void _updateResults(List<AlimentEntity> results) {
     setState(() {
       _foundAliments = results;
     });
   }
 
-  void _onPressed(AlimentEntity aliment) {}
+  // Inicializa la lista de alimentos cuando se cargan por primera vez
+  void _initializeAliments(List<AlimentEntity> aliments) {
+    if (_allAliments.isEmpty) {
+      _allAliments = aliments;
+      _foundAliments = aliments; // Mostrar todos inicialmente
+    }
+  }
+
+  void _onPressed(AlimentEntity aliment) {
+    // Acción al hacer clic en un alimento
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +52,8 @@ class SearchScreenState extends State<SearchScreen> {
           } else if (state.screenStatus.isError()) {
             return const Center(child: Text('Error loading data'));
           } else {
-            _foundAliments = state.aliments;
+            // Inicializar la lista de alimentos si no se ha hecho
+            _initializeAliments(state.aliments);
 
             return Column(
               children: [
@@ -58,20 +64,25 @@ class SearchScreenState extends State<SearchScreen> {
                     children: [
                       Expanded(
                         child: CustomSearchBar(
-                          allItems: _foundAliments,
-                          onResults: _updateResults,
+                          allItems:
+                              _allAliments, // Pasa la lista completa a la barra de búsqueda
+                          onResults: (results) => _updateResults(
+                              results), // Actualiza los resultados
                         ),
                       ),
                       IconButton(
                         onPressed: () async {
                           final filteredAliments = await context.push(
                             AppRoutesPath.filters,
-                            extra: _foundAliments,
+                            extra:
+                                _allAliments, // Pasar la lista completa al filtro
                           ) as List<AlimentEntity>?;
 
                           if (filteredAliments != null) {
                             setState(() {
                               _foundAliments = filteredAliments;
+                              _allAliments =
+                                  filteredAliments; // Actualizar la lista completa para buscar sobre ella
                             });
                           }
                         },

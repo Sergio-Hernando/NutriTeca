@@ -1,3 +1,4 @@
+import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'filters_event.freezed.dart';
@@ -10,5 +11,6 @@ class FiltersEvent with _$FiltersEvent {
     bool? highCarbohydrates,
     bool? highCalories,
     String? supermarket,
+    List<AlimentEntity>? aliments,
   }) = _FilterAliments;
 }

@@ -56,7 +56,16 @@ class SearchScreenState extends State<SearchScreen> {
           break;
       }
     });
-    context.read<SearchBloc>().add(SearchEvent.applyFilters(_activeFilters));
+    if (!(_activeFilters.highCalories &&
+            _activeFilters.highCarbohydrates &&
+            _activeFilters.highFats &&
+            _activeFilters.highProteins) &&
+        _activeFilters.supermarket == '') {
+      context.read<SearchBloc>().add(
+          const SearchEvent.resetFilters()); // Evento para reiniciar la lista
+    } else {
+      context.read<SearchBloc>().add(SearchEvent.applyFilters(_activeFilters));
+    }
   }
 
   void _onPressed(AlimentEntity aliment) {

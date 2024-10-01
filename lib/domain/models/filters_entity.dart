@@ -13,8 +13,27 @@ class FiltersEntity {
     this.supermarket,
   });
 
-  @override
-  String toString() {
-    return 'Filters{highFats: $highFats, highProteins: $highProteins, highCarbohydrates: $highCarbohydrates, highCalories: $highCalories, supermarket: $supermarket}';
+  FiltersEntity copyWith({
+    bool? highFats,
+    bool? highProteins,
+    bool? highCarbohydrates,
+    bool? highCalories,
+    String? supermarket,
+  }) {
+    return FiltersEntity(
+      highFats: highFats ?? this.highFats,
+      highProteins: highProteins ?? this.highProteins,
+      highCarbohydrates: highCarbohydrates ?? this.highCarbohydrates,
+      highCalories: highCalories ?? this.highCalories,
+      supermarket: supermarket ?? this.supermarket,
+    );
+  }
+
+  bool isEmpty() {
+    return !highFats &&
+        !highProteins &&
+        !highCarbohydrates &&
+        !highCalories &&
+        (supermarket == null || supermarket!.isEmpty);
   }
 }

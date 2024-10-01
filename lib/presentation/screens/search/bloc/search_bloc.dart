@@ -24,6 +24,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         applyFilters: (FiltersEntity filters) =>
             _applyFiltersToState(filters, emit),
         resetFilters: () => _resetFiltersToState(emit),
+        updateFilters: (FiltersEntity filters) => _updateFilters(emit, filters),
         updateSearch: (List<AlimentEntity> searchResults) =>
             _mapUpdateSearchToState(event, emit, searchResults),
       );
@@ -65,6 +66,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(state.copyWith(
         aliments: await _repository
             .getAllAliments())); // Restablece la lista a todos los alimentos
+  }
+
+  Future<void> _updateFilters(
+      Emitter<SearchState> emit, FiltersEntity filters) async {
+    emit(state.copyWith(
+        filters:
+            filters)); // Asegúrate de que el estado tenga una propiedad para los filtros
   }
 
   Future<void> _mapUpdateSearchToState(SearchEvent event,

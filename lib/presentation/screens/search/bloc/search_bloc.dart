@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
@@ -19,6 +21,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       await event.when(
         fetchAllAlimentsList: () =>
             _fetchAllAlimentsListEventToState(event, emit),
+        applyFilters: (FiltersEntity filters) =>
+            _applyFiltersToState(filters, emit),
+        updateSearch: (List<AlimentEntity> searchResults) =>
+            _mapUpdateSearchToState(event, emit, searchResults),
       );
     });
 
@@ -37,5 +43,26 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       screenStatus: const ScreenStatus.success(),
       aliments: data,
     ));
+  }
+
+  Future<void> _applyFiltersToState(
+      FiltersEntity filters, Emitter<SearchState> emit) async {
+    final filteredAliments = state.aliments.where((aliment) {
+      return (filters.highFats ? aliment.fats >= 10 : true) &&
+          (filters.highProteins ? aliment.proteins >= 10 : true) &&
+          (filters.highCarbohydrates ? aliment.carbohydrates >= 10 : true) &&
+          (filters.highCalories ? aliment.calories >= 100 : true) &&
+          (filters.supermarket != null
+              ? aliment.supermarket == filters.supermarket
+              : true);
+    }).toList();
+
+    emit(state.copyWith(aliments: filteredAliments));
+  }
+
+  Future<void> _mapUpdateSearchToState(SearchEvent event,
+      Emitter<SearchState> emit, List<AlimentEntity> searchResults) async {
+    // Actualizar el estado con los nuevos resultados
+    emit(state.copyWith(aliments: searchResults));
   }
 }

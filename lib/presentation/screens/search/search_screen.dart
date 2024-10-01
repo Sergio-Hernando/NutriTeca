@@ -5,7 +5,9 @@ import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
 import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
 import 'package:food_macros/presentation/screens/search/widgets/search_bar.dart';
@@ -19,22 +21,42 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  List<AlimentEntity> _foundAliments = []; // Lista de resultados de búsqueda
-  List<AlimentEntity> _allAliments = []; // Lista completa de alimentos
+  FiltersEntity _activeFilters = FiltersEntity(
+      highFats: false,
+      highProteins: false,
+      highCarbohydrates: false,
+      highCalories: false);
 
-  // Actualizar los resultados de la barra de búsqueda
-  void _updateResults(List<AlimentEntity> results) {
-    setState(() {
-      _foundAliments = results;
-    });
+  void _applyFilters(FiltersEntity? filters) {
+    if (filters != null) {
+      setState(() {
+        _activeFilters = filters;
+      });
+      context.read<SearchBloc>().add(SearchEvent.applyFilters(filters));
+    }
   }
 
-  // Inicializa la lista de alimentos cuando se cargan por primera vez
-  void _initializeAliments(List<AlimentEntity> aliments) {
-    if (_allAliments.isEmpty) {
-      _allAliments = aliments;
-      _foundAliments = aliments; // Mostrar todos inicialmente
-    }
+  void _removeFilter(String filterType) {
+    setState(() {
+      switch (filterType) {
+        case "highFats":
+          _activeFilters.highFats = false;
+          break;
+        case "highProteins":
+          _activeFilters.highProteins = false;
+          break;
+        case "highCarbohydrates":
+          _activeFilters.highCarbohydrates = false;
+          break;
+        case "highCalories":
+          _activeFilters.highCalories = false;
+          break;
+        case "supermarket":
+          _activeFilters.supermarket = '';
+          break;
+      }
+    });
+    context.read<SearchBloc>().add(SearchEvent.applyFilters(_activeFilters));
   }
 
   void _onPressed(AlimentEntity aliment) {
@@ -51,72 +73,109 @@ class SearchScreenState extends State<SearchScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (state.screenStatus.isError()) {
             return const Center(child: Text('Error loading data'));
-          } else {
-            // Inicializar la lista de alimentos si no se ha hecho
-            _initializeAliments(state.aliments);
+          }
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: CustomSearchBar(
-                          allItems:
-                              _allAliments, // Pasa la lista completa a la barra de búsqueda
-                          onResults: (results) => _updateResults(
-                              results), // Actualiza los resultados
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          final filteredAliments = await context.push(
-                            AppRoutesPath.filters,
-                            extra:
-                                _allAliments, // Pasar la lista completa al filtro
-                          ) as List<AlimentEntity>?;
+          // La lista de alimentos se obtiene directamente del estado del BLoC
+          final _foundAliments = state.aliments;
 
-                          if (filteredAliments != null) {
-                            setState(() {
-                              _foundAliments = filteredAliments;
-                              _allAliments =
-                                  filteredAliments; // Actualizar la lista completa para buscar sobre ella
-                            });
-                          }
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: CustomSearchBar(
+                        allItems: _foundAliments, // Usamos la lista filtrada
+                        onResults: (results) {
+                          // Manejamos los resultados de la búsqueda
+                          context
+                              .read<SearchBloc>()
+                              .add(SearchEvent.updateSearch(results));
                         },
-                        icon: const Icon(Icons.tune),
-                        iconSize: AppTheme.titleFontSize,
                       ),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        final selectedFilters = await context.push(
+                            AppRoutesPath.filters,
+                            extra: _foundAliments) as FiltersEntity?;
+                        if (selectedFilters != null) {
+                          _applyFilters(selectedFilters);
+                        }
+                      },
+                      icon: const Icon(Icons.tune),
+                      iconSize: AppTheme.titleFontSize,
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: _foundAliments.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: ListView.builder(
-                            itemCount: _foundAliments.length,
-                            itemBuilder: (context, index) => GestureDetector(
-                              onTap: () => _onPressed(_foundAliments[index]),
-                              child: CustomCard(
-                                imagePath: _foundAliments[index].imageBase64,
-                                text: _foundAliments[index].name,
-                                icon: Icons.chevron_right,
-                              ),
+              ),
+              Wrap(
+                spacing: 8.0,
+                children: [
+                  if (_activeFilters.highFats)
+                    Chip(
+                      label: const Text('High Fats'),
+                      onDeleted: () {
+                        _removeFilter("highFats");
+                      },
+                    ),
+                  if (_activeFilters.highProteins)
+                    Chip(
+                      label: const Text('High Proteins'),
+                      onDeleted: () {
+                        _removeFilter("highProteins");
+                      },
+                    ),
+                  if (_activeFilters.highCarbohydrates)
+                    Chip(
+                      label: const Text('High Carbohydrates'),
+                      onDeleted: () {
+                        _removeFilter("highCarbohydrates");
+                      },
+                    ),
+                  if (_activeFilters.highCalories)
+                    Chip(
+                      label: const Text('High Calories'),
+                      onDeleted: () {
+                        _removeFilter("highCalories");
+                      },
+                    ),
+                  if (_activeFilters.supermarket != null &&
+                      _activeFilters.supermarket!.isNotEmpty)
+                    Chip(
+                      label: Text('Supermarket: ${_activeFilters.supermarket}'),
+                      onDeleted: () {
+                        _removeFilter("supermarket");
+                      },
+                    ),
+                ],
+              ),
+              Expanded(
+                child: _foundAliments.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ListView.builder(
+                          itemCount: _foundAliments.length,
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () => _onPressed(_foundAliments[index]),
+                            child: CustomCard(
+                              imagePath: _foundAliments[index].imageBase64,
+                              text: _foundAliments[index].name,
+                              icon: Icons.chevron_right,
                             ),
                           ),
-                        )
-                      : Text(
-                          'No results found',
-                          style: AppTheme.bodyTextStyle
-                              .copyWith(color: AppColors.secondary),
                         ),
-                ),
-              ],
-            );
-          }
+                      )
+                    : Text(
+                        'No results found',
+                        style: AppTheme.bodyTextStyle
+                            .copyWith(color: AppColors.secondary),
+                      ),
+              ),
+            ],
+          );
         },
       ),
     );

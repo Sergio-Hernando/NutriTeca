@@ -44,7 +44,7 @@ class SearchBarWidget extends StatelessWidget {
               }
             },
             icon: const Icon(Icons.tune),
-            iconSize: 24.0, // Ajusta el tamaño según sea necesario
+            iconSize: 36.0,
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
@@ -41,10 +42,8 @@ class _FilterChipsState extends State<FilterChips> {
       }
     });
 
-    // Actualiza el estado del BLoC con los filtros modificados
     context.read<SearchBloc>().add(SearchEvent.updateFilters(_activeFilters));
 
-    // Vuelve a aplicar los filtros o reinicia si están todos desactivados
     if (_activeFilters.isEmpty()) {
       context.read<SearchBloc>().add(const SearchEvent.resetFilters());
     } else {
@@ -58,32 +57,53 @@ class _FilterChipsState extends State<FilterChips> {
       spacing: 8.0,
       children: [
         if (widget.activeFilters.highFats)
-          Chip(
-            label: const Text('High Fats'),
-            onDeleted: () => _removeFilter("highFats"),
+          _buildStyledChip(
+            'High Fats',
+            'highFats',
           ),
         if (widget.activeFilters.highProteins)
-          Chip(
-            label: const Text('High Proteins'),
-            onDeleted: () => _removeFilter("highProteins"),
+          _buildStyledChip(
+            'High Proteins',
+            'highProteins',
           ),
         if (widget.activeFilters.highCarbohydrates)
-          Chip(
-            label: const Text('High Carbohydrates'),
-            onDeleted: () => _removeFilter("highCarbohydrates"),
+          _buildStyledChip(
+            'High Carbohydrates',
+            'highCarbohydrates',
           ),
         if (widget.activeFilters.highCalories)
-          Chip(
-            label: const Text('High Calories'),
-            onDeleted: () => _removeFilter("highCalories"),
+          _buildStyledChip(
+            'High Calories',
+            'highCalories',
           ),
         if (widget.activeFilters.supermarket != null &&
             widget.activeFilters.supermarket!.isNotEmpty)
-          Chip(
-            label: Text('Supermarket: ${widget.activeFilters.supermarket}'),
-            onDeleted: () => _removeFilter("supermarket"),
-          ),
+          _buildStyledChip('Supermarket: ${widget.activeFilters.supermarket}',
+              'supermarket'),
       ],
+    );
+  }
+
+  Widget _buildStyledChip(String label, String filterType) {
+    return Chip(
+      label: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.foreground,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
+      ),
+      deleteIcon: const Icon(Icons.cancel, color: Colors.white),
+      onDeleted: () => _removeFilter(filterType),
+      backgroundColor: AppColors.secondaryAccent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side:
+            BorderSide(color: AppColors.foreground.withOpacity(0.3), width: 1),
+      ),
+      elevation: 8.0,
+      shadowColor: Colors.black38,
     );
   }
 }

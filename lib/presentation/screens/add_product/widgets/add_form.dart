@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
@@ -21,22 +22,22 @@ class AddProductForm extends StatelessWidget {
     void submitForm() {
       if (formKey.currentState?.validate() ?? false) {
         final aliment = AlimentRequestEntity(
-          name: controllers['name']!.text,
+          name: controllers['name']!.text.capitalize(),
           imageBase64: controllers['image']!.text,
           supermarket: controllers['supermarket']!.text,
           calories: _parseToInt(controllers['calories']!.text) ?? 0,
           fats: _parseToInt(controllers['fats']!.text) ?? 0,
-          fatsSaturated: _parseToInt(controllers['fatsSaturated']!.text) ?? 0,
+          fatsSaturated: _parseToInt(controllers['fatsSaturated']!.text),
           fatsPolyunsaturated:
-              _parseToInt(controllers['fatsPolyunsaturated']!.text) ?? 0,
+              _parseToInt(controllers['fatsPolyunsaturated']!.text),
           fatsMonounsaturated:
-              _parseToInt(controllers['fatsMonounsaturated']!.text) ?? 0,
-          fatsTrans: _parseToInt(controllers['fatsTrans']!.text) ?? 0,
+              _parseToInt(controllers['fatsMonounsaturated']!.text),
+          fatsTrans: _parseToInt(controllers['fatsTrans']!.text),
           carbohydrates: _parseToInt(controllers['carbohydrates']!.text) ?? 0,
-          fiber: _parseToInt(controllers['fiber']!.text) ?? 0,
-          sugar: _parseToInt(controllers['sugar']!.text) ?? 0,
+          fiber: _parseToInt(controllers['fiber']!.text),
+          sugar: _parseToInt(controllers['sugar']!.text),
           proteins: _parseToInt(controllers['proteins']!.text) ?? 0,
-          salt: _parseToInt(controllers['salt']!.text) ?? 0,
+          salt: _parseToInt(controllers['salt']!.text),
         );
 
         context.read<AddProductBloc>().add(AddProductEvent.addProduct(aliment));
@@ -152,7 +153,7 @@ class AddProductForm extends StatelessWidget {
 
   int? _parseToInt(String text) {
     try {
-      return int.tryParse(text) ?? 0;
+      return int.tryParse(text);
     } catch (e) {
       return null;
     }

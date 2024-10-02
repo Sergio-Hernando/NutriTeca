@@ -39,7 +39,6 @@ class AlimentRemoteEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'image_base64': imageBase64,
       'supermarket': supermarket,

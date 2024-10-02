@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
@@ -55,8 +57,7 @@ GoRouter appRoutes = GoRouter(
                     GoRoute(
                       path: 'home',
                       name: "Home",
-                      builder: (BuildContext context, GoRouterState state) =>
-                          const HomeScreen(),
+                      builder: (context, state) => const HomeScreen(),
                       /* routes: [
                   GoRoute(
                     path: 'subHome',
@@ -94,19 +95,23 @@ GoRouter appRoutes = GoRouter(
                         GoRoute(
                           path: 'search',
                           name: "Search",
-                          builder:
-                              (BuildContext context, GoRouterState state) =>
-                                  const SearchScreen(),
+                          builder: (context, state) => const SearchScreen(),
                           routes: [
                             GoRoute(
                               path: "filters",
                               name: "Filters",
                               parentNavigatorKey: _rootNavigatorKey,
-                              builder: (BuildContext context,
-                                      GoRouterState state) =>
-                                  // Aquí se envuelve FilterScreen con BlocProvider para inyectar FiltersBloc
-                                  const FilterScreen(),
-                            )
+                              builder: (context, state) => const FilterScreen(),
+                            ),
+                            GoRoute(
+                              path: "detail",
+                              name: "Aliment Detail",
+                              parentNavigatorKey: _rootNavigatorKey,
+                              builder: (context, state) {
+                                final aliment = state.extra as AlimentEntity;
+                                return AlimentDetailScreen(aliment: aliment);
+                              },
+                            ),
                           ],
                         ),
                       ],
@@ -132,9 +137,8 @@ GoRouter appRoutes = GoRouter(
                           GoRoute(
                             path: 'addProduct',
                             name: "Add Product",
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    const AddProductScreen(),
+                            builder: (context, state) =>
+                                const AddProductScreen(),
                             /* routes: [
                   GoRoute(
                     path: "subSetting",

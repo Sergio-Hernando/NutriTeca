@@ -21,9 +21,7 @@ class AlimentList extends StatelessWidget {
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () => _onPressed(aliments[index]),
                 child: CustomCard(
-                  imagePath: aliments[index].imageBase64,
-                  text: aliments[index].name,
-                  icon: Icons.chevron_right,
+                  aliment: aliments[index],
                 ),
               ),
             ),

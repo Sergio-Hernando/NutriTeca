@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -85,24 +84,15 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
+        CustomTextField(
           controller: widget.controller,
-          decoration: InputDecoration(
-            hintText: 'Imagen del producto',
-            hintStyle: AppTheme.descriptionTextStyle,
-            filled: true,
-            fillColor: AppColors.secondaryAccent,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.0),
-              borderSide: BorderSide.none,
+          label: 'Imagen del producto',
+          icon: IconButton(
+            icon: const Icon(
+              Icons.camera_alt,
+              color: Colors.white,
             ),
-            suffixIcon: IconButton(
-              icon: const Icon(
-                Icons.camera_alt,
-                color: Colors.white,
-              ),
-              onPressed: () => _showBottomSheet(context),
-            ),
+            onPressed: () => _showBottomSheet(context),
           ),
         ),
         _image != null

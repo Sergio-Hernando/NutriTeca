@@ -1,4 +1,4 @@
-import 'package:food_macros/data/repositories/data_source_contracts/aliment_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';

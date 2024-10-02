@@ -1,6 +1,6 @@
 import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/data/models/ingredients_recipe_remote_entity.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/ingredients_recipe_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/ingredients_recipe_data_source_contract.dart';
 
 class IngredientsRecipeDataSource
     implements IngredientsRecipeDataSourceContract {

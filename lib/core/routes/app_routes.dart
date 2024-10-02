@@ -7,8 +7,10 @@ import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
+import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
@@ -77,45 +79,38 @@ GoRouter appRoutes = GoRouter(
                   navigatorKey: _shellSearchNavigatorKey,
                   routes: <RouteBase>[
                     ShellRoute(
-                        navigatorKey: _shellSearchBlocNavigatorKey,
-                        builder: (context, state, child) {
-                          return BlocProvider(
-                            create: (context) => SearchBloc(
-                                repositoryContract: uiModulesDi(),
-                                alimentAddedController:
-                                    uiModulesDi<StreamController<void>>()),
-                            child: child,
-                          );
-                        },
-                        routes: [
-                          GoRoute(
-                            path: 'search',
-                            name: "Settings",
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    const SearchScreen(),
-
-                            /* routes: [
-                  GoRoute(
-                    path: "subSetting",
-                    name: "subSetting",
-                    pageBuilder: (context, state) {
-                      return CustomTransitionPage<void>(
-                        key: state.pageKey,
-                        child: const SubSettingsView(),
-                        transitionsBuilder: (
-                          context,
-                          animation,
-                          secondaryAnimation,
-                          child,
-                        ) =>
-                            FadeTransition(opacity: animation, child: child),
-                      );
-                    },
-                  ),
-                ], */
-                          ),
-                        ]),
+                      navigatorKey: _shellSearchBlocNavigatorKey,
+                      builder: (context, state, child) {
+                        return BlocProvider(
+                          create: (context) => SearchBloc(
+                            repositoryContract: uiModulesDi(),
+                            alimentAddedController:
+                                uiModulesDi<StreamController<void>>(),
+                          )..add(const SearchEvent.fetchAllAlimentsList()),
+                          child: child,
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          path: 'search',
+                          name: "Search",
+                          builder:
+                              (BuildContext context, GoRouterState state) =>
+                                  const SearchScreen(),
+                          routes: [
+                            GoRoute(
+                              path: "filters",
+                              name: "Filters",
+                              parentNavigatorKey: _rootNavigatorKey,
+                              builder: (BuildContext context,
+                                      GoRouterState state) =>
+                                  // Aquí se envuelve FilterScreen con BlocProvider para inyectar FiltersBloc
+                                  const FilterScreen(),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
 

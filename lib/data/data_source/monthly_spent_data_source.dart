@@ -1,6 +1,6 @@
 import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/data/models/monthly_spent_remote_entity.dart';
-import 'package:food_macros/data/repositories/data_source_contracts/monthly_spent_data_source_contract.dart';
+import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 
 class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   final DatabaseHandler dbHandler;

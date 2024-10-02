@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
@@ -14,28 +15,28 @@ class AddProductForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _controllers = _buildControllers();
+    final formKey = GlobalKey<FormState>();
+    final controllers = _buildControllers();
 
-    void _submitForm() {
-      if (_formKey.currentState?.validate() ?? false) {
+    void submitForm() {
+      if (formKey.currentState?.validate() ?? false) {
         final aliment = AlimentRequestEntity(
-          name: _controllers['name']!.text,
-          imageBase64: _controllers['image']!.text,
-          supermarket: _controllers['supermarket']!.text,
-          calories: _parseToInt(_controllers['calories']!.text) ?? 0,
-          fats: _parseToInt(_controllers['fats']!.text) ?? 0,
-          fatsSaturated: _parseToInt(_controllers['fatsSaturated']!.text) ?? 0,
+          name: controllers['name']!.text,
+          imageBase64: controllers['image']!.text,
+          supermarket: controllers['supermarket']!.text,
+          calories: _parseToInt(controllers['calories']!.text) ?? 0,
+          fats: _parseToInt(controllers['fats']!.text) ?? 0,
+          fatsSaturated: _parseToInt(controllers['fatsSaturated']!.text) ?? 0,
           fatsPolyunsaturated:
-              _parseToInt(_controllers['fatsPolyunsaturated']!.text) ?? 0,
+              _parseToInt(controllers['fatsPolyunsaturated']!.text) ?? 0,
           fatsMonounsaturated:
-              _parseToInt(_controllers['fatsMonounsaturated']!.text) ?? 0,
-          fatsTrans: _parseToInt(_controllers['fatsTrans']!.text) ?? 0,
-          carbohydrates: _parseToInt(_controllers['carbohydrates']!.text) ?? 0,
-          fiber: _parseToInt(_controllers['fiber']!.text) ?? 0,
-          sugar: _parseToInt(_controllers['sugar']!.text) ?? 0,
-          proteins: _parseToInt(_controllers['proteins']!.text) ?? 0,
-          salt: _parseToInt(_controllers['salt']!.text) ?? 0,
+              _parseToInt(controllers['fatsMonounsaturated']!.text) ?? 0,
+          fatsTrans: _parseToInt(controllers['fatsTrans']!.text) ?? 0,
+          carbohydrates: _parseToInt(controllers['carbohydrates']!.text) ?? 0,
+          fiber: _parseToInt(controllers['fiber']!.text) ?? 0,
+          sugar: _parseToInt(controllers['sugar']!.text) ?? 0,
+          proteins: _parseToInt(controllers['proteins']!.text) ?? 0,
+          salt: _parseToInt(controllers['salt']!.text) ?? 0,
         );
 
         context.read<AddProductBloc>().add(AddProductEvent.addProduct(aliment));
@@ -54,7 +55,7 @@ class AddProductForm extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message)),
           );
-          _controllers.forEach((key, controller) {
+          controllers.forEach((key, controller) {
             controller.clear();
           });
         }
@@ -64,60 +65,61 @@ class AddProductForm extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomTextField(
-                    controller: _controllers['name']!,
+                    controller: controllers['name']!,
                     label: 'Nombre del producto',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
-                    controller: _controllers['supermarket']!,
+                    controller: controllers['supermarket']!,
                     label: 'Supermercado',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   ImagePickerTextField(
-                    controller: _controllers['image']!,
+                    controller: controllers['image']!,
                   ),
                   CustomTextField(
-                    controller: _controllers['calories']!,
+                    controller: controllers['calories']!,
                     label: 'Calorías',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
-                    controller: _controllers['fats']!,
+                    controller: controllers['fats']!,
                     label: 'Grasas',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
-                    controller: _controllers['carbohydrates']!,
+                    controller: controllers['carbohydrates']!,
                     label: 'Carbohidratos',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
-                    controller: _controllers['proteins']!,
+                    controller: controllers['proteins']!,
                     label: 'Proteínas',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  AdvancedFields(controllers: _controllers),
+                  AdvancedFields(controllers: controllers),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _submitForm,
+                    onPressed: submitForm,
                     style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32.0, vertical: 12.0),
-                    ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32.0, vertical: 12.0),
+                        backgroundColor: AppColors.secondaryAccent,
+                        foregroundColor: Colors.white),
                     child: const Text('Submit'),
                   ),
                 ],

@@ -45,9 +45,9 @@ class AlimentRepository implements AlimentRepositoryContract {
   }
 
   @override
-  Future<int> deleteAliment(int id) async {
+  Future<bool> deleteAliment(int id) async {
     final data = await _alimentDataSourceContract.deleteAliment(id);
 
-    return data;
+    return data == 1 ? true : false;
   }
 }

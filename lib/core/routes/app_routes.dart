@@ -9,6 +9,7 @@ import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
+import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
@@ -26,6 +27,8 @@ final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
 final GlobalKey<NavigatorState> _shellSearchBlocNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearchBloc');
+final GlobalKey<NavigatorState> _shellDetailBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellDetailBloc');
 final GlobalKey<NavigatorState> _shellAddProductNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAddProduct');
 final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =
@@ -100,16 +103,25 @@ GoRouter appRoutes = GoRouter(
                             GoRoute(
                               path: "filters",
                               name: "Filters",
-                              parentNavigatorKey: _rootNavigatorKey,
+                              parentNavigatorKey:
+                                  _rootNavigatorKey, // Mantener fuera del Shell con BottomNav
                               builder: (context, state) => const FilterScreen(),
                             ),
                             GoRoute(
                               path: "detail",
                               name: "Aliment Detail",
-                              parentNavigatorKey: _rootNavigatorKey,
+                              parentNavigatorKey:
+                                  _rootNavigatorKey, // Aseguramos que esté fuera del ScaffoldWithBottomNav
                               builder: (context, state) {
                                 final aliment = state.extra as AlimentEntity;
-                                return AlimentDetailScreen(aliment: aliment);
+                                return BlocProvider(
+                                  create: (context) => AlimentDetailBloc(
+                                    repositoryContract: uiModulesDi(),
+                                    alimentController:
+                                        uiModulesDi<StreamController<void>>(),
+                                  ),
+                                  child: AlimentDetailScreen(aliment: aliment),
+                                );
                               },
                             ),
                           ],

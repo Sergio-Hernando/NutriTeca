@@ -9,13 +9,13 @@ import 'dart:async';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<void> _alimentAddedController;
+  final StreamController<void> _alimentController;
 
   SearchBloc({
     required AlimentRepositoryContract repositoryContract,
     required StreamController<void> alimentAddedController,
   })  : _repository = repositoryContract,
-        _alimentAddedController = alimentAddedController,
+        _alimentController = alimentAddedController,
         super(SearchState.initial()) {
     on<SearchEvent>((event, emit) async {
       await event.when(
@@ -31,7 +31,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
 
     // Suscripción al StreamController para escuchar eventos de nuevos alimentos
-    _alimentAddedController.stream.listen((_) {
+    _alimentController.stream.listen((_) {
       add(const SearchEvent.fetchAllAlimentsList());
     });
   }

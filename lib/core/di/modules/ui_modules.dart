@@ -5,8 +5,7 @@ final uiModulesDi = GetIt.instance;
 void _uiModulesInit() {
   uiModulesDi.registerSingleton<StreamController<void>>(
     StreamController<void>.broadcast(),
-    dispose: (controller) =>
-        controller.close(), // Asegúrate de cerrarlo al destruir
+    dispose: (controller) => controller.close(),
   );
   uiModulesDi
       .registerFactory(() => HomeBloc(repositoryContract: uiModulesDi()));
@@ -17,4 +16,6 @@ void _uiModulesInit() {
   uiModulesDi.registerFactory(() => SearchBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController: uiModulesDi()));
+  uiModulesDi.registerFactory(() => AlimentDetailBloc(
+      repositoryContract: uiModulesDi(), alimentController: uiModulesDi()));
 }

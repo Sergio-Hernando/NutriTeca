@@ -26,12 +26,11 @@ class FilterScreenState extends State<FilterScreen> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: AppColors.background,
-        title: const Text('Filters'),
+        title: const Center(child: Text('Filtros')),
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
-              // Crear un objeto de filtros
               final filters = FiltersEntity(
                 highFats: highFats,
                 highProteins: highProteins,
@@ -40,7 +39,6 @@ class FilterScreenState extends State<FilterScreen> {
                 supermarket: selectedSupermarket,
               );
 
-              // Devuelve la lista de filtros a la pantalla de búsqueda
               context.pop(filters);
             },
           ),

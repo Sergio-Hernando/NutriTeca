@@ -61,19 +61,6 @@ GoRouter appRoutes = GoRouter(
                       path: 'home',
                       name: "Home",
                       builder: (context, state) => const HomeScreen(),
-                      /* routes: [
-                  GoRoute(
-                    path: 'subHome',
-                    name: 'subHome',
-                    pageBuilder: (context, state) => CustomTransitionPage<void>(
-                      key: state.pageKey,
-                      child: const SubHomeView(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) =>
-                              FadeTransition(opacity: animation, child: child),
-                    ),
-                  ),
-                ], */
                     ),
                   ],
                 ),
@@ -151,61 +138,10 @@ GoRouter appRoutes = GoRouter(
                             name: "Add Product",
                             builder: (context, state) =>
                                 const AddProductScreen(),
-                            /* routes: [
-                  GoRoute(
-                    path: "subSetting",
-                    name: "subSetting",
-                    pageBuilder: (context, state) {
-                      return CustomTransitionPage<void>(
-                        key: state.pageKey,
-                        child: const SubSettingsView(),
-                        transitionsBuilder: (
-                          context,
-                          animation,
-                          secondaryAnimation,
-                          child,
-                        ) =>
-                            FadeTransition(opacity: animation, child: child),
-                      );
-                    },
-                  ),
-                ], */
                           ),
                         ])
                   ],
                 ),
-
-                /// Brach Add Product
-                /* StatefulShellBranch(
-            navigatorKey: _shellRecipesNavigatorKey,
-            routes: <RouteBase>[
-              GoRoute(
-                path: AppRoutesPath.recipes,
-                name: "recipes",
-                builder: (BuildContext context, GoRouterState state) =>
-                    const RecipesScreen(),
-                /* routes: [
-                  GoRoute(
-                    path: "subSetting",
-                    name: "subSetting",
-                    pageBuilder: (context, state) {
-                      return CustomTransitionPage<void>(
-                        key: state.pageKey,
-                        child: const SubSettingsView(),
-                        transitionsBuilder: (
-                          context,
-                          animation,
-                          secondaryAnimation,
-                          child,
-                        ) =>
-                            FadeTransition(opacity: animation, child: child),
-                      );
-                    },
-                  ),
-                ], */
-              ),
-            ],
-          ), */
               ],
             ),
           ])

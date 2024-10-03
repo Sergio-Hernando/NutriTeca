@@ -63,21 +63,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Future<void> _resetFiltersToState(Emitter<SearchState> emit) async {
-    emit(state.copyWith(
-        aliments: await _repository
-            .getAllAliments())); // Restablece la lista a todos los alimentos
+    emit(state.copyWith(aliments: await _repository.getAllAliments()));
   }
 
   Future<void> _updateFilters(
       Emitter<SearchState> emit, FiltersEntity filters) async {
-    emit(state.copyWith(
-        filters:
-            filters)); // Asegúrate de que el estado tenga una propiedad para los filtros
+    emit(state.copyWith(filters: filters));
   }
 
   Future<void> _mapUpdateSearchToState(SearchEvent event,
       Emitter<SearchState> emit, List<AlimentEntity> searchResults) async {
-    // Actualizar el estado con los nuevos resultados
     emit(state.copyWith(aliments: searchResults));
   }
 }

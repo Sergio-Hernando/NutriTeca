@@ -27,8 +27,6 @@ final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
 final GlobalKey<NavigatorState> _shellSearchBlocNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearchBloc');
-final GlobalKey<NavigatorState> _shellDetailBlocNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellDetailBloc');
 final GlobalKey<NavigatorState> _shellAddProductNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAddProduct');
 final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =

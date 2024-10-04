@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
@@ -8,6 +9,7 @@ import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bl
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_event.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_state.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/advanced_fields.dart';
+import 'package:food_macros/presentation/screens/add_product/widgets/custom_dropdown.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/image_picker.dart';
 
@@ -17,30 +19,55 @@ class AddProductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
+    final imagePickerKey = GlobalKey<ImagePickerTextFieldState>();
     final controllers = _buildControllers();
+
+    final list = ['Mercadona', 'Lidl', 'Aldi', 'Eroski', 'Dia', 'Alcampo'];
 
     void submitForm() {
       if (formKey.currentState?.validate() ?? false) {
         final aliment = AlimentRequestEntity(
-          name: controllers['name']!.text.capitalize(),
-          imageBase64: controllers['image']!.text,
-          supermarket: controllers['supermarket']!.text,
-          calories: _parseToInt(controllers['calories']!.text) ?? 0,
-          fats: _parseToInt(controllers['fats']!.text) ?? 0,
-          fatsSaturated: _parseToInt(controllers['fatsSaturated']!.text),
-          fatsPolyunsaturated:
-              _parseToInt(controllers['fatsPolyunsaturated']!.text),
-          fatsMonounsaturated:
-              _parseToInt(controllers['fatsMonounsaturated']!.text),
-          fatsTrans: _parseToInt(controllers['fatsTrans']!.text),
-          carbohydrates: _parseToInt(controllers['carbohydrates']!.text) ?? 0,
-          fiber: _parseToInt(controllers['fiber']!.text),
-          sugar: _parseToInt(controllers['sugar']!.text),
-          proteins: _parseToInt(controllers['proteins']!.text) ?? 0,
-          salt: _parseToInt(controllers['salt']!.text),
+          name:
+              (controllers['name'] as TextEditingController).text.capitalize(),
+          imageBase64: (controllers['image'] as TextEditingController).text,
+          supermarket:
+              (controllers['supermarket'] as SingleSelectController<String>)
+                      .value ??
+                  '',
+          calories: _parseToInt(
+                  (controllers['calories'] as TextEditingController).text) ??
+              0,
+          fats: _parseToInt(
+                  (controllers['fats'] as TextEditingController).text) ??
+              0,
+          fatsSaturated: _parseToInt(
+              (controllers['fatsSaturated'] as TextEditingController).text),
+          fatsPolyunsaturated: _parseToInt(
+              (controllers['fatsPolyunsaturated'] as TextEditingController)
+                  .text),
+          fatsMonounsaturated: _parseToInt(
+              (controllers['fatsMonounsaturated'] as TextEditingController)
+                  .text),
+          fatsTrans: _parseToInt(
+              (controllers['fatsTrans'] as TextEditingController).text),
+          carbohydrates: _parseToInt(
+                  (controllers['carbohydrates'] as TextEditingController)
+                      .text) ??
+              0,
+          fiber:
+              _parseToInt((controllers['fiber'] as TextEditingController).text),
+          sugar:
+              _parseToInt((controllers['sugar'] as TextEditingController).text),
+          proteins: _parseToInt(
+                  (controllers['proteins'] as TextEditingController).text) ??
+              0,
+          salt:
+              _parseToInt((controllers['salt'] as TextEditingController).text),
         );
 
         context.read<AddProductBloc>().add(AddProductEvent.addProduct(aliment));
+
+        imagePickerKey.currentState?.clearImage();
       }
     }
 
@@ -76,13 +103,13 @@ class AddProductForm extends StatelessWidget {
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),
-                  CustomTextField(
-                    controller: controllers['supermarket']!,
-                    label: 'Supermercado',
-                    validator: _requiredValidator,
+                  CustomSupermarketDropdown(
+                    controllers: controllers,
+                    list: list,
                   ),
                   const SizedBox(height: 16),
                   ImagePickerTextField(
+                    key: imagePickerKey,
                     controller: controllers['image']!,
                   ),
                   CustomTextField(
@@ -132,10 +159,10 @@ class AddProductForm extends StatelessWidget {
     );
   }
 
-  Map<String, TextEditingController> _buildControllers() {
+  Map<String, dynamic> _buildControllers() {
     return {
       'name': TextEditingController(),
-      'supermarket': TextEditingController(),
+      'supermarket': SingleSelectController<String>(null),
       'image': TextEditingController(),
       'calories': TextEditingController(),
       'fats': TextEditingController(),

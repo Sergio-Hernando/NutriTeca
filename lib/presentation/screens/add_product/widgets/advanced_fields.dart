@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
 
 class AdvancedFields extends StatelessWidget {
-  final Map<String, TextEditingController> controllers;
+  final Map<String, dynamic> controllers;
 
   const AdvancedFields({super.key, required this.controllers});
 

@@ -9,13 +9,13 @@ import 'package:food_macros/presentation/screens/add_product/bloc/add_product_st
 
 class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<void> _alimentAddedController;
+  final StreamController<void> _alimentController;
 
   AddProductBloc({
     required AlimentRepositoryContract repositoryContract,
     required StreamController<void> alimentAddedController,
   })  : _repository = repositoryContract,
-        _alimentAddedController = alimentAddedController,
+        _alimentController = alimentAddedController,
         super(AddProductState.initial()) {
     on<AddProductEvent>((event, emit) async {
       await event.when(
@@ -31,7 +31,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     if (data == 0) {
       emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     } else {
-      _alimentAddedController.add(null);
+      _alimentController.add(null);
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));
     }
   }

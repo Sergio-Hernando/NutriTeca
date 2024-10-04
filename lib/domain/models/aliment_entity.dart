@@ -41,6 +41,7 @@ class AlimentEntity {
 
 extension AlimentEntityExtension on AlimentRemoteEntity {
   AlimentEntity toEntity() => AlimentEntity(
+      id: id,
       name: name,
       imageBase64: imageBase64,
       supermarket: supermarket,

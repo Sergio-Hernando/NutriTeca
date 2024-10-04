@@ -86,7 +86,6 @@ class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
   }
 }
 
-// Método para mostrar una confirmación para salir de la app
 Future<bool> _showExitConfirmation(BuildContext context) async {
   return await showDialog(
         context: context,

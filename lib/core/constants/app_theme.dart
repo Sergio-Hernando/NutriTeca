@@ -25,6 +25,11 @@ class AppTheme {
     color: AppColors.foreground,
   );
 
+  static const TextStyle detailTextStyle = TextStyle(
+    fontSize: bodyFontSize,
+    color: AppColors.secondaryAccent,
+  );
+
   static const TextStyle splashBodyTextStyle = TextStyle(
     fontFamily: 'DancingScript',
     fontWeight: FontWeight.w700,

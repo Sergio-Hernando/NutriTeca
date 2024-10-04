@@ -79,6 +79,13 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
     );
   }
 
+  void clearImage() {
+    setState(() {
+      _image = null;
+    });
+    widget.controller.clear(); // Esto también vacía el controlador
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(

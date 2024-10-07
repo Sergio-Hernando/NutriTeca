@@ -1,6 +1,7 @@
 import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/data/models/aliment_remote_entity.dart';
 import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
+import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 
 class AlimentDataSource implements AlimentDataSourceContract {
   final DatabaseHandler dbHandler;
@@ -8,7 +9,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   AlimentDataSource({required this.dbHandler});
 
   @override
-  Future<int> createAliment(AlimentRemoteEntity aliment) async {
+  Future<int> createAliment(AlimentRequestEntity aliment) async {
     final db = await dbHandler.database;
     return db.insert('aliment', aliment.toMap());
   }
@@ -38,7 +39,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   }
 
   @override
-  Future<int> updateAliment(AlimentRemoteEntity aliment) async {
+  Future<int> updateAliment(AlimentRequestEntity aliment) async {
     final db = await dbHandler.database;
     return db.update(
       'aliment',

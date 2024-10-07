@@ -29,7 +29,9 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     final data = await _repository.createAliment(aliment);
 
     if (data == 0) {
-      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+      emit(state.copyWith(
+          screenStatus:
+              const ScreenStatus.error('El alimento no se ha creado')));
     } else {
       _alimentController.add(null);
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));

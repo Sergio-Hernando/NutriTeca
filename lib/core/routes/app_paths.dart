@@ -8,4 +8,5 @@ class AppRoutesPath {
 
   static String addProduct = '/addProduct';
   static String recipes = '/recipes';
+  static String addRecipe = '$recipes/addRecipe';
 }

@@ -8,10 +8,13 @@ import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/add_recipe/add_recipe_screen.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
+import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
+import 'package:food_macros/presentation/screens/recipes/recipes_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
@@ -33,6 +36,8 @@ final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAddProductBloc');
 final GlobalKey<NavigatorState> _shellRecipesNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellRecipes');
+final GlobalKey<NavigatorState> _shellRecipesBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellRecipesBloc');
 
 GoRouter appRoutes = GoRouter(
     initialLocation: AppRoutesPath.main,
@@ -137,6 +142,36 @@ GoRouter appRoutes = GoRouter(
                             builder: (context, state) =>
                                 const AddProductScreen(),
                           ),
+                        ])
+                  ],
+                ),
+
+                /// Brach Recipes
+                StatefulShellBranch(
+                  navigatorKey: _shellRecipesNavigatorKey,
+                  routes: <RouteBase>[
+                    ShellRoute(
+                        navigatorKey: _shellRecipesBlocNavigatorKey,
+                        builder: (context, state, child) {
+                          return BlocProvider(
+                              create: (context) => RecipeBloc(
+                                    repositoryContract: uiModulesDi(),
+                                    alimentRepositoryContract: uiModulesDi(),
+                                  ),
+                              child: child);
+                        },
+                        routes: [
+                          GoRoute(
+                              path: 'recipes',
+                              name: "Recipes",
+                              builder: (context, state) => const RecipeScreen(),
+                              routes: [
+                                GoRoute(
+                                  path: 'addRecipe',
+                                  builder: (context, state) =>
+                                      const AddRecipeScreen(),
+                                )
+                              ]),
                         ])
                   ],
                 ),

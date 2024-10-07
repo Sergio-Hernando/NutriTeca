@@ -6,11 +6,15 @@ void _localDataSourceModulesInit(
     {required SharedPreferences instance,
     required DatabaseHandler dbInstance}) {
   localModulesDi.registerLazySingleton<AlimentDataSourceContract>(
-      () => AlimentDataSource(dbHandler: dbInstance));
+    () => AlimentDataSource(dbHandler: dbInstance),
+  );
   localModulesDi.registerLazySingleton<RecipeDataSourceContract>(
-      () => RecipeDataSource(dbHandler: dbInstance));
+    () => RecipeDataSource(dbHandler: dbInstance),
+  );
   localModulesDi.registerLazySingleton<IngredientsRecipeDataSourceContract>(
-      () => IngredientsRecipeDataSource(dbHandler: dbInstance));
+    () => IngredientsRecipeDataSource(dbHandler: dbInstance),
+  );
   localModulesDi.registerLazySingleton<MonthlySpentDataSourceContract>(
-      () => MonthlySpentDataSource(dbHandler: dbInstance));
+    () => MonthlySpentDataSource(dbHandler: dbInstance),
+  );
 }

@@ -73,15 +73,16 @@ class AddProductForm extends StatelessWidget {
 
     return BlocConsumer<AddProductBloc, AddProductState>(
       listener: (context, state) {
-        final messages = {
-          const ScreenStatus.success(): 'Formulario enviado',
-          const ScreenStatus.error(): 'El formulario no se ha enviado',
-        };
-
-        final message = messages[state.screenStatus];
-        if (message != null) {
+        if (state.screenStatus.isSuccess()) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
+            const SnackBar(content: Text('Formulario enviado')),
+          );
+          controllers.forEach((key, controller) {
+            controller.clear();
+          });
+        } else if (state.screenStatus.isSuccess()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('El formulario no se ha enviado')),
           );
           controllers.forEach((key, controller) {
             controller.clear();

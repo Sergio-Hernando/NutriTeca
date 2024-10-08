@@ -9,11 +9,13 @@ import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/add_recipe/add_recipe_screen.dart';
+import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
+import 'package:food_macros/presentation/screens/recipes/bloc/recipe_event.dart';
 import 'package:food_macros/presentation/screens/recipes/recipes_screen.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
@@ -93,15 +95,13 @@ GoRouter appRoutes = GoRouter(
                             GoRoute(
                               path: "filters",
                               name: "Filters",
-                              parentNavigatorKey:
-                                  _rootNavigatorKey, // Mantener fuera del Shell con BottomNav
+                              parentNavigatorKey: _rootNavigatorKey,
                               builder: (context, state) => const FilterScreen(),
                             ),
                             GoRoute(
                               path: "detail",
                               name: "Aliment Detail",
-                              parentNavigatorKey:
-                                  _rootNavigatorKey, // Aseguramos que esté fuera del ScaffoldWithBottomNav
+                              parentNavigatorKey: _rootNavigatorKey,
                               builder: (context, state) {
                                 final aliment = state.extra as AlimentEntity;
                                 return BlocProvider(
@@ -155,9 +155,10 @@ GoRouter appRoutes = GoRouter(
                         builder: (context, state, child) {
                           return BlocProvider(
                               create: (context) => RecipeBloc(
-                                    repositoryContract: uiModulesDi(),
-                                    alimentRepositoryContract: uiModulesDi(),
-                                  ),
+                                  repositoryContract: uiModulesDi(),
+                                  recipeNotificationController:
+                                      uiModulesDi<StreamController<void>>())
+                                ..add(const RecipeEvent.getRecipes()),
                               child: child);
                         },
                         routes: [
@@ -168,8 +169,19 @@ GoRouter appRoutes = GoRouter(
                               routes: [
                                 GoRoute(
                                   path: 'addRecipe',
-                                  builder: (context, state) =>
-                                      const AddRecipeScreen(),
+                                  parentNavigatorKey: _rootNavigatorKey,
+                                  builder: (context, state) {
+                                    return BlocProvider(
+                                      create: (context) => AddRecipeBloc(
+                                          repositoryContract: uiModulesDi(),
+                                          alimentRepositoryContract:
+                                              uiModulesDi(),
+                                          recipeNotificationController:
+                                              uiModulesDi<
+                                                  StreamController<void>>()),
+                                      child: const AddRecipeScreen(),
+                                    );
+                                  },
                                 )
                               ]),
                         ])

@@ -7,10 +7,6 @@ class AlimentList extends StatelessWidget {
 
   const AlimentList({Key? key, required this.aliments}) : super(key: key);
 
-  void _onPressed(AlimentEntity aliment) {
-    // Acción al hacer clic en un alimento
-  }
-
   @override
   Widget build(BuildContext context) {
     return aliments.isNotEmpty
@@ -18,11 +14,8 @@ class AlimentList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(
               itemCount: aliments.length,
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () => _onPressed(aliments[index]),
-                child: CustomCard(
-                  aliment: aliments[index],
-                ),
+              itemBuilder: (context, index) => CustomCard(
+                aliment: aliments[index],
               ),
             ),
           )

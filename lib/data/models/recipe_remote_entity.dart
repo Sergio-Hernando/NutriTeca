@@ -3,11 +3,13 @@ import 'package:food_macros/data/models/aliment_remote_entity.dart';
 class RecipeRemoteEntity {
   final int id;
   final String name;
+  final String instructions;
   final List<AlimentRemoteEntity> aliments;
 
   RecipeRemoteEntity({
     required this.id,
     required this.name,
+    required this.instructions,
     required this.aliments,
   });
 
@@ -15,6 +17,7 @@ class RecipeRemoteEntity {
     return {
       'id': id,
       'name': name,
+      'instructions': instructions,
     };
   }
 
@@ -22,6 +25,7 @@ class RecipeRemoteEntity {
     return RecipeRemoteEntity(
       id: map['id'],
       name: map['name'],
+      instructions: map['instructions'],
       aliments: map['aliments'],
     );
   }

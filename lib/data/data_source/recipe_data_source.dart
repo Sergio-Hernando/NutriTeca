@@ -82,6 +82,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
       return RecipeRemoteEntity(
         id: recipeMaps.first['id'] as int,
         name: recipeName as String,
+        instructions: recipeMaps.first['instructions'] as String,
         aliments: aliments,
       );
     } else {
@@ -95,7 +96,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
 
     final recipeMaps = await db.query(
       'recipe',
-      columns: ['id', 'name'],
+      columns: ['id', 'name', 'instructions'],
     );
 
     List<RecipeRemoteEntity> recipes = [];
@@ -104,6 +105,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
       recipes.add(RecipeRemoteEntity(
         id: recipeMap['id'] as int,
         name: recipeMap['name'] as String,
+        instructions: recipeMap['instructions'] as String,
         aliments: [],
       ));
     }

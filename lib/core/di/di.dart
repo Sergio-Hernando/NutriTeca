@@ -15,6 +15,7 @@ import 'package:food_macros/data/repositories/recipe_repository.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
-import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
-import 'package:food_macros/presentation/screens/recipes/bloc/recipe_event.dart';
-import 'package:food_macros/presentation/screens/recipes/bloc/recipe_state.dart';
+import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
+import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_event.dart';
+import 'package:food_macros/presentation/screens/add_recipe/widgets/aliments_selection_dialog.dart';
+import 'package:food_macros/presentation/screens/add_recipe/widgets/instructions_text_input.dart';
+import 'package:food_macros/presentation/screens/add_recipe/widgets/select_aliments_list.dart';
 import 'package:go_router/go_router.dart';
 
 class AddRecipeScreen extends StatefulWidget {
@@ -17,12 +20,13 @@ class AddRecipeScreen extends StatefulWidget {
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
   final TextEditingController _recipeNameController = TextEditingController();
-  final Map<int, int> _selectedAliments = {};
+  final TextEditingController _instructionsController = TextEditingController();
+  final Map<int, Map<String, dynamic>> _selectedAliments = {};
 
   @override
   void initState() {
     super.initState();
-    context.read<RecipeBloc>().add(const RecipeEvent.getAliments());
+    context.read<AddRecipeBloc>().add(const AddRecipeEvent.fetchAliments());
   }
 
   void _removeAliment(int alimentId) {
@@ -33,12 +37,16 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   void _saveRecipe() {
     if (_recipeNameController.text.isNotEmpty && _selectedAliments.isNotEmpty) {
-      context.read<RecipeBloc>().add(RecipeEvent.saveRecipe(
-            recipeName: _recipeNameController.text,
-            aliments: _selectedAliments.entries
-                .map((entry) => {'id': entry.key, 'quantity': entry.value})
-                .toList(),
-          ));
+      context.read<AddRecipeBloc>().add(
+            AddRecipeEvent.addRecipe(
+              recipeName: _recipeNameController.text.capitalize(),
+              instructions: _instructionsController.text,
+              aliments: _selectedAliments.entries
+                  .map((entry) =>
+                      {'id': entry.key, 'quantity': entry.value['quantity']})
+                  .toList(),
+            ),
+          );
       context.pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -51,97 +59,57 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   }
 
   void _showSelectAlimentOverlay() {
-    final TextEditingController quantityController = TextEditingController();
+    final state = context.read<AddRecipeBloc>().state;
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Seleccionar Alimento'),
-          content: BlocBuilder<RecipeBloc, RecipeState>(
-            builder: (context, state) {
-              if (state.screenStatus.isLoading()) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state.screenStatus.isError()) {
-                return const Center(child: Text('Error al cargar alimentos'));
-              }
-              if (state.aliments.isEmpty) {
-                return const Center(
-                    child: Text('No hay alimentos disponibles'));
-              }
-
-              return SizedBox(
-                width: double.maxFinite,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Campo para ingresar la cantidad
-                    TextField(
-                      controller: quantityController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Cantidad',
-                      ),
-                    ),
-                    const SizedBox(
-                        height: 10), // Espacio entre el campo y la lista
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: state.aliments.length,
-                        itemBuilder: (context, index) {
-                          final aliment = state.aliments[index];
-                          return ListTile(
-                            title: Text(aliment.name),
-                            onTap: () {
-                              final quantity = quantityController.text;
-                              if (quantity.isNotEmpty) {
-                                Navigator.of(context)
-                                    .pop(); // Cierra el overlay
-                                _addAliment(
-                                    aliment.id!,
-                                    int.parse(
-                                        quantity)); // Agrega el ID y la cantidad del alimento seleccionado
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Por favor, ingresa una cantidad.')),
-                                );
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => context.pop(),
-              child: const Text('Cancelar'),
-            ),
-          ],
-        );
-      },
-    );
+    if (state.screenStatus.isLoading()) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('Cargando alimentos...'),
+        ),
+      );
+    } else if (state.screenStatus.isError()) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('Error al cargar alimentos'),
+        ),
+      );
+    } else if (state.aliments.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('No hay alimentos disponibles'),
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlimentSelectionDialog(
+          aliments: state.aliments,
+          onSelectAliment: _addAliment,
+        ),
+      );
+    }
   }
 
-  void _addAliment(int alimentId, int quantity) {
+  void _addAliment(int alimentId, String name, int quantity) {
     setState(() {
-      _selectedAliments[alimentId] = quantity;
+      _selectedAliments[alimentId] = {
+        'name': name,
+        'quantity': quantity,
+      };
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.foreground,
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         title: const Text('Añadir Receta'),
-        backgroundColor: AppColors.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -153,6 +121,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               label: 'Nombre de la receta',
             ),
             const SizedBox(height: 16.0),
+            InstructionsTextField(controller: _instructionsController),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _showSelectAlimentOverlay,
               style: ElevatedButton.styleFrom(
@@ -161,57 +131,26 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: const Text('Añadir Alimento'),
+              child: const Text(
+                'Añadir Alimento',
+                style: TextStyle(color: AppColors.foreground),
+              ),
             ),
             const SizedBox(height: 16.0),
             Expanded(
-              child: _selectedAliments.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: _selectedAliments.length,
-                      itemBuilder: (context, index) {
-                        final alimentId =
-                            _selectedAliments.keys.elementAt(index);
-                        final quantity = _selectedAliments[alimentId];
-                        return Card(
-                          color: AppColors.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              'Alimento ID: $alimentId, Cantidad: $quantity',
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 18),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _removeAliment(index),
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : const Center(
-                      child: Text(
-                        'No hay alimentos añadidos',
-                        style: TextStyle(
-                            color: AppColors.foreground, fontSize: 16),
-                      ),
-                    ),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _saveRecipe,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
+              child: SelectedAlimentsList(
+                selectedAliments: _selectedAliments,
+                removeAliment: _removeAliment,
               ),
-              child: const Text('Guardar Receta'),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: _saveRecipe,
+        backgroundColor: AppColors.secondary,
+        child: const Icon(Icons.save_outlined),
       ),
     );
   }

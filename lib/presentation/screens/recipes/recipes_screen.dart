@@ -6,29 +6,17 @@ import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_event.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_state.dart';
+import 'package:food_macros/presentation/screens/recipes/widgets/custom_card.dart';
+import 'package:food_macros/presentation/screens/recipes/widgets/custom_search_bar.dart';
 import 'package:go_router/go_router.dart';
 
-class RecipeScreen extends StatefulWidget {
+class RecipeScreen extends StatelessWidget {
   const RecipeScreen({super.key});
-
-  @override
-  _RecipeScreenState createState() => _RecipeScreenState();
-}
-
-class _RecipeScreenState extends State<RecipeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<RecipeBloc>().add(const RecipeEvent.getRecipes());
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recetas'),
-        backgroundColor: AppColors.primary,
-      ),
+      backgroundColor: AppColors.foreground,
       body: BlocBuilder<RecipeBloc, RecipeState>(
         builder: (context, state) {
           if (state.screenStatus.isLoading()) {
@@ -40,24 +28,37 @@ class _RecipeScreenState extends State<RecipeScreen> {
             if (state.recipes.isEmpty) {
               return const Center(child: Text('No hay recetas disponibles'));
             }
-            return ListView.builder(
-              itemCount: state.recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = state.recipes[index];
-                return ListTile(
-                  title: Text(recipe.name),
-                  subtitle: Text('Alimentos: ${recipe.aliments?.length}'),
-                  onTap: () {
-                    // Lógica para ver detalles o editar la receta
+
+            return Column(
+              children: [
+                RecipeSearchBar(
+                  allItems: state.recipes,
+                  onResults: (p0) {
+                    context
+                        .read<RecipeBloc>()
+                        .add(RecipeEvent.updateSearch(p0));
                   },
-                );
-              },
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView.builder(
+                      itemCount: state.recipes.length,
+                      itemBuilder: (context, index) {
+                        final recipe = state.recipes[index];
+                        return CustomCard(recipe: recipe);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go(AppRoutesPath.addRecipe),
+        shape: const CircleBorder(),
+        onPressed: () => context.push(AppRoutesPath.addRecipe),
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add),
       ),

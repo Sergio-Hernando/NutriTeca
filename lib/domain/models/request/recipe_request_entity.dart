@@ -1,17 +1,20 @@
 class RecipeRequestEntity {
   final String? id;
   final String name;
+  final String instructions;
   final List<Map<String, dynamic>> aliments;
 
   RecipeRequestEntity({
     this.id,
     required this.name,
+    required this.instructions,
     required this.aliments,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'instructions': instructions,
     };
   }
 

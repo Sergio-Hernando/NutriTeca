@@ -9,11 +9,11 @@ import 'dart:async';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<void> _alimentController;
+  final StreamController<AlimentEntity> _alimentController;
 
   SearchBloc({
     required AlimentRepositoryContract repositoryContract,
-    required StreamController<void> alimentAddedController,
+    required StreamController<AlimentEntity> alimentAddedController,
   })  : _repository = repositoryContract,
         _alimentController = alimentAddedController,
         super(SearchState.initial()) {
@@ -31,8 +31,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
 
     // Suscripción al StreamController para escuchar eventos de nuevos alimentos
-    _alimentController.stream.listen((_) {
-      add(const SearchEvent.fetchAllAlimentsList());
+    _alimentController.stream.listen((aliment) {
+      final List<AlimentEntity> aliments = List.from(state.aliments);
+
+      aliments.add(aliment);
+
+      emit(state.copyWith(
+        aliments: aliments,
+        screenStatus: const ScreenStatus.success(),
+      ));
     });
   }
 

@@ -9,12 +9,12 @@ import 'package:food_macros/presentation/screens/recipes/bloc/recipe_state.dart'
 
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeRepositoryContract _repository;
-  final StreamController<void> _recipeNotificationController;
+  final StreamController<RecipeEntity> _recipeNotificationController;
 
-  RecipeBloc(
-      {required RecipeRepositoryContract repositoryContract,
-      required StreamController<void> recipeNotificationController})
-      : _repository = repositoryContract,
+  RecipeBloc({
+    required RecipeRepositoryContract repositoryContract,
+    required StreamController<RecipeEntity> recipeNotificationController,
+  })  : _repository = repositoryContract,
         _recipeNotificationController = recipeNotificationController,
         super(RecipeState.initial()) {
     on<RecipeEvent>((event, emit) async {
@@ -25,8 +25,15 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       );
     });
 
-    _recipeNotificationController.stream.listen((_) {
-      add(const RecipeEvent.getRecipes());
+    _recipeNotificationController.stream.listen((recipe) {
+      final List<RecipeEntity> recipes = List.from(state.recipes);
+
+      recipes.add(recipe);
+
+      emit(state.copyWith(
+        recipes: recipes,
+        screenStatus: const ScreenStatus.success(),
+      ));
     });
   }
 

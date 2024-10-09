@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/recipe_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/add_recipe/add_recipe_screen.dart';
@@ -70,7 +71,7 @@ GoRouter appRoutes = GoRouter(
                   ],
                 ),
 
-                /// Brach Setting
+                /// Brach Search
                 StatefulShellBranch(
                   navigatorKey: _shellSearchNavigatorKey,
                   routes: <RouteBase>[
@@ -81,7 +82,8 @@ GoRouter appRoutes = GoRouter(
                           create: (context) => SearchBloc(
                             repositoryContract: uiModulesDi(),
                             alimentAddedController:
-                                uiModulesDi<StreamController<void>>(),
+                                uiModulesDi<StreamController<AlimentEntity>>(
+                                    instanceName: 'alimentEventController'),
                           )..add(const SearchEvent.fetchAllAlimentsList()),
                           child: child,
                         );
@@ -108,7 +110,9 @@ GoRouter appRoutes = GoRouter(
                                   create: (context) => AlimentDetailBloc(
                                     repositoryContract: uiModulesDi(),
                                     alimentController:
-                                        uiModulesDi<StreamController<void>>(),
+                                        uiModulesDi<StreamController<void>>(
+                                            instanceName:
+                                                'alimentEventController'),
                                   ),
                                   child: AlimentDetailScreen(aliment: aliment),
                                 );
@@ -131,8 +135,9 @@ GoRouter appRoutes = GoRouter(
                           return BlocProvider(
                               create: (context) => AddProductBloc(
                                   repositoryContract: uiModulesDi(),
-                                  alimentAddedController:
-                                      uiModulesDi<StreamController<void>>()),
+                                  alimentAddedController: uiModulesDi<
+                                          StreamController<AlimentEntity>>(
+                                      instanceName: 'alimentEventController')),
                               child: child);
                         },
                         routes: [
@@ -156,8 +161,10 @@ GoRouter appRoutes = GoRouter(
                           return BlocProvider(
                               create: (context) => RecipeBloc(
                                   repositoryContract: uiModulesDi(),
-                                  recipeNotificationController:
-                                      uiModulesDi<StreamController<void>>())
+                                  recipeNotificationController: uiModulesDi<
+                                          StreamController<RecipeEntity>>(
+                                      instanceName:
+                                          'recipeNotificationController'))
                                 ..add(const RecipeEvent.getRecipes()),
                               child: child);
                         },
@@ -176,9 +183,11 @@ GoRouter appRoutes = GoRouter(
                                           repositoryContract: uiModulesDi(),
                                           alimentRepositoryContract:
                                               uiModulesDi(),
-                                          recipeNotificationController:
-                                              uiModulesDi<
-                                                  StreamController<void>>()),
+                                          recipeNotificationController: uiModulesDi<
+                                                  StreamController<
+                                                      RecipeEntity>>(
+                                              instanceName:
+                                                  'recipeNotificationController')),
                                       child: const AddRecipeScreen(),
                                     );
                                   },

@@ -10,15 +10,40 @@ class RecipeDataSource implements RecipeDataSourceContract {
   RecipeDataSource({required this.dbHandler});
 
   @override
-  Future<int> createRecipe(RecipeRequestEntity recipe) async {
+  Future<RecipeRemoteEntity?> createRecipe(RecipeRequestEntity recipe) async {
     final db = await dbHandler.database;
 
     final result = await db.transaction((txn) async {
       final recipeId = await txn.insert('recipe', recipe.toMap());
 
       for (var aliment in recipe.aliments) {
-        await txn.insert('recipe_aliment',
-            recipe.alimentsToMap(recipeId, aliment) as Map<String, Object?>);
+        await txn.insert(
+          'recipe_aliment',
+          recipe.alimentsToMap(recipeId, aliment) as Map<String, Object?>,
+        );
+      }
+
+      final recipeQuery = await txn.query(
+        'recipe',
+        columns: [
+          'id',
+          'name',
+          'instructions'
+        ], // Solo necesitamos estas dos columnas
+        where: 'id = ?',
+        whereArgs: [recipeId],
+      );
+
+      if (recipeQuery.isNotEmpty) {
+        final recetaMap = recipeQuery.first;
+
+        return RecipeRemoteEntity(
+          id: recetaMap['id'] as int,
+          name: recetaMap['name'] as String,
+          instructions: recetaMap['instructions'] as String,
+        );
+      } else {
+        return null;
       }
     });
 

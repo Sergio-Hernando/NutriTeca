@@ -11,7 +11,7 @@ class RecipeEntity {
     required this.id,
     required this.name,
     required this.instructions,
-    required this.aliments,
+    this.aliments,
   });
 }
 
@@ -21,7 +21,7 @@ extension RecipeEntityExtension on RecipeRemoteEntity {
       name: name,
       instructions: instructions,
       aliments: aliments
-          .map(
+          ?.map(
             (e) => e.toEntity(),
           )
           .toList());

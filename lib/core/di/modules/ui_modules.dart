@@ -4,16 +4,16 @@ final uiModulesDi = GetIt.instance;
 
 void _uiModulesInit() {
   // StreamController para manejar eventos generales
-  uiModulesDi.registerSingleton<StreamController<void>>(
-    StreamController<void>.broadcast(),
+  uiModulesDi.registerSingleton<StreamController<AlimentEntity>>(
+    StreamController<AlimentEntity>.broadcast(),
     instanceName: 'alimentEventController',
     dispose: (controller) => controller.close(),
   );
 
   // StreamController para manejar notificaciones sobre nuevas recetas
-  uiModulesDi.registerSingleton<StreamController<void>>(
-    StreamController<void>.broadcast(),
-    instanceName: 'recipeNotificationController', // Nombre único
+  uiModulesDi.registerSingleton<StreamController<RecipeEntity>>(
+    StreamController<RecipeEntity>.broadcast(),
+    instanceName: 'recipeNotificationController',
     dispose: (controller) => controller.close(),
   );
   uiModulesDi.registerFactory(

@@ -4,13 +4,13 @@ class RecipeRemoteEntity {
   final int id;
   final String name;
   final String instructions;
-  final List<AlimentRemoteEntity> aliments;
+  final List<AlimentRemoteEntity>? aliments;
 
   RecipeRemoteEntity({
     required this.id,
     required this.name,
     required this.instructions,
-    required this.aliments,
+    this.aliments,
   });
 
   Map<String, dynamic> toMap() {

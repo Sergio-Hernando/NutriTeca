@@ -12,6 +12,8 @@ import 'package:food_macros/data/data_source_contracts/ingredients_recipe_data_s
 import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
 import 'package:food_macros/data/repositories/recipe_repository.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/recipe_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';

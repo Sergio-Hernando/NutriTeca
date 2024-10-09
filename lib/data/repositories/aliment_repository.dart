@@ -9,10 +9,10 @@ class AlimentRepository implements AlimentRepositoryContract {
   AlimentRepository(this._alimentDataSourceContract);
 
   @override
-  Future<int> createAliment(AlimentRequestEntity aliment) async {
+  Future<AlimentEntity?> createAliment(AlimentRequestEntity aliment) async {
     final data = await _alimentDataSourceContract.createAliment(aliment);
 
-    return data;
+    return data?.toEntity();
   }
 
   @override

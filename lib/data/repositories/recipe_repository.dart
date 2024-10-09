@@ -9,10 +9,10 @@ class RecipeRepository implements RecipeRepositoryContract {
   RecipeRepository(this._recipeDataSourceContract);
 
   @override
-  Future<bool> createRecipe(RecipeRequestEntity recipe) async {
-    final int recipeId = await _recipeDataSourceContract.createRecipe(recipe);
+  Future<RecipeEntity?> createRecipe(RecipeRequestEntity recipe) async {
+    final recipeId = await _recipeDataSourceContract.createRecipe(recipe);
 
-    return recipeId == 1 ? true : false;
+    return recipeId?.toEntity();
   }
 
   @override

@@ -9,9 +9,11 @@ class AlimentDataSource implements AlimentDataSourceContract {
   AlimentDataSource({required this.dbHandler});
 
   @override
-  Future<int> createAliment(AlimentRequestEntity aliment) async {
+  Future<AlimentRemoteEntity?> createAliment(
+      AlimentRequestEntity aliment) async {
     final db = await dbHandler.database;
-    return db.insert('aliment', aliment.toMap());
+    final id = await db.insert('aliment', aliment.toMap());
+    return getAliment(id);
   }
 
   @override

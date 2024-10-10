@@ -22,18 +22,12 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         getRecipes: () => _getRecipesEventToState(emit),
         updateSearch: (searchResults) =>
             _mapUpdateSearchToState(emit, searchResults),
+        refreshRecipes: (recipe) => _mapRefreshRecipeEventToState(recipe, emit),
       );
     });
 
     _recipeNotificationController.stream.listen((recipe) {
-      final List<RecipeEntity> recipes = List.from(state.recipes);
-
-      recipes.add(recipe);
-
-      emit(state.copyWith(
-        recipes: recipes,
-        screenStatus: const ScreenStatus.success(),
-      ));
+      add(RecipeEvent.refreshRecipes(recipe));
     });
   }
 
@@ -62,5 +56,17 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   Future<void> _mapUpdateSearchToState(
       Emitter<RecipeState> emit, List<RecipeEntity> searchResults) async {
     emit(state.copyWith(recipes: searchResults));
+  }
+
+  Future<void> _mapRefreshRecipeEventToState(
+      RecipeEntity recipe, Emitter<RecipeState> emit) async {
+    final List<RecipeEntity> recipes = List.from(state.recipes);
+
+    recipes.add(recipe);
+
+    emit(state.copyWith(
+      recipes: recipes,
+      screenStatus: const ScreenStatus.success(),
+    ));
   }
 }

@@ -1,8 +1,7 @@
 import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/aliment_remote_entity.dart';
-import 'package:food_macros/data/models/recipe_remote_entity.dart';
+import 'package:food_macros/data/models/aliment_data_entity.dart';
+import 'package:food_macros/data/models/recipe_data_entity.dart';
 import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
-import 'package:food_macros/domain/models/request/recipe_request_entity.dart';
 
 class RecipeDataSource implements RecipeDataSourceContract {
   final DatabaseHandler dbHandler;
@@ -10,26 +9,22 @@ class RecipeDataSource implements RecipeDataSourceContract {
   RecipeDataSource({required this.dbHandler});
 
   @override
-  Future<RecipeRemoteEntity?> createRecipe(RecipeRequestEntity recipe) async {
+  Future<RecipeDataEntity?> createRecipe(RecipeDataEntity recipe) async {
     final db = await dbHandler.database;
 
     final result = await db.transaction((txn) async {
       final recipeId = await txn.insert('recipe', recipe.toMap());
 
-      for (var aliment in recipe.aliments) {
+      recipe.aliments?.forEach((element) async {
         await txn.insert(
           'recipe_aliment',
-          recipe.alimentsToMap(recipeId, aliment) as Map<String, Object?>,
+          recipe.alimentsToMap(recipeId, element) as Map<String, Object?>,
         );
-      }
+      });
 
       final recipeQuery = await txn.query(
         'recipe',
-        columns: [
-          'id',
-          'name',
-          'instructions'
-        ], // Solo necesitamos estas dos columnas
+        columns: ['id', 'name', 'instructions'],
         where: 'id = ?',
         whereArgs: [recipeId],
       );
@@ -37,7 +32,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
       if (recipeQuery.isNotEmpty) {
         final recetaMap = recipeQuery.first;
 
-        return RecipeRemoteEntity(
+        return RecipeDataEntity(
           id: recetaMap['id'] as int,
           name: recetaMap['name'] as String,
           instructions: recetaMap['instructions'] as String,
@@ -51,7 +46,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
-  Future<RecipeRemoteEntity?> getRecipe(int id) async {
+  Future<RecipeDataEntity?> getRecipe(int id) async {
     final db = await dbHandler.database;
 
     final recipeMaps = await db.query(
@@ -69,7 +64,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
         whereArgs: [id],
       );
 
-      List<AlimentRemoteEntity> aliments = [];
+      List<AlimentDataEntity> aliments = [];
 
       for (var alimentMap in alimentMaps) {
         final alimentId = alimentMap['id_aliment'];
@@ -83,7 +78,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
         if (alimentInfo.isNotEmpty) {
           final alimentData = alimentInfo.first;
 
-          aliments.add(AlimentRemoteEntity(
+          aliments.add(AlimentDataEntity(
             id: alimentData['id'] as int?,
             name: alimentData['name'] as String,
             imageBase64: alimentData['image_base64'] as String,
@@ -104,7 +99,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
         }
       }
 
-      return RecipeRemoteEntity(
+      return RecipeDataEntity(
         id: recipeMaps.first['id'] as int,
         name: recipeName as String,
         instructions: recipeMaps.first['instructions'] as String,
@@ -116,7 +111,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
-  Future<List<RecipeRemoteEntity>> getAllRecipes() async {
+  Future<List<RecipeDataEntity>> getAllRecipes() async {
     final db = await dbHandler.database;
 
     final recipeMaps = await db.query(
@@ -124,10 +119,10 @@ class RecipeDataSource implements RecipeDataSourceContract {
       columns: ['id', 'name', 'instructions'],
     );
 
-    List<RecipeRemoteEntity> recipes = [];
+    List<RecipeDataEntity> recipes = [];
 
     for (var recipeMap in recipeMaps) {
-      recipes.add(RecipeRemoteEntity(
+      recipes.add(RecipeDataEntity(
         id: recipeMap['id'] as int,
         name: recipeMap['name'] as String,
         instructions: recipeMap['instructions'] as String,
@@ -139,7 +134,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
-  Future<int> updateRecipe(RecipeRequestEntity updatedRecipe) async {
+  Future<int> updateRecipe(RecipeDataEntity updatedRecipe) async {
     final db = await dbHandler.database;
 
     // Empezamos una transacción
@@ -166,9 +161,10 @@ class RecipeDataSource implements RecipeDataSourceContract {
         final existingAlimentId = existingAliment['id_aliment'];
 
         // Verificar si el alimento sigue en la receta actualizada
-        final alimentExistsInUpdatedRecipe = updatedRecipe.aliments.any(
-          (updatedAliment) => updatedAliment.entries.first == existingAlimentId,
-        );
+        final bool alimentExistsInUpdatedRecipe = updatedRecipe.aliments?.any(
+              (updatedAliment) => updatedAliment.id == existingAlimentId,
+            ) ??
+            false;
 
         // Si no existe, lo borramos
         if (!alimentExistsInUpdatedRecipe) {
@@ -181,31 +177,33 @@ class RecipeDataSource implements RecipeDataSourceContract {
       }
 
       // 4. Actualizar o agregar los alimentos nuevos
-      for (var updatedAliment in updatedRecipe.aliments) {
-        final existingAliment = existingAliments.firstWhere(
-          (element) => element['id_aliment'] == updatedAliment.entries.first,
-          orElse: () => <String, Object?>{},
-        );
+      updatedRecipe.aliments?.forEach(
+        (updatedAliment) async {
+          final existingAliment = existingAliments.firstWhere(
+            (element) => element['id_aliment'] == updatedAliment.id,
+            orElse: () => <String, Object?>{},
+          );
 
-        if (existingAliment.isNotEmpty) {
-          // Si el alimento ya existe, actualizamos la cantidad
-          if (updatedAliment.values.first != null) {
-            await txn.update(
-              'recipe_aliment',
-              {'quantity': updatedAliment.values.first},
-              where: 'id_aliment = ? AND id_recipe = ?',
-              whereArgs: [updatedAliment.entries.first, updatedRecipe.id],
-            );
+          if (existingAliment.isNotEmpty) {
+            // Si el alimento ya existe, actualizamos la cantidad
+            if (updatedAliment.id != null) {
+              await txn.update(
+                'recipe_aliment',
+                {'quantity': updatedAliment.quantity},
+                where: 'id_aliment = ? AND id_recipe = ?',
+                whereArgs: [updatedAliment.id, updatedRecipe.id],
+              );
+            }
+          } else {
+            // Si es un nuevo alimento, lo agregamos
+            await txn.insert('recipe_aliment', {
+              'id_recipe': updatedRecipe.id,
+              'id_aliment': updatedAliment.id,
+              'quantity': updatedAliment.quantity ?? 1,
+            });
           }
-        } else {
-          // Si es un nuevo alimento, lo agregamos
-          await txn.insert('recipe_aliment', {
-            'id_recipe': updatedRecipe.id,
-            'id_aliment': updatedAliment.entries.first,
-            'quantity': updatedAliment.values.first ?? 1,
-          });
-        }
-      }
+        },
+      );
     });
 
     return result;

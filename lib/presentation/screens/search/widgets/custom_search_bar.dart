@@ -16,7 +16,7 @@ class AlimentSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GenericSearchBar<AlimentEntity>(
       allItems: allItems,
-      getItemName: (AlimentEntity item) => item.name,
+      getItemName: (AlimentEntity item) => item.name ?? '',
       onResults: onResults,
       hintText: 'Buscar Alimento',
     );

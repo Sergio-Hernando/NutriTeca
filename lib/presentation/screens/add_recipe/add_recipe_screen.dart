@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/request/recipe_request_entity.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/recipe_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/widgets/custom_text_field.dart';
 import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_event.dart';
@@ -22,7 +23,7 @@ class AddRecipeScreen extends StatefulWidget {
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
   final TextEditingController _recipeNameController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
-  final Map<int, Map<String, dynamic>> _selectedAliments = {};
+  final List<AlimentEntity> _selectedAliments = [];
 
   @override
   void initState() {
@@ -38,14 +39,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   void _saveRecipe() {
     if (_recipeNameController.text.isNotEmpty && _selectedAliments.isNotEmpty) {
-      final recipeRequest = RecipeRequestEntity(
-        name: _recipeNameController.text.capitalize(),
-        instructions: _instructionsController.text,
-        aliments: _selectedAliments.entries
-            .map((entry) =>
-                {'id': entry.key, 'quantity': entry.value['quantity']})
-            .toList(),
-      );
+      final recipeRequest = RecipeEntity(
+          name: _recipeNameController.text.capitalize(),
+          instructions: _instructionsController.text,
+          aliments: _selectedAliments);
 
       context.read<AddRecipeBloc>().add(
             AddRecipeEvent.addRecipe(recipe: recipeRequest),
@@ -98,10 +95,11 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   void _addAliment(int alimentId, String name, int quantity) {
     setState(() {
-      _selectedAliments[alimentId] = {
-        'name': name,
-        'quantity': quantity,
-      };
+      _selectedAliments.add(AlimentEntity(
+        id: alimentId,
+        name: name,
+        quantity: quantity.toString(),
+      ));
     });
   }
 

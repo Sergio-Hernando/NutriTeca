@@ -3,12 +3,12 @@ part of '../di.dart';
 final repositoryModulesDi = GetIt.instance;
 
 void _repositoryModulesInit() {
-  remoteModulesDi.registerLazySingleton<AlimentRepositoryContract>(
+  repositoryModulesDi.registerLazySingleton<AlimentRepositoryContract>(
     () => AlimentRepository(
       repositoryModulesDi(),
     ),
   );
-  remoteModulesDi.registerLazySingleton<RecipeRepositoryContract>(
+  repositoryModulesDi.registerLazySingleton<RecipeRepositoryContract>(
     () => RecipeRepository(
       repositoryModulesDi(),
     ),

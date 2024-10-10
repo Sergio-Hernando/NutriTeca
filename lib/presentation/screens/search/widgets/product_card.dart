@@ -33,7 +33,7 @@ class CustomCard extends StatelessWidget {
                 onTap: () => _showMacroOverlay(context),
                 child: CircleAvatar(
                   backgroundImage:
-                      MemoryImage(base64Decode(aliment.imageBase64)),
+                      MemoryImage(base64Decode(aliment.imageBase64 ?? '')),
                   radius: 30,
                 ),
               ),
@@ -43,7 +43,7 @@ class CustomCard extends StatelessWidget {
                   onTap: () =>
                       context.go(AppRoutesPath.alimentDetail, extra: aliment),
                   child: Text(
-                    aliment.name,
+                    aliment.name ?? '',
                     style: AppTheme.bodyTextStyle.copyWith(color: Colors.white),
                   ),
                 ),
@@ -90,7 +90,7 @@ class CustomCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  aliment.name,
+                  aliment.name ?? '',
                   style: AppTheme.titleTextStyle
                       .copyWith(color: AppColors.foreground),
                 ),

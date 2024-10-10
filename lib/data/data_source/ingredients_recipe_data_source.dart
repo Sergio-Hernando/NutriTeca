@@ -1,5 +1,5 @@
 import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/ingredients_recipe_remote_entity.dart';
+import 'package:food_macros/data/models/ingredients_recipe_data_entity.dart';
 import 'package:food_macros/data/data_source_contracts/ingredients_recipe_data_source_contract.dart';
 
 class IngredientsRecipeDataSource
@@ -10,13 +10,13 @@ class IngredientsRecipeDataSource
 
   @override
   Future<int> createIngredientsRecipe(
-      IngredientsRecipeRemoteEntity entity) async {
+      IngredientsRecipeDataEntity entity) async {
     final db = await dbHandler.database;
     return db.insert('recipe_aliment', entity.toMap());
   }
 
   @override
-  Future<IngredientsRecipeRemoteEntity?> getIngredientsRecipe(int id) async {
+  Future<IngredientsRecipeDataEntity?> getIngredientsRecipe(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
       'recipe_aliment',
@@ -25,25 +25,23 @@ class IngredientsRecipeDataSource
     );
 
     if (maps.isNotEmpty) {
-      return IngredientsRecipeRemoteEntity.fromMap(maps.first);
+      return IngredientsRecipeDataEntity.fromMap(maps.first);
     } else {
       return null;
     }
   }
 
   @override
-  Future<List<IngredientsRecipeRemoteEntity>> getAllIngredientsRecipe() async {
+  Future<List<IngredientsRecipeDataEntity>> getAllIngredientsRecipe() async {
     final db = await dbHandler.database;
     final maps = await db.query('recipe_aliment');
 
-    return maps
-        .map((map) => IngredientsRecipeRemoteEntity.fromMap(map))
-        .toList();
+    return maps.map((map) => IngredientsRecipeDataEntity.fromMap(map)).toList();
   }
 
   @override
   Future<int> updateIngredientsRecipe(
-      IngredientsRecipeRemoteEntity entity) async {
+      IngredientsRecipeDataEntity entity) async {
     final db = await dbHandler.database;
     return db.update(
       'recipe_aliment',

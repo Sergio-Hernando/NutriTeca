@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 
 class SelectedAlimentsList extends StatelessWidget {
-  final Map<int, Map<String, dynamic>> selectedAliments;
+  final List<AlimentEntity> selectedAliments;
   final void Function(int) removeAliment;
 
   const SelectedAlimentsList({
@@ -17,9 +18,9 @@ class SelectedAlimentsList extends StatelessWidget {
         ? ListView.builder(
             itemCount: selectedAliments.length,
             itemBuilder: (context, index) {
-              final alimentId = selectedAliments.keys.elementAt(index);
-              final alimentName = selectedAliments[alimentId]?['name'];
-              final quantity = selectedAliments[alimentId]?['quantity'];
+              final alimentId = selectedAliments[index].id ?? 0;
+              final alimentName = selectedAliments[alimentId].name;
+              final quantity = selectedAliments[alimentId].quantity;
               return Card(
                 color: AppColors.secondary,
                 shape: RoundedRectangleBorder(

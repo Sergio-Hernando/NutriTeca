@@ -1,6 +1,5 @@
 import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/domain/models/request/recipe_request_entity.dart';
 import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
 
 class RecipeRepository implements RecipeRepositoryContract {
@@ -9,17 +8,18 @@ class RecipeRepository implements RecipeRepositoryContract {
   RecipeRepository(this._recipeDataSourceContract);
 
   @override
-  Future<RecipeEntity?> createRecipe(RecipeRequestEntity recipe) async {
-    final recipeId = await _recipeDataSourceContract.createRecipe(recipe);
+  Future<RecipeEntity?> createRecipe(RecipeEntity recipe) async {
+    final recipeId =
+        await _recipeDataSourceContract.createRecipe(recipe.toDataModel());
 
-    return recipeId?.toEntity();
+    return getRecipe(recipeId?.id ?? 0);
   }
 
   @override
   Future<RecipeEntity?> getRecipe(int id) async {
     final recipe = await _recipeDataSourceContract.getRecipe(id);
 
-    return recipe?.toEntity();
+    return RecipeEntity.toDomain(recipe);
   }
 
   @override
@@ -28,14 +28,15 @@ class RecipeRepository implements RecipeRepositoryContract {
 
     return recipes
         .map(
-          (e) => e.toEntity(),
+          (e) => RecipeEntity.toDomain(e),
         )
         .toList();
   }
 
   @override
-  Future<bool> updateRecipe(RecipeRequestEntity aliment) async {
-    final result = await _recipeDataSourceContract.updateRecipe(aliment);
+  Future<bool> updateRecipe(RecipeEntity recipe) async {
+    final result =
+        await _recipeDataSourceContract.updateRecipe(recipe.toDataModel());
 
     return result == 1 ? true : false;
   }

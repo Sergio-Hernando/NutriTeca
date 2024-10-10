@@ -1,9 +1,9 @@
-import 'package:food_macros/data/models/ingredients_recipe_remote_entity.dart';
+import 'package:food_macros/data/models/ingredients_recipe_data_entity.dart';
 
 abstract class IngredientsRecipeDataSourceContract {
-  Future<int> createIngredientsRecipe(IngredientsRecipeRemoteEntity entity);
-  Future<IngredientsRecipeRemoteEntity?> getIngredientsRecipe(int id);
-  Future<List<IngredientsRecipeRemoteEntity>> getAllIngredientsRecipe();
-  Future<int> updateIngredientsRecipe(IngredientsRecipeRemoteEntity entity);
+  Future<int> createIngredientsRecipe(IngredientsRecipeDataEntity entity);
+  Future<IngredientsRecipeDataEntity?> getIngredientsRecipe(int id);
+  Future<List<IngredientsRecipeDataEntity>> getAllIngredientsRecipe();
+  Future<int> updateIngredientsRecipe(IngredientsRecipeDataEntity entity);
   Future<int> deleteIngredientsRecipe(int id);
 }

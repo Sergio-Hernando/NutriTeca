@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/presentation/screens/search/widgets/product_card.dart';
+import 'package:food_macros/domain/models/recipe_entity.dart';
+import 'package:food_macros/presentation/screens/recipes/widgets/custom_card.dart';
 
-class AlimentList extends StatelessWidget {
-  final List<AlimentEntity> aliments;
+class RecipesList extends StatelessWidget {
+  final List<RecipeEntity> recipes;
 
-  const AlimentList({Key? key, required this.aliments}) : super(key: key);
+  const RecipesList({super.key, required this.recipes});
 
   @override
   Widget build(BuildContext context) {
-    return aliments.isNotEmpty
+    return recipes.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(
-              itemCount: aliments.length,
+              itemCount: recipes.length,
               itemBuilder: (context, index) => CustomCard(
-                aliment: aliments[index],
+                recipe: recipes[index],
               ),
             ),
           )

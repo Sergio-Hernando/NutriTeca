@@ -9,11 +9,11 @@ import 'dart:async';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<void> _alimentController;
+  final StreamController<AlimentEntity> _alimentController;
 
   SearchBloc({
     required AlimentRepositoryContract repositoryContract,
-    required StreamController<void> alimentAddedController,
+    required StreamController<AlimentEntity> alimentAddedController,
   })  : _repository = repositoryContract,
         _alimentController = alimentAddedController,
         super(SearchState.initial()) {
@@ -27,12 +27,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         updateFilters: (FiltersEntity filters) => _updateFilters(emit, filters),
         updateSearch: (List<AlimentEntity> searchResults) =>
             _mapUpdateSearchToState(event, emit, searchResults),
+        refreshAllAlimentsList: (aliment) =>
+            _mapRefreshAllAlimentsListEventToState(aliment, emit),
       );
     });
 
     // Suscripción al StreamController para escuchar eventos de nuevos alimentos
-    _alimentController.stream.listen((_) {
-      add(const SearchEvent.fetchAllAlimentsList());
+    _alimentController.stream.listen((aliment) {
+      add(SearchEvent.refreshAllAlimentsList(aliment));
     });
   }
 
@@ -74,5 +76,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Future<void> _mapUpdateSearchToState(SearchEvent event,
       Emitter<SearchState> emit, List<AlimentEntity> searchResults) async {
     emit(state.copyWith(aliments: searchResults));
+  }
+
+  Future<void> _mapRefreshAllAlimentsListEventToState(
+      AlimentEntity aliment, Emitter<SearchState> emit) async {
+    final List<AlimentEntity> aliments = List.from(state.aliments);
+
+    aliments.add(aliment);
+
+    emit(state.copyWith(
+      aliments: aliments,
+      screenStatus: const ScreenStatus.success(),
+    ));
   }
 }

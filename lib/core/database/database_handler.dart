@@ -51,7 +51,8 @@ class DatabaseHandler {
     await db.execute('''
       CREATE TABLE recipe(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL
+        name TEXT NOT NULL,
+        instructions TEXT NOT NULL
       );
     ''');
 

@@ -1,49 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/presentation/widgets/generic_search_bar.dart';
 
-class CustomSearchBar extends StatefulWidget {
+class AlimentSearchBar extends StatelessWidget {
   final List<AlimentEntity> allItems;
   final void Function(List<AlimentEntity>) onResults;
 
-  const CustomSearchBar(
-      {required this.allItems, required this.onResults, Key? key})
-      : super(key: key);
-
-  @override
-  CustomSearchBarState createState() => CustomSearchBarState();
-}
-
-class CustomSearchBarState extends State<CustomSearchBar> {
-  List<AlimentEntity> _foundItems = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _foundItems = widget.allItems;
-  }
-
-  void _runFilter(String enteredKeyword) {
-    List<AlimentEntity> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = _foundItems;
-    } else {
-      results = _foundItems
-          .where((item) =>
-              item.name.toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-    widget.onResults(results);
-  }
+  const AlimentSearchBar({
+    required this.allItems,
+    required this.onResults,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: SearchBar(
-        onChanged: (value) => _runFilter(value),
-        hintText: 'Search',
-        leading: const Icon(Icons.search),
-      ),
+    return GenericSearchBar<AlimentEntity>(
+      allItems: allItems,
+      getItemName: (AlimentEntity item) => item.name,
+      onResults: onResults,
+      hintText: 'Buscar Alimento',
     );
   }
 }

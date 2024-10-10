@@ -3,19 +3,60 @@ part of '../di.dart';
 final uiModulesDi = GetIt.instance;
 
 void _uiModulesInit() {
-  uiModulesDi.registerSingleton<StreamController<void>>(
-    StreamController<void>.broadcast(),
+  // StreamController para manejar eventos generales
+  uiModulesDi.registerSingleton<StreamController<AlimentEntity>>(
+    StreamController<AlimentEntity>.broadcast(),
+    instanceName: 'alimentEventController',
     dispose: (controller) => controller.close(),
   );
-  uiModulesDi
-      .registerFactory(() => HomeBloc(repositoryContract: uiModulesDi()));
-  uiModulesDi.registerFactory(() => SplashBloc());
-  uiModulesDi.registerFactory(() => AddProductBloc(
+
+  // StreamController para manejar notificaciones sobre nuevas recetas
+  uiModulesDi.registerSingleton<StreamController<RecipeEntity>>(
+    StreamController<RecipeEntity>.broadcast(),
+    instanceName: 'recipeNotificationController',
+    dispose: (controller) => controller.close(),
+  );
+  uiModulesDi.registerFactory(
+    () => HomeBloc(
       repositoryContract: uiModulesDi(),
-      alimentAddedController: uiModulesDi()));
-  uiModulesDi.registerFactory(() => SearchBloc(
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => SplashBloc(),
+  );
+  uiModulesDi.registerFactory(
+    () => AddProductBloc(
       repositoryContract: uiModulesDi(),
-      alimentAddedController: uiModulesDi()));
-  uiModulesDi.registerFactory(() => AlimentDetailBloc(
-      repositoryContract: uiModulesDi(), alimentController: uiModulesDi()));
+      alimentAddedController:
+          uiModulesDi(instanceName: 'alimentEventController'),
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => SearchBloc(
+      repositoryContract: uiModulesDi(),
+      alimentAddedController:
+          uiModulesDi(instanceName: 'alimentEventController'),
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => AlimentDetailBloc(
+      repositoryContract: uiModulesDi(),
+      alimentController: uiModulesDi(instanceName: 'alimentEventController'),
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => RecipeBloc(
+      repositoryContract: uiModulesDi(),
+      recipeNotificationController:
+          uiModulesDi(instanceName: 'recipeNotificationController'),
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => AddRecipeBloc(
+      repositoryContract: uiModulesDi(),
+      alimentRepositoryContract: uiModulesDi(),
+      recipeNotificationController:
+          uiModulesDi(instanceName: 'recipeNotificationController'),
+    ),
+  );
 }

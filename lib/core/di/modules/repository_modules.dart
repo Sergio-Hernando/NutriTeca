@@ -4,5 +4,13 @@ final repositoryModulesDi = GetIt.instance;
 
 void _repositoryModulesInit() {
   remoteModulesDi.registerLazySingleton<AlimentRepositoryContract>(
-      () => AlimentRepository(repositoryModulesDi()));
+    () => AlimentRepository(
+      repositoryModulesDi(),
+    ),
+  );
+  remoteModulesDi.registerLazySingleton<RecipeRepositoryContract>(
+    () => RecipeRepository(
+      repositoryModulesDi(),
+    ),
+  );
 }

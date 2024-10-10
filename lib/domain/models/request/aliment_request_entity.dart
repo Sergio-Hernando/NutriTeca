@@ -1,5 +1,3 @@
-import 'package:food_macros/data/models/aliment_remote_entity.dart';
-
 class AlimentRequestEntity {
   final int? id;
   final String name;
@@ -38,22 +36,23 @@ class AlimentRequestEntity {
     required this.proteins,
     this.salt,
   });
-}
 
-extension AlimentRequestEntityExtension on AlimentRequestEntity {
-  AlimentRemoteEntity toRemoteEntity() => AlimentRemoteEntity(
-      name: name,
-      imageBase64: imageBase64,
-      supermarket: supermarket,
-      calories: calories,
-      fats: fats,
-      fatsSaturated: fatsSaturated,
-      fatsPolyunsaturated: fatsPolyunsaturated,
-      fatsMonounsaturated: fatsMonounsaturated,
-      fatsTrans: fatsTrans,
-      carbohydrates: carbohydrates,
-      fiber: fiber,
-      sugar: sugar,
-      proteins: proteins,
-      salt: salt);
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'image_base64': imageBase64,
+      'supermarket': supermarket,
+      'calories': calories,
+      'fats': fats,
+      'fats_saturated': fatsSaturated,
+      'fats_polyunsaturated': fatsPolyunsaturated,
+      'fats_monounsaturated': fatsMonounsaturated,
+      'fats_trans': fatsTrans,
+      'carbohydrates': carbohydrates,
+      'fiber': fiber,
+      'sugar': sugar,
+      'proteins': proteins,
+      'salt': salt,
+    };
+  }
 }

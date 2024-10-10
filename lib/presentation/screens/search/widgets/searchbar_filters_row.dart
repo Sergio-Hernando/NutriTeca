@@ -21,7 +21,7 @@ class SearchBarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: CustomSearchBar(
+            child: AlimentSearchBar(
               allItems: allItems,
               onResults: (results) {
                 context

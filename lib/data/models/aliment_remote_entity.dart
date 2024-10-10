@@ -18,6 +18,7 @@ class AlimentRemoteEntity {
   final int proteins;
 
   final int? salt;
+  final String? quantity;
 
   AlimentRemoteEntity({
     this.id,
@@ -35,26 +36,8 @@ class AlimentRemoteEntity {
     this.sugar,
     required this.proteins,
     this.salt,
+    this.quantity,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'image_base64': imageBase64,
-      'supermarket': supermarket,
-      'calories': calories,
-      'fats': fats,
-      'fats_saturated': fatsSaturated,
-      'fats_polyunsaturated': fatsPolyunsaturated,
-      'fats_monounsaturated': fatsMonounsaturated,
-      'fats_trans': fatsTrans,
-      'carbohydrates': carbohydrates,
-      'fiber': fiber,
-      'sugar': sugar,
-      'proteins': proteins,
-      'salt': salt,
-    };
-  }
 
   factory AlimentRemoteEntity.fromMap(Map<String, dynamic> map) {
     return AlimentRemoteEntity(

@@ -29,7 +29,9 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
     final result = await _repository.deleteAliment(alimentId);
 
     if (!result) {
-      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+      emit(state.copyWith(
+          screenStatus: const ScreenStatus.error(
+              'El alimento no se ha eliminado correctamente')));
     } else {
       _alimentController.add(null);
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));

@@ -1,5 +1,5 @@
 import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/monthly_spent_remote_entity.dart';
+import 'package:food_macros/data/models/monthly_spent_data_entity.dart';
 import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 
 class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
@@ -8,13 +8,13 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   MonthlySpentDataSource({required this.dbHandler});
 
   @override
-  Future<int> createMonthlySpent(MonthlySpentRemoteEntity monthlySpent) async {
+  Future<int> createMonthlySpent(MonthlySpentDataEntity monthlySpent) async {
     final db = await dbHandler.database;
     return db.insert('gasto', monthlySpent.toMap());
   }
 
   @override
-  Future<MonthlySpentRemoteEntity?> getMonthlySpent(int id) async {
+  Future<MonthlySpentDataEntity?> getMonthlySpent(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
       'gasto',
@@ -23,22 +23,22 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
     );
 
     if (maps.isNotEmpty) {
-      return MonthlySpentRemoteEntity.fromMap(maps.first);
+      return MonthlySpentDataEntity.fromMap(maps.first);
     } else {
       return null;
     }
   }
 
   @override
-  Future<List<MonthlySpentRemoteEntity>> getAllMonthlySpents() async {
+  Future<List<MonthlySpentDataEntity>> getAllMonthlySpents() async {
     final db = await dbHandler.database;
     final maps = await db.query('gasto');
 
-    return maps.map((map) => MonthlySpentRemoteEntity.fromMap(map)).toList();
+    return maps.map((map) => MonthlySpentDataEntity.fromMap(map)).toList();
   }
 
   @override
-  Future<int> updateMonthlySpent(MonthlySpentRemoteEntity monthlySpent) async {
+  Future<int> updateMonthlySpent(MonthlySpentDataEntity monthlySpent) async {
     final db = await dbHandler.database;
     return db.update(
       'gasto',

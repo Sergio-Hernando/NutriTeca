@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_event.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_state.dart';
@@ -26,7 +26,7 @@ class AddProductForm extends StatelessWidget {
 
     void submitForm() {
       if (formKey.currentState?.validate() ?? false) {
-        final aliment = AlimentRequestEntity(
+        final aliment = AlimentEntity(
           name:
               (controllers['name'] as TextEditingController).text.capitalize(),
           imageBase64: (controllers['image'] as TextEditingController).text,

@@ -1,13 +1,13 @@
-class MonthlySpentRemoteEntity {
+class IngredientsRecipeDataEntity {
   final int? id;
   final int idAlimento;
-  final String date;
-  final double quantity;
+  final int idReceta;
+  final int quantity;
 
-  MonthlySpentRemoteEntity({
+  IngredientsRecipeDataEntity({
     this.id,
     required this.idAlimento,
-    required this.date,
+    required this.idReceta,
     required this.quantity,
   });
 
@@ -15,16 +15,16 @@ class MonthlySpentRemoteEntity {
     return {
       'id': id,
       'id_aliment': idAlimento,
-      'date': date,
+      'id_recipe': idReceta,
       'quantity': quantity,
     };
   }
 
-  factory MonthlySpentRemoteEntity.fromMap(Map<String, dynamic> map) {
-    return MonthlySpentRemoteEntity(
+  factory IngredientsRecipeDataEntity.fromMap(Map<String, dynamic> map) {
+    return IngredientsRecipeDataEntity(
       id: map['id'],
       idAlimento: map['id_aliment'],
-      date: map['date'],
+      idReceta: map['id_recipe'],
       quantity: map['quantity'],
     );
   }

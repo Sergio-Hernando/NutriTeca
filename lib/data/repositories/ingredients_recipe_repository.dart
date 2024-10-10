@@ -1,4 +1,4 @@
-import 'package:food_macros/data/models/ingredients_recipe_remote_entity.dart';
+import 'package:food_macros/data/models/ingredients_recipe_data_entity.dart';
 import 'package:food_macros/data/data_source_contracts/ingredients_recipe_data_source_contract.dart';
 
 class IngredientsRecipeRepository {
@@ -15,7 +15,7 @@ class IngredientsRecipeRepository {
       final alimentId = entry.key;
       final quantity = entry.value;
 
-      final relacion = IngredientsRecipeRemoteEntity(
+      final relacion = IngredientsRecipeDataEntity(
         idAlimento: alimentId,
         idReceta: recipeId,
         quantity: quantity,

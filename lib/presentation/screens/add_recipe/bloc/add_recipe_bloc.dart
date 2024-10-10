@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/domain/models/request/recipe_request_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
 import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_event.dart';
@@ -46,7 +45,7 @@ class AddRecipeBloc extends Bloc<AddRecipeEvent, AddRecipeState> {
   }
 
   Future<void> _saveRecipeEventToState(
-      RecipeRequestEntity recipe, Emitter<AddRecipeState> emit) async {
+      RecipeEntity recipe, Emitter<AddRecipeState> emit) async {
     try {
       emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
 

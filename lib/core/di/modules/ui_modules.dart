@@ -4,8 +4,8 @@ final uiModulesDi = GetIt.instance;
 
 void _uiModulesInit() {
   // StreamController para manejar eventos generales
-  uiModulesDi.registerSingleton<StreamController<AlimentEntity>>(
-    StreamController<AlimentEntity>.broadcast(),
+  uiModulesDi.registerSingleton<StreamController<AlimentAction>>(
+    StreamController<AlimentAction>.broadcast(),
     instanceName: 'alimentEventController',
     dispose: (controller) => controller.close(),
   );

@@ -80,7 +80,7 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
                   final aliment = widget.aliments[index];
                   return ListTile(
                     title: Text(
-                      aliment.name,
+                      aliment.name ?? '',
                       style: TextStyle(
                         color: selectedAlimentId == aliment.id
                             ? AppColors.background
@@ -89,7 +89,7 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
                       ),
                     ),
                     onTap: () =>
-                        _handleSelection(aliment.id ?? 0, aliment.name),
+                        _handleSelection(aliment.id ?? 0, aliment.name ?? ''),
                     selected: selectedAlimentId == aliment.id,
                   );
                 },

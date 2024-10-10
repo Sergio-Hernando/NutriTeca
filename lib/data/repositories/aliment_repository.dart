@@ -1,6 +1,5 @@
 import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/domain/models/request/aliment_request_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 
 class AlimentRepository implements AlimentRepositoryContract {
@@ -9,17 +8,18 @@ class AlimentRepository implements AlimentRepositoryContract {
   AlimentRepository(this._alimentDataSourceContract);
 
   @override
-  Future<AlimentEntity?> createAliment(AlimentRequestEntity aliment) async {
-    final data = await _alimentDataSourceContract.createAliment(aliment);
+  Future<AlimentEntity?> createAliment(AlimentEntity aliment) async {
+    final data =
+        await _alimentDataSourceContract.createAliment(aliment.toDataModel());
 
-    return data?.toEntity();
+    return AlimentEntity.toDomain(data);
   }
 
   @override
   Future<AlimentEntity?> getAliment(int id) async {
     final data = await _alimentDataSourceContract.getAliment(id);
 
-    return data?.toEntity();
+    return AlimentEntity.toDomain(data);
   }
 
   @override
@@ -28,7 +28,7 @@ class AlimentRepository implements AlimentRepositoryContract {
 
     final response = data
         .map(
-          (e) => e.toEntity(),
+          (e) => AlimentEntity.toDomain(e),
         )
         .toList();
 
@@ -36,8 +36,9 @@ class AlimentRepository implements AlimentRepositoryContract {
   }
 
   @override
-  Future<int> updateAliment(AlimentRequestEntity aliment) async {
-    final data = await _alimentDataSourceContract.updateAliment(aliment);
+  Future<int> updateAliment(AlimentEntity aliment) async {
+    final data =
+        await _alimentDataSourceContract.updateAliment(aliment.toDataModel());
 
     return data;
   }

@@ -1,9 +1,9 @@
-import 'package:food_macros/data/models/monthly_spent_remote_entity.dart';
+import 'package:food_macros/data/models/monthly_spent_data_entity.dart';
 
 abstract class MonthlySpentDataSourceContract {
-  Future<int> createMonthlySpent(MonthlySpentRemoteEntity monthlySpent);
-  Future<MonthlySpentRemoteEntity?> getMonthlySpent(int id);
-  Future<List<MonthlySpentRemoteEntity>> getAllMonthlySpents();
-  Future<int> updateMonthlySpent(MonthlySpentRemoteEntity monthlySpent);
+  Future<int> createMonthlySpent(MonthlySpentDataEntity monthlySpent);
+  Future<MonthlySpentDataEntity?> getMonthlySpent(int id);
+  Future<List<MonthlySpentDataEntity>> getAllMonthlySpents();
+  Future<int> updateMonthlySpent(MonthlySpentDataEntity monthlySpent);
   Future<int> deleteMonthlySpent(int id);
 }

@@ -7,13 +7,15 @@ import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_state.dart';
 import 'dart:async';
 
+import 'package:food_macros/presentation/shared/aliment_action.dart';
+
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<AlimentEntity> _alimentController;
+  final StreamController<AlimentAction> _alimentController;
 
   SearchBloc({
     required AlimentRepositoryContract repositoryContract,
-    required StreamController<AlimentEntity> alimentAddedController,
+    required StreamController<AlimentAction> alimentAddedController,
   })  : _repository = repositoryContract,
         _alimentController = alimentAddedController,
         super(SearchState.initial()) {
@@ -52,10 +54,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Future<void> _applyFiltersToState(
       FiltersEntity filters, Emitter<SearchState> emit) async {
     final filteredAliments = state.aliments.where((aliment) {
-      return (filters.highFats ? aliment.fats >= 10 : true) &&
-          (filters.highProteins ? aliment.proteins >= 10 : true) &&
-          (filters.highCarbohydrates ? aliment.carbohydrates >= 10 : true) &&
-          (filters.highCalories ? aliment.calories >= 100 : true) &&
+      return (filters.highFats ? (aliment.fats ?? 0) >= 10 : true) &&
+          (filters.highProteins ? (aliment.proteins ?? 0) >= 10 : true) &&
+          (filters.highCarbohydrates
+              ? (aliment.carbohydrates ?? 0) >= 10
+              : true) &&
+          (filters.highCalories ? (aliment.calories ?? 0) >= 100 : true) &&
           (filters.supermarket != null
               ? aliment.supermarket == filters.supermarket
               : true);
@@ -79,10 +83,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Future<void> _mapRefreshAllAlimentsListEventToState(
-      AlimentEntity aliment, Emitter<SearchState> emit) async {
+      AlimentAction aliment, Emitter<SearchState> emit) async {
     final List<AlimentEntity> aliments = List.from(state.aliments);
 
-    aliments.add(aliment);
+    if (aliment.isAdd) {
+      aliments.add(aliment.aliment);
+    } else {
+      aliments.removeWhere(
+        (element) => element.id == aliment.aliment.id,
+      );
+    }
 
     emit(state.copyWith(
       aliments: aliments,

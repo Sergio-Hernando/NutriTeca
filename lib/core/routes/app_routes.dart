@@ -22,6 +22,7 @@ import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
+import 'package:food_macros/presentation/shared/aliment_action.dart';
 import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -82,7 +83,7 @@ GoRouter appRoutes = GoRouter(
                           create: (context) => SearchBloc(
                             repositoryContract: uiModulesDi(),
                             alimentAddedController:
-                                uiModulesDi<StreamController<AlimentEntity>>(
+                                uiModulesDi<StreamController<AlimentAction>>(
                                     instanceName: 'alimentEventController'),
                           )..add(const SearchEvent.fetchAllAlimentsList()),
                           child: child,
@@ -109,10 +110,9 @@ GoRouter appRoutes = GoRouter(
                                 return BlocProvider(
                                   create: (context) => AlimentDetailBloc(
                                     repositoryContract: uiModulesDi(),
-                                    alimentController:
-                                        uiModulesDi<StreamController<void>>(
-                                            instanceName:
-                                                'alimentEventController'),
+                                    alimentController: uiModulesDi<
+                                            StreamController<AlimentAction>>(
+                                        instanceName: 'alimentEventController'),
                                   ),
                                   child: AlimentDetailScreen(aliment: aliment),
                                 );
@@ -136,7 +136,7 @@ GoRouter appRoutes = GoRouter(
                               create: (context) => AddProductBloc(
                                   repositoryContract: uiModulesDi(),
                                   alimentAddedController: uiModulesDi<
-                                          StreamController<AlimentEntity>>(
+                                          StreamController<AlimentAction>>(
                                       instanceName: 'alimentEventController')),
                               child: child);
                         },

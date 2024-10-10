@@ -2,17 +2,19 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
+import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_event.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_state.dart';
+import 'package:food_macros/presentation/shared/aliment_action.dart';
 
 class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
   final AlimentRepositoryContract _repository;
-  final StreamController<void> _alimentController;
+  final StreamController<AlimentAction> _alimentController;
 
   AlimentDetailBloc({
     required AlimentRepositoryContract repositoryContract,
-    required StreamController<void> alimentController,
+    required StreamController<AlimentAction> alimentController,
   })  : _repository = repositoryContract,
         _alimentController = alimentController,
         super(AlimentDetailState.initial()) {
@@ -33,7 +35,8 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
           screenStatus: const ScreenStatus.error(
               'El alimento no se ha eliminado correctamente')));
     } else {
-      _alimentController.add(null);
+      _alimentController.add(
+          AlimentAction(aliment: AlimentEntity(id: alimentId), isAdd: false));
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));
     }
   }

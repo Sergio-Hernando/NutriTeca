@@ -26,7 +26,7 @@ class AlimentDetailScreen extends StatelessWidget {
       backgroundColor: AppColors.foreground,
       appBar: AppBar(
         title: Center(
-            child: Text(aliment.name.capitalize(),
+            child: Text(aliment.name?.capitalize() ?? '',
                 style: AppTheme.titleTextStyle)),
         backgroundColor: AppColors.background,
         leading: IconButton(
@@ -67,7 +67,8 @@ class AlimentDetailScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.memory(
-                          const Base64Decoder().convert(aliment.imageBase64),
+                          const Base64Decoder()
+                              .convert(aliment.imageBase64 ?? ''),
                           fit: BoxFit.cover,
                           height: 200,
                           width: double.infinity,

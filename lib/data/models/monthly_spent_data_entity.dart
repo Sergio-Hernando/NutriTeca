@@ -1,12 +1,14 @@
 class MonthlySpentDataEntity {
   final int? id;
-  final int idAlimento;
+  final int alimentId;
+  final String alimentName;
   final String date;
-  final double quantity;
+  final int quantity;
 
   MonthlySpentDataEntity({
     this.id,
-    required this.idAlimento,
+    required this.alimentId,
+    required this.alimentName,
     required this.date,
     required this.quantity,
   });
@@ -14,7 +16,8 @@ class MonthlySpentDataEntity {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'id_aliment': idAlimento,
+      'id_aliment': alimentId,
+      'aliment_name': alimentName,
       'date': date,
       'quantity': quantity,
     };
@@ -23,7 +26,8 @@ class MonthlySpentDataEntity {
   factory MonthlySpentDataEntity.fromMap(Map<String, dynamic> map) {
     return MonthlySpentDataEntity(
       id: map['id'],
-      idAlimento: map['id_aliment'],
+      alimentId: map['id_aliment'],
+      alimentName: map['aliment_name'],
       date: map['date'],
       quantity: map['quantity'],
     );

@@ -48,66 +48,79 @@ class AlimentDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocListener<AlimentDetailBloc, AlimentDetailState>(
-          listener: (context, state) {
-            if (state.screenStatus.isSuccess()) {
-              context.pop();
-            } else {}
-          },
-          child: context
-                  .read<AlimentDetailBloc>()
-                  .state
-                  .screenStatus
-                  .isLoading()
-              ? const CircularProgressIndicator()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.memory(
-                          const Base64Decoder()
-                              .convert(aliment.imageBase64 ?? ''),
-                          fit: BoxFit.cover,
-                          height: 200,
-                          width: double.infinity,
-                        ),
-                        const SizedBox(height: 16),
-                        DataTable(
-                          columns: const [
-                            DataColumn(
-                                label: Text('Nutrient',
-                                    style: AppTheme.detailTextStyle)),
-                            DataColumn(
-                                label: Text('Value',
-                                    style: AppTheme.detailTextStyle)),
-                          ],
-                          rows: [
-                            _buildDataRow(
-                                'Supermarket', aliment.supermarket, ''),
-                            _buildDataRow(
-                                'Calories', '${aliment.calories}', 'kcal'),
-                            _buildDataRow('Fats', '${aliment.fats}'),
-                            _buildDataRow(
-                                'Saturated Fats', '${aliment.fatsSaturated}'),
-                            _buildDataRow('Polyunsaturated Fats',
-                                '${aliment.fatsPolyunsaturated}'),
-                            _buildDataRow('Monounsaturated Fats',
-                                '${aliment.fatsMonounsaturated}'),
-                            _buildDataRow('Trans Fats', '${aliment.fatsTrans}'),
-                            _buildDataRow(
-                                'Carbohydrates', '${aliment.carbohydrates}'),
-                            _buildDataRow('Fiber', '${aliment.fiber}'),
-                            _buildDataRow('Sugar', '${aliment.sugar}'),
-                            _buildDataRow('Proteins', '${aliment.proteins}'),
-                            _buildDataRow('Salt', '${aliment.salt}'),
-                          ],
-                        ),
-                      ],
-                    ),
+      body: BlocBuilder<AlimentDetailBloc, AlimentDetailState>(
+        builder: (context, state) {
+          if (state.screenStatus.isSuccess()) {
+            context.pop();
+          }
+
+          if (state.screenStatus.isLoading()) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.screenStatus.isError()) {
+            return const Center(
+              child: Text('Error al cargar los alimentos'),
+            );
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.memory(
+                    const Base64Decoder().convert(aliment.imageBase64 ?? ''),
+                    fit: BoxFit.cover,
+                    height: 200,
+                    width: double.infinity,
                   ),
-                )),
+                  const SizedBox(height: 16),
+                  DataTable(
+                    columns: const [
+                      DataColumn(
+                          label: Text('Nutrient',
+                              style: AppTheme.detailTextStyle)),
+                      DataColumn(
+                          label:
+                              Text('Value', style: AppTheme.detailTextStyle)),
+                    ],
+                    rows: [
+                      _buildDataRow('Supermarket', aliment.supermarket, ''),
+                      _buildDataRow('Calories', '${aliment.calories}', 'kcal'),
+                      _buildDataRow('Fats', '${aliment.fats}'),
+                      _buildDataRow(
+                          'Saturated Fats', '${aliment.fatsSaturated}'),
+                      _buildDataRow('Polyunsaturated Fats',
+                          '${aliment.fatsPolyunsaturated}'),
+                      _buildDataRow('Monounsaturated Fats',
+                          '${aliment.fatsMonounsaturated}'),
+                      _buildDataRow('Trans Fats', '${aliment.fatsTrans}'),
+                      _buildDataRow(
+                          'Carbohydrates', '${aliment.carbohydrates}'),
+                      _buildDataRow('Fiber', '${aliment.fiber}'),
+                      _buildDataRow('Sugar', '${aliment.sugar}'),
+                      _buildDataRow('Proteins', '${aliment.proteins}'),
+                      _buildDataRow('Salt', '${aliment.salt}'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () {},
+        backgroundColor: AppColors.secondary,
+        child: const Icon(
+          Icons.edit,
+          color: AppColors.foreground,
+        ),
+      ),
     );
   }
 

@@ -13,4 +13,9 @@ void _repositoryModulesInit() {
       repositoryModulesDi(),
     ),
   );
+  repositoryModulesDi.registerLazySingleton<MonthlySpentRepositoryContract>(
+    () => MonthlySpentRepository(
+      repositoryModulesDi(),
+    ),
+  );
 }

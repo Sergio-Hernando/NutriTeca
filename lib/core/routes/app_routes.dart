@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/models/monthly_spent_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
 import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
 import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
@@ -13,7 +14,11 @@ import 'package:food_macros/presentation/screens/add_recipe/add_recipe_screen.da
 import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
 import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
+import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
+import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_event.dart';
 import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
+import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:food_macros/presentation/screens/home/bloc/home_event.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes/bloc/recipe_event.dart';
@@ -23,13 +28,15 @@ import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
 import 'package:food_macros/presentation/screens/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
-import 'package:food_macros/presentation/widgets/app_bottom_nav_bar.dart';
+import 'package:food_macros/presentation/screens/base_screen/base_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHome');
+final GlobalKey<NavigatorState> _shellHomeBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellHomeBloc');
 final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
 final GlobalKey<NavigatorState> _shellSearchBlocNavigatorKey =
@@ -55,8 +62,21 @@ GoRouter appRoutes = GoRouter(
             /// MainWrapper
             StatefulShellRoute.indexedStack(
               builder: (context, state, navigationShell) {
-                return ScaffoldWithBottomNav(
-                  navigationShell: navigationShell,
+                final baseScreenBloc = BaseScreenBloc(
+                  alimentRepositoryContract: uiModulesDi(),
+                  monthlySpentRepository: uiModulesDi(),
+                  monthlySpentNotificationController:
+                      uiModulesDi<StreamController<MonthlySpentEntity>>(
+                          instanceName: 'monthlySpentNotificationController'),
+                );
+
+                baseScreenBloc.add(const BaseScreenEvent.getAllAlimentsList());
+
+                return BlocProvider(
+                  create: (context) => baseScreenBloc,
+                  child: BaseScreen(
+                    navigationShell: navigationShell,
+                  ),
                 );
               },
               branches: <StatefulShellBranch>[
@@ -64,11 +84,26 @@ GoRouter appRoutes = GoRouter(
                 StatefulShellBranch(
                   navigatorKey: _shellHomeNavigatorKey,
                   routes: <RouteBase>[
-                    GoRoute(
-                      path: 'home',
-                      name: "Home",
-                      builder: (context, state) => const HomeScreen(),
-                    ),
+                    ShellRoute(
+                        navigatorKey: _shellHomeBlocNavigatorKey,
+                        builder: (context, state, child) {
+                          return BlocProvider(
+                            create: (context) => HomeBloc(
+                                monthlySpentRepository: uiModulesDi(),
+                                monthlySpentController: uiModulesDi(
+                                    instanceName:
+                                        'monthlySpentNotificationController'))
+                              ..add(const HomeEvent.getAllMonthlySpent()),
+                            child: child,
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            path: 'home',
+                            name: "Home",
+                            builder: (context, state) => const HomeScreen(),
+                          ),
+                        ])
                   ],
                 ),
 
@@ -85,7 +120,9 @@ GoRouter appRoutes = GoRouter(
                             alimentAddedController:
                                 uiModulesDi<StreamController<AlimentAction>>(
                                     instanceName: 'alimentEventController'),
-                          )..add(const SearchEvent.fetchAllAlimentsList()),
+                          )..add(
+                              const SearchEvent.fetchAllAlimentsList(),
+                            ),
                           child: child,
                         );
                       },
@@ -134,10 +171,11 @@ GoRouter appRoutes = GoRouter(
                         builder: (context, state, child) {
                           return BlocProvider(
                               create: (context) => AddProductBloc(
-                                  repositoryContract: uiModulesDi(),
-                                  alimentAddedController: uiModulesDi<
-                                          StreamController<AlimentAction>>(
-                                      instanceName: 'alimentEventController')),
+                                    repositoryContract: uiModulesDi(),
+                                    alimentAddedController: uiModulesDi<
+                                            StreamController<AlimentAction>>(
+                                        instanceName: 'alimentEventController'),
+                                  ),
                               child: child);
                         },
                         routes: [
@@ -165,7 +203,9 @@ GoRouter appRoutes = GoRouter(
                                           StreamController<RecipeEntity>>(
                                       instanceName:
                                           'recipeNotificationController'))
-                                ..add(const RecipeEvent.getRecipes()),
+                                ..add(
+                                  const RecipeEvent.getRecipes(),
+                                ),
                               child: child);
                         },
                         routes: [
@@ -180,14 +220,14 @@ GoRouter appRoutes = GoRouter(
                                   builder: (context, state) {
                                     return BlocProvider(
                                       create: (context) => AddRecipeBloc(
-                                          repositoryContract: uiModulesDi(),
-                                          alimentRepositoryContract:
-                                              uiModulesDi(),
-                                          recipeNotificationController: uiModulesDi<
-                                                  StreamController<
-                                                      RecipeEntity>>(
-                                              instanceName:
-                                                  'recipeNotificationController')),
+                                        repositoryContract: uiModulesDi(),
+                                        alimentRepositoryContract:
+                                            uiModulesDi(),
+                                        recipeNotificationController: uiModulesDi<
+                                                StreamController<RecipeEntity>>(
+                                            instanceName:
+                                                'recipeNotificationController'),
+                                      ),
                                       child: const AddRecipeScreen(),
                                     );
                                   },

@@ -20,11 +20,12 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
         super(AddProductState.initial()) {
     on<AddProductEvent>((event, emit) async {
       await event.when(
-          addProduct: (aliment) => _createAliment(event, emit, aliment));
+          addProduct: (aliment) =>
+              _createAlimentEventToState(event, emit, aliment));
     });
   }
 
-  Future<void> _createAliment(AddProductEvent event,
+  Future<void> _createAlimentEventToState(AddProductEvent event,
       Emitter<AddProductState> emit, AlimentEntity aliment) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final data = await _repository.createAliment(aliment);

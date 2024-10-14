@@ -8,16 +8,18 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   MonthlySpentDataSource({required this.dbHandler});
 
   @override
-  Future<int> createMonthlySpent(MonthlySpentDataEntity monthlySpent) async {
+  Future<MonthlySpentDataEntity?> createMonthlySpent(
+      MonthlySpentDataEntity monthlySpent) async {
     final db = await dbHandler.database;
-    return db.insert('gasto', monthlySpent.toMap());
+    final id = await db.insert('spent', monthlySpent.toMap());
+    return getMonthlySpent(id);
   }
 
   @override
   Future<MonthlySpentDataEntity?> getMonthlySpent(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
-      'gasto',
+      'spent',
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -30,29 +32,19 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   }
 
   @override
-  Future<List<MonthlySpentDataEntity>> getAllMonthlySpents() async {
+  Future<List<MonthlySpentDataEntity>> getAllMonthlySpent() async {
     final db = await dbHandler.database;
-    final maps = await db.query('gasto');
+    final maps = await db.query('spent');
 
     return maps.map((map) => MonthlySpentDataEntity.fromMap(map)).toList();
   }
 
   @override
-  Future<int> updateMonthlySpent(MonthlySpentDataEntity monthlySpent) async {
-    final db = await dbHandler.database;
-    return db.update(
-      'gasto',
-      monthlySpent.toMap(),
-      where: 'id = ?',
-      whereArgs: [monthlySpent.id],
-    );
-  }
-
-  @override
   Future<int> deleteMonthlySpent(int id) async {
     final db = await dbHandler.database;
-    return db.delete(
-      'gasto',
+
+    return await db.delete(
+      'spent',
       where: 'id = ?',
       whereArgs: [id],
     );

@@ -11,9 +11,6 @@ void _localDataSourceModulesInit(
   localModulesDi.registerLazySingleton<RecipeDataSourceContract>(
     () => RecipeDataSource(dbHandler: dbInstance),
   );
-  localModulesDi.registerLazySingleton<IngredientsRecipeDataSourceContract>(
-    () => IngredientsRecipeDataSource(dbHandler: dbInstance),
-  );
   localModulesDi.registerLazySingleton<MonthlySpentDataSourceContract>(
     () => MonthlySpentDataSource(dbHandler: dbInstance),
   );

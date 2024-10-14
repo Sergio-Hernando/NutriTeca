@@ -73,7 +73,8 @@ class DatabaseHandler {
       CREATE TABLE spent(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_aliment INTEGER,
-        date DATE NOT NULL,
+        aliment_name TEXT NOT NULL,
+        date TEXT NOT NULL,
         quantity INTEGER NOT NULL,
         FOREIGN KEY (id_aliment) REFERENCES aliment(id) ON DELETE CASCADE
       );

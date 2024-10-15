@@ -54,8 +54,11 @@ class RecipeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         onPressed: () => context.push(AppRoutesPath.addRecipe),
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add),
+        backgroundColor: AppColors.secondary,
+        child: const Icon(
+          Icons.add,
+          color: AppColors.foreground,
+        ),
       ),
     );
   }

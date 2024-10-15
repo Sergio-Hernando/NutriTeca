@@ -151,7 +151,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
         shape: const CircleBorder(),
         onPressed: _saveRecipe,
         backgroundColor: AppColors.secondary,
-        child: const Icon(Icons.save_outlined),
+        child: const Icon(
+          Icons.save_outlined,
+          color: AppColors.foreground,
+        ),
       ),
     );
   }

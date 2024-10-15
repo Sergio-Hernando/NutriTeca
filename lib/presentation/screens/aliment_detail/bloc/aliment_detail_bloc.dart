@@ -21,7 +21,8 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
     on<AlimentDetailEvent>((event, emit) async {
       await event.when(
           deleteAliment: (alimentId) =>
-              _deleteAlimentEventToState(event, emit, alimentId));
+              _deleteAlimentEventToState(event, emit, alimentId),
+          editAliment: (aliment) => _editAlimentEventToState(emit, aliment));
     });
   }
 
@@ -38,6 +39,21 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
       _alimentController.add(
           AlimentAction(aliment: AlimentEntity(id: alimentId), isAdd: false));
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));
+    }
+  }
+
+  Future<void> _editAlimentEventToState(
+      Emitter<AlimentDetailState> emit, AlimentEntity aliment) async {
+    emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
+    final result = await _repository.updateAliment(aliment);
+
+    if (result != null) {
+      _alimentController.add(AlimentAction(aliment: result, isAdd: true));
+      emit(state.copyWith(screenStatus: const ScreenStatus.success()));
+    } else {
+      emit(state.copyWith(
+          screenStatus: const ScreenStatus.error(
+              'El alimento no se ha eliminado correctamente')));
     }
   }
 }

@@ -87,7 +87,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final List<AlimentEntity> aliments = List.from(state.aliments);
 
     if (aliment.isAdd) {
-      aliments.add(aliment.aliment);
+      final int index =
+          aliments.indexWhere((element) => element.id == aliment.aliment.id);
+
+      if (index != -1) {
+        aliments[index] = aliment.aliment;
+      } else {
+        aliments.add(aliment.aliment);
+      }
     } else {
       aliments.removeWhere(
         (element) => element.id == aliment.aliment.id,

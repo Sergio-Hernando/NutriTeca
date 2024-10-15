@@ -19,8 +19,10 @@ class SelectedAlimentsList extends StatelessWidget {
             itemCount: selectedAliments.length,
             itemBuilder: (context, index) {
               final alimentId = selectedAliments[index].id ?? 0;
-              final alimentName = selectedAliments[alimentId].name;
-              final quantity = selectedAliments[alimentId].quantity;
+              final aliment = selectedAliments
+                  .firstWhere((aliment) => aliment.id == alimentId);
+              final alimentName = aliment.name;
+              final quantity = aliment.quantity;
               return Card(
                 color: AppColors.secondary,
                 shape: RoundedRectangleBorder(

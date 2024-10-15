@@ -4,6 +4,6 @@ abstract class AlimentRepositoryContract {
   Future<AlimentEntity?> createAliment(AlimentEntity aliment);
   Future<AlimentEntity?> getAliment(int id);
   Future<List<AlimentEntity>> getAllAliments();
-  Future<int> updateAliment(AlimentEntity aliment);
+  Future<AlimentEntity?> updateAliment(AlimentEntity aliment);
   Future<bool> deleteAliment(int id);
 }

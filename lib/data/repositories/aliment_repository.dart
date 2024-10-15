@@ -36,11 +36,11 @@ class AlimentRepository implements AlimentRepositoryContract {
   }
 
   @override
-  Future<int> updateAliment(AlimentEntity aliment) async {
+  Future<AlimentEntity?> updateAliment(AlimentEntity aliment) async {
     final data =
         await _alimentDataSourceContract.updateAliment(aliment.toDataModel());
 
-    return data;
+    return AlimentEntity.toDomain(data);
   }
 
   @override

@@ -16,10 +16,29 @@ void _uiModulesInit() {
     instanceName: 'recipeNotificationController',
     dispose: (controller) => controller.close(),
   );
+
+  // StreamController para manejar notificaciones sobre gastos mensuales
+  uiModulesDi.registerSingleton<StreamController<MonthlySpentEntity>>(
+    StreamController<MonthlySpentEntity>.broadcast(),
+    instanceName: 'monthlySpentNotificationController',
+    dispose: (controller) => controller.close(),
+  );
+
+  uiModulesDi.registerFactory(
+    () => BaseScreenBloc(
+      alimentRepositoryContract: uiModulesDi(),
+      monthlySpentRepository: uiModulesDi(),
+      monthlySpentNotificationController:
+          uiModulesDi(instanceName: 'monthlySpentNotificationController'),
+    ),
+  );
+
   uiModulesDi.registerFactory(
     () => HomeBloc(
-      repositoryContract: uiModulesDi(),
-    ),
+        monthlySpentRepository: uiModulesDi(),
+        monthlySpentController:
+            uiModulesDi(instanceName: 'monthlySpentNotificationController'),
+        additiveRepositoryContract: uiModulesDi()),
   );
   uiModulesDi.registerFactory(
     () => SplashBloc(),

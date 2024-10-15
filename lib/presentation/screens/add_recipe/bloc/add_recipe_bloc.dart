@@ -23,13 +23,13 @@ class AddRecipeBloc extends Bloc<AddRecipeEvent, AddRecipeState> {
         super(AddRecipeState.initial()) {
     on<AddRecipeEvent>((event, emit) async {
       await event.when(
-        fetchAliments: () => _getAliments(emit),
+        fetchAliments: () => _getAlimentsEventToState(emit),
         addRecipe: (recipe) => _saveRecipeEventToState(recipe, emit),
       );
     });
   }
 
-  Future<void> _getAliments(Emitter<AddRecipeState> emit) async {
+  Future<void> _getAlimentsEventToState(Emitter<AddRecipeState> emit) async {
     try {
       emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
 

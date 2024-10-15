@@ -4,6 +4,6 @@ abstract class AlimentDataSourceContract {
   Future<AlimentDataEntity?> createAliment(AlimentDataEntity aliment);
   Future<AlimentDataEntity?> getAliment(int id);
   Future<List<AlimentDataEntity>> getAllAliments();
-  Future<int> updateAliment(AlimentDataEntity aliment);
+  Future<AlimentDataEntity?> updateAliment(AlimentDataEntity aliment);
   Future<int> deleteAliment(int id);
 }

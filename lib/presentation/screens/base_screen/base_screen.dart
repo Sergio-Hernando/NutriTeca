@@ -2,22 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/presentation/widgets/app_bar.dart';
+import 'package:food_macros/presentation/screens/base_screen/widgets/app_bar.dart';
 import 'package:go_router/go_router.dart';
 
-class ScaffoldWithBottomNav extends StatefulWidget {
+class BaseScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
-  const ScaffoldWithBottomNav({
+  const BaseScreen({
     super.key,
     required this.navigationShell,
   });
 
   @override
-  ScaffoldWithBottomNavState createState() => ScaffoldWithBottomNavState();
+  BaseScreenState createState() => BaseScreenState();
 }
 
-class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
+class BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
 
   void _goBranch(int index) {
@@ -30,6 +30,7 @@ class ScaffoldWithBottomNavState extends State<ScaffoldWithBottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(goHome: () {
         setState(() {
           _selectedIndex = 0;

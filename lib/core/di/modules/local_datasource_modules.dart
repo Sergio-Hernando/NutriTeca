@@ -14,4 +14,7 @@ void _localDataSourceModulesInit(
   localModulesDi.registerLazySingleton<MonthlySpentDataSourceContract>(
     () => MonthlySpentDataSource(dbHandler: dbInstance),
   );
+  localModulesDi.registerLazySingleton<AdditivesDataSourceContract>(
+    () => AdditiveDataSource(dbHandler: dbInstance),
+  );
 }

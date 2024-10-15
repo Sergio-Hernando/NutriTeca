@@ -37,7 +37,8 @@ void _uiModulesInit() {
     () => HomeBloc(
         monthlySpentRepository: uiModulesDi(),
         monthlySpentController:
-            uiModulesDi(instanceName: 'monthlySpentNotificationController')),
+            uiModulesDi(instanceName: 'monthlySpentNotificationController'),
+        additiveRepositoryContract: uiModulesDi()),
   );
   uiModulesDi.registerFactory(
     () => SplashBloc(),

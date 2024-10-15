@@ -18,4 +18,9 @@ void _repositoryModulesInit() {
       repositoryModulesDi(),
     ),
   );
+  repositoryModulesDi.registerLazySingleton<AdditiveRepositoryContract>(
+    () => AdditiveRepository(
+      repositoryModulesDi(),
+    ),
+  );
 }

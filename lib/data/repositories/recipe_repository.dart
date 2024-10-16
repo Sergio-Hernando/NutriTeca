@@ -34,11 +34,11 @@ class RecipeRepository implements RecipeRepositoryContract {
   }
 
   @override
-  Future<bool> updateRecipe(RecipeEntity recipe) async {
+  Future<RecipeEntity?> updateRecipe(RecipeEntity recipe) async {
     final result =
         await _recipeDataSourceContract.updateRecipe(recipe.toDataModel());
 
-    return result == 1 ? true : false;
+    return RecipeEntity.toDomain(result);
   }
 
   @override

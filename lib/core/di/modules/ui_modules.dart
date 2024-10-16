@@ -11,8 +11,8 @@ void _uiModulesInit() {
   );
 
   // StreamController para manejar notificaciones sobre nuevas recetas
-  uiModulesDi.registerSingleton<StreamController<RecipeEntity>>(
-    StreamController<RecipeEntity>.broadcast(),
+  uiModulesDi.registerSingleton<StreamController<RecipeAction>>(
+    StreamController<RecipeAction>.broadcast(),
     instanceName: 'recipeNotificationController',
     dispose: (controller) => controller.close(),
   );
@@ -67,6 +67,14 @@ void _uiModulesInit() {
     () => RecipeBloc(
       repositoryContract: uiModulesDi(),
       recipeNotificationController:
+          uiModulesDi(instanceName: 'recipeNotificationController'),
+    ),
+  );
+  uiModulesDi.registerFactory(
+    () => RecipeDetailBloc(
+      repository: uiModulesDi(),
+      alimentRepository: uiModulesDi(),
+      recipeController:
           uiModulesDi(instanceName: 'recipeNotificationController'),
     ),
   );

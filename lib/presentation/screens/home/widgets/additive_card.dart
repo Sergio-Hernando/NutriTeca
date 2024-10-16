@@ -14,7 +14,7 @@ class AdditiveCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.85,
       decoration: BoxDecoration(
         color: AppColors.secondaryAccent,
         borderRadius: BorderRadius.circular(10),
@@ -38,8 +38,9 @@ class AdditiveCard extends StatelessWidget {
               maxLines: 1,
               name,
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 24,
                 color: Colors.white,
+                fontFamily: 'Roboto',
               ),
               overflow: TextOverflow.ellipsis,
             ),

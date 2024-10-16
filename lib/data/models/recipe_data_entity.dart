@@ -2,14 +2,14 @@ import 'package:food_macros/data/models/aliment_data_entity.dart';
 
 class RecipeDataEntity {
   final int? id;
-  final String name;
-  final String instructions;
+  final String? name;
+  final String? instructions;
   final List<AlimentDataEntity>? aliments;
 
   RecipeDataEntity({
     this.id,
-    required this.name,
-    required this.instructions,
+    this.name,
+    this.instructions,
     this.aliments,
   });
 

@@ -30,12 +30,12 @@ class RecipeDataSource implements RecipeDataSourceContract {
       );
 
       if (recipeQuery.isNotEmpty) {
-        final recetaMap = recipeQuery.first;
+        final recipeMap = recipeQuery.first;
 
         return RecipeDataEntity(
-          id: recetaMap['id'] as int,
-          name: recetaMap['name'] as String,
-          instructions: recetaMap['instructions'] as String,
+          id: recipeMap['id'] as int,
+          name: recipeMap['name'] as String,
+          instructions: recipeMap['instructions'] as String,
         );
       } else {
         return null;
@@ -94,7 +94,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
             sugar: alimentData['sugar'] as int?,
             proteins: alimentData['proteins'] as int,
             salt: alimentData['salt'] as int?,
-            quantity: alimentMap['quantity'] as String?,
+            quantity: alimentMap['quantity'].toString() as String?,
           ));
         }
       }
@@ -134,13 +134,13 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
-  Future<int> updateRecipe(RecipeDataEntity updatedRecipe) async {
+  Future<RecipeDataEntity?> updateRecipe(RecipeDataEntity updatedRecipe) async {
     final db = await dbHandler.database;
 
     // Empezamos una transacción
     final result = await db.transaction((txn) async {
       // 1. Actualizar el nombre de la receta si ha cambiado
-      if (updatedRecipe.name.isNotEmpty) {
+      if (updatedRecipe.name!.isNotEmpty) {
         await txn.update(
           'recipe',
           {'name': updatedRecipe.name},
@@ -206,7 +206,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
       );
     });
 
-    return result;
+    return getRecipe(result);
   }
 
   @override

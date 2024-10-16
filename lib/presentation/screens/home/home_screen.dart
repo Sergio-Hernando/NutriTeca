@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         .toList(),
                     options: CarouselOptions(
                       height: 200,
-                      viewportFraction: 0.7,
+                      viewportFraction: 0.8,
                       autoPlay: true,
                       autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,

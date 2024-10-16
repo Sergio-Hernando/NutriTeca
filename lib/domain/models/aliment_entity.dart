@@ -20,7 +20,7 @@ class AlimentEntity {
   final int? proteins;
 
   final int? salt;
-  final String? quantity;
+  String? quantity;
 
   AlimentEntity({
     this.id,
@@ -58,7 +58,7 @@ class AlimentEntity {
         sugar: dataEntity?.sugar,
         proteins: dataEntity?.proteins ?? 0,
         salt: dataEntity?.salt,
-        quantity: dataEntity?.quantity);
+        quantity: dataEntity?.quantity ?? '');
   }
 
   AlimentDataEntity toDataModel() {

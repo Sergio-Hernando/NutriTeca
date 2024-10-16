@@ -7,28 +7,31 @@ import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/screens/add_product/add_product_screen.dart';
-import 'package:food_macros/presentation/screens/add_product/bloc/add_product_bloc.dart';
-import 'package:food_macros/presentation/screens/add_recipe/add_recipe_screen.dart';
-import 'package:food_macros/presentation/screens/add_recipe/bloc/add_recipe_bloc.dart';
-import 'package:food_macros/presentation/screens/aliment_detail/aliment_detail_screen.dart';
-import 'package:food_macros/presentation/screens/aliment_detail/bloc/aliment_detail_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_product/add_product_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/add_recipe_screen.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/aliment_detail_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
 import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_event.dart';
-import 'package:food_macros/presentation/screens/filters/filters_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/filters/filters_screen.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_event.dart';
 import 'package:food_macros/presentation/screens/home/home_screen.dart';
-import 'package:food_macros/presentation/screens/recipes/bloc/recipe_bloc.dart';
-import 'package:food_macros/presentation/screens/recipes/bloc/recipe_event.dart';
-import 'package:food_macros/presentation/screens/recipes/recipes_screen.dart';
-import 'package:food_macros/presentation/screens/search/bloc/search_bloc.dart';
-import 'package:food_macros/presentation/screens/search/bloc/search_event.dart';
-import 'package:food_macros/presentation/screens/search/search_screen.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/recipe_detail_screen.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_event.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipes/recipes_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/search/search_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 import 'package:food_macros/presentation/screens/base_screen/base_screen.dart';
+import 'package:food_macros/presentation/shared/recipe_action.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -202,7 +205,7 @@ GoRouter appRoutes = GoRouter(
                               create: (context) => RecipeBloc(
                                   repositoryContract: uiModulesDi(),
                                   recipeNotificationController: uiModulesDi<
-                                          StreamController<RecipeEntity>>(
+                                          StreamController<RecipeAction>>(
                                       instanceName:
                                           'recipeNotificationController'))
                                 ..add(
@@ -226,14 +229,33 @@ GoRouter appRoutes = GoRouter(
                                         alimentRepositoryContract:
                                             uiModulesDi(),
                                         recipeNotificationController: uiModulesDi<
-                                                StreamController<RecipeEntity>>(
+                                                StreamController<RecipeAction>>(
                                             instanceName:
                                                 'recipeNotificationController'),
                                       ),
                                       child: const AddRecipeScreen(),
                                     );
                                   },
-                                )
+                                ),
+                                GoRoute(
+                                  path: "detail",
+                                  name: "Recipe Detail",
+                                  parentNavigatorKey: _rootNavigatorKey,
+                                  builder: (context, state) {
+                                    final recipeId = state.extra as int;
+                                    return BlocProvider(
+                                      create: (context) => RecipeDetailBloc(
+                                        repository: uiModulesDi(),
+                                        recipeController: uiModulesDi<
+                                                StreamController<RecipeAction>>(
+                                            instanceName:
+                                                'recipeNotificationController'),
+                                      )..add(RecipeDetailEvent.getRecipe(
+                                          recipeId)),
+                                      child: const RecipeDetailScreen(),
+                                    );
+                                  },
+                                ),
                               ]),
                         ])
                   ],

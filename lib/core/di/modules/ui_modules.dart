@@ -73,6 +73,7 @@ void _uiModulesInit() {
   uiModulesDi.registerFactory(
     () => RecipeDetailBloc(
       repository: uiModulesDi(),
+      alimentRepository: uiModulesDi(),
       recipeController:
           uiModulesDi(instanceName: 'recipeNotificationController'),
     ),

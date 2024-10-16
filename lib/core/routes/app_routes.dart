@@ -246,12 +246,17 @@ GoRouter appRoutes = GoRouter(
                                     return BlocProvider(
                                       create: (context) => RecipeDetailBloc(
                                         repository: uiModulesDi(),
+                                        alimentRepository: uiModulesDi(),
                                         recipeController: uiModulesDi<
                                                 StreamController<RecipeAction>>(
                                             instanceName:
                                                 'recipeNotificationController'),
-                                      )..add(RecipeDetailEvent.getRecipe(
-                                          recipeId)),
+                                      )
+                                        ..add(
+                                          RecipeDetailEvent.getRecipe(recipeId),
+                                        )
+                                        ..add(const RecipeDetailEvent
+                                            .getAliments()),
                                       child: const RecipeDetailScreen(),
                                     );
                                   },

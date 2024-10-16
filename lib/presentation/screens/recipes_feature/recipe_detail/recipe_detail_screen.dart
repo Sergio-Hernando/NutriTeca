@@ -5,6 +5,7 @@ import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
@@ -23,6 +24,7 @@ class RecipeDetailScreen extends StatefulWidget {
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   bool isEditing = false;
   Map<String, dynamic>? controllers;
+  List<AlimentEntity>? _originalAliments;
 
   void _initializeControllers(RecipeEntity recipe) {
     controllers = {
@@ -52,6 +54,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   void _toggleEditModeOn() {
     if (isEditing) {
       _updateRecipe();
+    } else {
+      _originalAliments = List<AlimentEntity>.from(controllers?['aliments']);
     }
     setState(() {
       isEditing = !isEditing;
@@ -59,8 +63,14 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   }
 
   void _toggleEditModeOff() {
+    if (isEditing) {
+      setState(() {
+        controllers?['aliments'] =
+            List<AlimentEntity>.from(_originalAliments ?? []);
+      });
+    }
     setState(() {
-      isEditing = !isEditing;
+      isEditing = false;
     });
   }
 
@@ -72,8 +82,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               name: (controllers?['name'] as TextEditingController).text,
               instructions:
                   (controllers?['instructions'] as TextEditingController).text,
-              aliments: controllers?[
-                  'aliments'], // Actualizamos la lista de alimentos
+              aliments: controllers?['aliments'],
             ),
           ),
         );
@@ -85,7 +94,50 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     });
   }
 
-  void _addAliment() {}
+  void _showSelectAlimentOverlay() {
+    final state = context.read<RecipeDetailBloc>().state;
+
+    if (state.screenStatus.isLoading()) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('Cargando alimentos...'),
+        ),
+      );
+    } else if (state.screenStatus.isError()) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('Error al cargar alimentos'),
+        ),
+      );
+    } else if (state.aliments.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('No hay alimentos disponibles'),
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlimentSelectionDialog(
+          aliments: state.aliments,
+          onSelectAliment: _addAlimentFromSelection,
+        ),
+      );
+    }
+  }
+
+  void _addAlimentFromSelection(int alimentId, String name, int quantity) {
+    setState(() {
+      controllers?['aliments'].add(AlimentEntity(
+        id: alimentId,
+        name: name,
+        quantity: quantity.toString(),
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +175,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             return const Center(child: Text('Error al cargar la receta'));
           }
 
+          if (state.isEdited) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.pop();
+            });
+          }
+
+          if (state.isDeleted) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.pop();
+            });
+          }
+
           if (state.recipe != null && controllers == null) {
             _initializeControllers(state.recipe as RecipeEntity);
           }
@@ -138,9 +202,9 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 const SizedBox(height: 16.0),
                 if (controllers != null)
                   AlimentsTable(
-                    aliments: controllers!['aliments'],
+                    aliments: controllers?['aliments'],
                     isEditing: isEditing,
-                    onAddAliment: _addAliment,
+                    onAddAliment: _showSelectAlimentOverlay,
                     onRemoveAliment: _removeAliment,
                   ),
               ],

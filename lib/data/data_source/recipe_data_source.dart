@@ -215,7 +215,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
 
     final result = await db.transaction((txn) async {
       // 1. Borrar la receta de la tabla 'recipe'
-      await txn.delete(
+      final rows = await txn.delete(
         'recipe',
         where: 'id = ?',
         whereArgs: [id],
@@ -230,6 +230,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
         where: 'id_recipe = ?',
         whereArgs: [id],
       );
+      return rows;
     });
 
     return result;

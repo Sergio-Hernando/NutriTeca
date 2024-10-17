@@ -19,14 +19,14 @@ import 'package:food_macros/domain/repository_contracts/additive_repository_cont
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:food_macros/domain/repository_contracts/monthly_spent_repository_contract.dart';
 import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 import 'package:food_macros/presentation/shared/recipe_action.dart';

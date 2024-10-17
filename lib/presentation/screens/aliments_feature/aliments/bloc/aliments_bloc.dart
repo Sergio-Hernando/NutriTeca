@@ -3,23 +3,23 @@ import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_state.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_state.dart';
 import 'dart:async';
 
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 
-class SearchBloc extends Bloc<SearchEvent, SearchState> {
+class AlimentsBloc extends Bloc<AlimentsEvent, AlimentsState> {
   final AlimentRepositoryContract _repository;
   final StreamController<AlimentAction> _alimentController;
 
-  SearchBloc({
+  AlimentsBloc({
     required AlimentRepositoryContract repositoryContract,
     required StreamController<AlimentAction> alimentAddedController,
   })  : _repository = repositoryContract,
         _alimentController = alimentAddedController,
-        super(SearchState.initial()) {
-    on<SearchEvent>((event, emit) async {
+        super(AlimentsState.initial()) {
+    on<AlimentsEvent>((event, emit) async {
       await event.when(
         fetchAllAlimentsList: () =>
             _fetchAllAlimentsListEventToState(event, emit),
@@ -36,12 +36,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     // Suscripción al StreamController para escuchar eventos de nuevos alimentos
     _alimentController.stream.listen((aliment) {
-      add(SearchEvent.refreshAllAlimentsList(aliment));
+      add(AlimentsEvent.refreshAllAlimentsList(aliment));
     });
   }
 
   Future<void> _fetchAllAlimentsListEventToState(
-      SearchEvent event, Emitter<SearchState> emit) async {
+      AlimentsEvent event, Emitter<AlimentsState> emit) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final data = await _repository.getAllAliments();
 
@@ -52,7 +52,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Future<void> _applyFiltersToState(
-      FiltersEntity filters, Emitter<SearchState> emit) async {
+      FiltersEntity filters, Emitter<AlimentsState> emit) async {
     final filteredAliments = state.aliments.where((aliment) {
       return (filters.highFats ? (aliment.fats ?? 0) >= 10 : true) &&
           (filters.highProteins ? (aliment.proteins ?? 0) >= 10 : true) &&
@@ -68,22 +68,22 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(state.copyWith(aliments: filteredAliments));
   }
 
-  Future<void> _resetFiltersToState(Emitter<SearchState> emit) async {
+  Future<void> _resetFiltersToState(Emitter<AlimentsState> emit) async {
     emit(state.copyWith(aliments: await _repository.getAllAliments()));
   }
 
   Future<void> _updateFilters(
-      Emitter<SearchState> emit, FiltersEntity filters) async {
+      Emitter<AlimentsState> emit, FiltersEntity filters) async {
     emit(state.copyWith(filters: filters));
   }
 
-  Future<void> _mapUpdateSearchToState(SearchEvent event,
-      Emitter<SearchState> emit, List<AlimentEntity> searchResults) async {
+  Future<void> _mapUpdateSearchToState(AlimentsEvent event,
+      Emitter<AlimentsState> emit, List<AlimentEntity> searchResults) async {
     emit(state.copyWith(aliments: searchResults));
   }
 
   Future<void> _mapRefreshAllAlimentsListEventToState(
-      AlimentAction aliment, Emitter<SearchState> emit) async {
+      AlimentAction aliment, Emitter<AlimentsState> emit) async {
     final List<AlimentEntity> aliments = List.from(state.aliments);
 
     if (aliment.isAdd) {

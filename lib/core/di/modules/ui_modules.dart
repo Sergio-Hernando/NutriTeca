@@ -44,14 +44,14 @@ void _uiModulesInit() {
     () => SplashBloc(),
   );
   uiModulesDi.registerFactory(
-    () => AddProductBloc(
+    () => AddAlimentBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),
     ),
   );
   uiModulesDi.registerFactory(
-    () => SearchBloc(
+    () => AlimentsBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),

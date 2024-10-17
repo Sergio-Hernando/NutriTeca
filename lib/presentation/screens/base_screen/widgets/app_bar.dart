@@ -10,9 +10,11 @@ import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_ev
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function() goHome;
+  final int screenIndex;
   const CustomAppBar({
     super.key,
     required this.goHome,
+    required this.screenIndex,
   });
 
   void _showSelectAlimentDialog(BuildContext builContext) {
@@ -70,13 +72,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: goHome,
       ),
       actions: <Widget>[
-        IconButton(
-          icon: const Icon(
-            Icons.shopping_bag_outlined,
-            color: AppColors.foreground,
-          ),
-          onPressed: () => _showSelectAlimentDialog(context),
-        ),
+        screenIndex == 1
+            ? IconButton(
+                icon: const Icon(
+                  Icons.shopping_bag_outlined,
+                  color: AppColors.foreground,
+                ),
+                onPressed: () => _showSelectAlimentDialog(context),
+              )
+            : const SizedBox(),
       ],
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/custom_text_field.dart';
+import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -93,7 +93,7 @@ class ImagePickerTextFieldState extends State<ImagePickerTextField> {
       children: [
         CustomTextField(
           controller: widget.controller,
-          label: 'Imagen del producto',
+          label: 'Imagen del Alimento',
           icon: IconButton(
             icon: const Icon(
               Icons.camera_alt,

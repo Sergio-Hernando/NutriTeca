@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/custom_text_field.dart';
+import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 
 class RecipeDetailHeader extends StatelessWidget {
   final bool isEditing;

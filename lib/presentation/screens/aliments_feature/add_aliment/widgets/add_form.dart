@@ -5,16 +5,17 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_state.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/advanced_fields.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/custom_dropdown.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/custom_text_field.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/image_picker.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_state.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/advanced_fields.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/custom_dropdown.dart';
+import 'package:food_macros/presentation/widgets/custom_text_field.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/image_picker.dart';
+import 'package:go_router/go_router.dart';
 
-class AddProductForm extends StatelessWidget {
-  const AddProductForm({super.key});
+class AddAlimentForm extends StatelessWidget {
+  const AddAlimentForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +66,15 @@ class AddProductForm extends StatelessWidget {
               _parseToInt((controllers['salt'] as TextEditingController).text),
         );
 
-        context.read<AddProductBloc>().add(AddProductEvent.addProduct(aliment));
+        context.read<AddAlimentBloc>().add(AddAlimentEvent.addAliment(aliment));
 
         imagePickerKey.currentState?.clearImage();
+
+        context.pop();
       }
     }
 
-    return BlocConsumer<AddProductBloc, AddProductState>(
+    return BlocConsumer<AddAlimentBloc, AddAlimentState>(
       listener: (context, state) {
         if (state.screenStatus.isSuccess()) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -100,7 +103,7 @@ class AddProductForm extends StatelessWidget {
                 children: [
                   CustomTextField(
                     controller: controllers['name']!,
-                    label: 'Nombre del producto',
+                    label: 'Nombre del Alimento',
                     validator: _requiredValidator,
                   ),
                   const SizedBox(height: 16),

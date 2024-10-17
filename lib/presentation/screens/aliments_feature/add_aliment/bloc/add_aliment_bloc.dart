@@ -4,29 +4,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_state.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_state.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 
-class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
+class AddAlimentBloc extends Bloc<AddAlimentEvent, AddAlimentState> {
   final AlimentRepositoryContract _repository;
   final StreamController<AlimentAction> _alimentController;
 
-  AddProductBloc({
+  AddAlimentBloc({
     required AlimentRepositoryContract repositoryContract,
     required StreamController<AlimentAction> alimentAddedController,
   })  : _repository = repositoryContract,
         _alimentController = alimentAddedController,
-        super(AddProductState.initial()) {
-    on<AddProductEvent>((event, emit) async {
+        super(AddAlimentState.initial()) {
+    on<AddAlimentEvent>((event, emit) async {
       await event.when(
-          addProduct: (aliment) =>
+          addAliment: (aliment) =>
               _createAlimentEventToState(event, emit, aliment));
     });
   }
 
-  Future<void> _createAlimentEventToState(AddProductEvent event,
-      Emitter<AddProductState> emit, AlimentEntity aliment) async {
+  Future<void> _createAlimentEventToState(AddAlimentEvent event,
+      Emitter<AddAlimentState> emit, AlimentEntity aliment) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final data = await _repository.createAliment(aliment);
 

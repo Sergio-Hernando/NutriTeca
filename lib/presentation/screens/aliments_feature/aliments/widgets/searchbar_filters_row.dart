@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/widgets/custom_search_bar.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/custom_search_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 
@@ -25,8 +25,8 @@ class SearchBarWidget extends StatelessWidget {
               allItems: allItems,
               onResults: (results) {
                 context
-                    .read<SearchBloc>()
-                    .add(SearchEvent.updateSearch(results));
+                    .read<AlimentsBloc>()
+                    .add(AlimentsEvent.updateSearch(results));
               },
             ),
           ),
@@ -36,11 +36,11 @@ class SearchBarWidget extends StatelessWidget {
                   extra: allItems) as FiltersEntity?;
               if (selectedFilters != null) {
                 context
-                    .read<SearchBloc>()
-                    .add(SearchEvent.updateFilters(selectedFilters));
+                    .read<AlimentsBloc>()
+                    .add(AlimentsEvent.updateFilters(selectedFilters));
                 context
-                    .read<SearchBloc>()
-                    .add(SearchEvent.applyFilters(selectedFilters));
+                    .read<AlimentsBloc>()
+                    .add(AlimentsEvent.applyFilters(selectedFilters));
               }
             },
             icon: const Icon(Icons.tune),

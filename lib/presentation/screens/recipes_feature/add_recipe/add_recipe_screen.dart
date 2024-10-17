@@ -5,12 +5,12 @@ import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/widgets/custom_text_field.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_event.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/instructions_text_input.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/select_aliments_list.dart';
+import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 import 'package:go_router/go_router.dart';
 
 class AddRecipeScreen extends StatefulWidget {

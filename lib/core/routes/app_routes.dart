@@ -7,8 +7,8 @@ import 'package:food_macros/core/di/di.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/add_product_screen.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_product/bloc/add_product_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/add_aliment_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/add_recipe_screen.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/aliment_detail_screen.dart';
@@ -25,9 +25,9 @@ import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/r
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_event.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/recipes_screen.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/search_screen.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/aliments_screen.dart';
 import 'package:food_macros/presentation/screens/splash/splash_controller.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 import 'package:food_macros/presentation/screens/base_screen/base_screen.dart';
@@ -40,14 +40,14 @@ final GlobalKey<NavigatorState> _shellHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final GlobalKey<NavigatorState> _shellHomeBlocNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHomeBloc');
-final GlobalKey<NavigatorState> _shellSearchNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
-final GlobalKey<NavigatorState> _shellSearchBlocNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellSearchBloc');
-final GlobalKey<NavigatorState> _shellAddProductNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellAddProduct');
-final GlobalKey<NavigatorState> _shellAddProductBlocNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellAddProductBloc');
+final GlobalKey<NavigatorState> _shellAlimentsNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellAliments');
+final GlobalKey<NavigatorState> _shellAlimentsBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellAlimentsBloc');
+final GlobalKey<NavigatorState> _shellAddAlimentNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellAddAliment');
+final GlobalKey<NavigatorState> _shellAddAlimentBlocNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellAddAlimentBloc');
 final GlobalKey<NavigatorState> _shellRecipesNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellRecipes');
 final GlobalKey<NavigatorState> _shellRecipesBlocNavigatorKey =
@@ -83,60 +83,47 @@ GoRouter appRoutes = GoRouter(
                 );
               },
               branches: <StatefulShellBranch>[
-                /// Brach Home
+                /// Brach Aliments
                 StatefulShellBranch(
-                  navigatorKey: _shellHomeNavigatorKey,
+                  navigatorKey: _shellAlimentsNavigatorKey,
                   routes: <RouteBase>[
                     ShellRoute(
-                        navigatorKey: _shellHomeBlocNavigatorKey,
-                        builder: (context, state, child) {
-                          return BlocProvider(
-                            create: (context) => HomeBloc(
-                                monthlySpentRepository: uiModulesDi(),
-                                monthlySpentController: uiModulesDi(
-                                    instanceName:
-                                        'monthlySpentNotificationController'),
-                                additiveRepositoryContract: uiModulesDi())
-                              ..add(const HomeEvent.getAllMonthlySpent())
-                              ..add(const HomeEvent.getAdditives()),
-                            child: child,
-                          );
-                        },
-                        routes: [
-                          GoRoute(
-                            path: 'home',
-                            name: "Home",
-                            builder: (context, state) => const HomeScreen(),
-                          ),
-                        ])
-                  ],
-                ),
-
-                /// Brach Search
-                StatefulShellBranch(
-                  navigatorKey: _shellSearchNavigatorKey,
-                  routes: <RouteBase>[
-                    ShellRoute(
-                      navigatorKey: _shellSearchBlocNavigatorKey,
+                      navigatorKey: _shellAlimentsBlocNavigatorKey,
                       builder: (context, state, child) {
                         return BlocProvider(
-                          create: (context) => SearchBloc(
+                          create: (context) => AlimentsBloc(
                             repositoryContract: uiModulesDi(),
                             alimentAddedController:
                                 uiModulesDi<StreamController<AlimentAction>>(
                                     instanceName: 'alimentEventController'),
                           )..add(
-                              const SearchEvent.fetchAllAlimentsList(),
+                              const AlimentsEvent.fetchAllAlimentsList(),
                             ),
                           child: child,
                         );
                       },
                       routes: [
                         GoRoute(
-                          path: 'search',
-                          name: "Search",
-                          builder: (context, state) => const SearchScreen(),
+                          path: 'aliments',
+                          name: "Aliments",
+                          builder: (context, state) => const AlimentsScreen(),
                           routes: [
+                            GoRoute(
+                              path: 'addAliment',
+                              name: "Add Aliment",
+                              parentNavigatorKey: _rootNavigatorKey,
+                              builder: (context, state) {
+                                return BlocProvider(
+                                  create: (context) => AddAlimentBloc(
+                                    repositoryContract: uiModulesDi(),
+                                    alimentAddedController: uiModulesDi<
+                                            StreamController<AlimentAction>>(
+                                        instanceName: 'alimentEventController'),
+                                  ),
+                                  child: const AddAlimentScreen(),
+                                );
+                              },
+                            ),
                             GoRoute(
                               path: "filters",
                               name: "Filters",
@@ -167,28 +154,30 @@ GoRouter appRoutes = GoRouter(
                   ],
                 ),
 
-                /// Brach Add Product
+                /// Brach Home
                 StatefulShellBranch(
-                  navigatorKey: _shellAddProductNavigatorKey,
+                  navigatorKey: _shellHomeNavigatorKey,
                   routes: <RouteBase>[
                     ShellRoute(
-                        navigatorKey: _shellAddProductBlocNavigatorKey,
+                        navigatorKey: _shellHomeBlocNavigatorKey,
                         builder: (context, state, child) {
                           return BlocProvider(
-                              create: (context) => AddProductBloc(
-                                    repositoryContract: uiModulesDi(),
-                                    alimentAddedController: uiModulesDi<
-                                            StreamController<AlimentAction>>(
-                                        instanceName: 'alimentEventController'),
-                                  ),
-                              child: child);
+                            create: (context) => HomeBloc(
+                                monthlySpentRepository: uiModulesDi(),
+                                monthlySpentController: uiModulesDi(
+                                    instanceName:
+                                        'monthlySpentNotificationController'),
+                                additiveRepositoryContract: uiModulesDi())
+                              ..add(const HomeEvent.getAllMonthlySpent())
+                              ..add(const HomeEvent.getAdditives()),
+                            child: child,
+                          );
                         },
                         routes: [
                           GoRoute(
-                            path: 'addProduct',
-                            name: "Add Product",
-                            builder: (context, state) =>
-                                const AddProductScreen(),
+                            path: 'home',
+                            name: "Home",
+                            builder: (context, state) => const HomeScreen(),
                           ),
                         ])
                   ],

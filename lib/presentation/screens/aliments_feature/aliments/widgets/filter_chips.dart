@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/bloc/search_event.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
 
 class FilterChips extends StatefulWidget {
   final FiltersEntity activeFilters;
@@ -42,12 +42,16 @@ class _FilterChipsState extends State<FilterChips> {
       }
     });
 
-    context.read<SearchBloc>().add(SearchEvent.updateFilters(_activeFilters));
+    context
+        .read<AlimentsBloc>()
+        .add(AlimentsEvent.updateFilters(_activeFilters));
 
     if (_activeFilters.isEmpty()) {
-      context.read<SearchBloc>().add(const SearchEvent.resetFilters());
+      context.read<AlimentsBloc>().add(const AlimentsEvent.resetFilters());
     } else {
-      context.read<SearchBloc>().add(SearchEvent.applyFilters(_activeFilters));
+      context
+          .read<AlimentsBloc>()
+          .add(AlimentsEvent.applyFilters(_activeFilters));
     }
   }
 

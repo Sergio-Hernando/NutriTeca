@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/presentation/screens/base_screen/widgets/app_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,7 @@ class BaseScreen extends StatefulWidget {
 }
 
 class BaseScreenState extends State<BaseScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _goBranch(int index) {
     widget.navigationShell.goBranch(
@@ -31,12 +32,15 @@ class BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(goHome: () {
-        setState(() {
-          _selectedIndex = 0;
-        });
-        _goBranch(0);
-      }),
+      appBar: CustomAppBar(
+        goHome: () {
+          setState(() {
+            _selectedIndex = 1;
+          });
+          _goBranch(1);
+        },
+        screenIndex: _selectedIndex,
+      ),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -48,6 +52,7 @@ class BaseScreenState extends State<BaseScreen> {
         backgroundColor: AppColors.background,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.foreground,
+        selectedLabelStyle: const TextStyle(fontSize: 18),
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
@@ -55,20 +60,27 @@ class BaseScreenState extends State<BaseScreen> {
           });
           _goBranch(_selectedIndex);
         },
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/nutrition_icon.svg',
+              width: 24,
+              height: 24,
+              color: AppColors.foreground,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/nutrition_icon.svg',
+              width: 24,
+              height: 24,
+              color: AppColors.primary,
+            ),
+            label: 'Alimentos',
+          ),
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Principal',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Buscar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Añadir Producto',
-          ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'Recetas',
           ),

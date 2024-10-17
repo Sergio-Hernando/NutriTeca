@@ -4,7 +4,7 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/search/widgets/macro_row.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/macro_row.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomCard extends StatelessWidget {

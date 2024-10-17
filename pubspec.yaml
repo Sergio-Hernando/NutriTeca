@@ -28,6 +28,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.9.0
   animated_custom_dropdown: ^3.1.1
+  flutter_svg: ^2.0.10+1
   
 
 dev_dependencies:
@@ -42,6 +43,7 @@ flutter:
   assets: 
     - assets/logos/
     - assets/images/
+    - assets/icons/
   
   fonts: 
     - family: DancingScript

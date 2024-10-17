@@ -119,10 +119,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
         ),
       );
     } else {
+      final List<AlimentEntity> addedAliments = controllers?['aliments'] ?? [];
+
+      final List<AlimentEntity> availableAliments =
+          state.aliments.where((aliment) {
+        return !addedAliments
+            .any((addedAliment) => addedAliment.id == aliment.id);
+      }).toList();
+
       showDialog(
         context: context,
         builder: (context) => AlimentSelectionDialog(
-          aliments: state.aliments,
+          aliments: availableAliments,
           onSelectAliment: _addAlimentFromSelection,
         ),
       );

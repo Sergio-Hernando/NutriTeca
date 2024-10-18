@@ -3,11 +3,11 @@ class AppRoutesPath {
   static String home = '/home';
 
   static String aliments = '/aliments';
-  static String alimentDetail = '$aliments/detail';
+  static String alimentDetail = '$aliments/alimentDetail';
+  static String addAliment = '$aliments/addAliment';
   static String filters = '$aliments/filters';
 
-  static String addAliment = '$aliments/addAliment';
   static String recipes = '/recipes';
   static String addRecipe = '$recipes/addRecipe';
-  static String recipeDetail = '$recipes/detail';
+  static String recipeDetail = '$recipes/recipeDetail';
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:food_macros/core/database/database_handler.dart';
 import 'package:food_macros/core/network/dio_http_client.dart';
-import 'package:food_macros/data/data_source/addite_data_source.dart';
+import 'package:food_macros/data/data_source/additives_data_source.dart';
 import 'package:food_macros/data/data_source/aliment_data_source.dart';
 import 'package:food_macros/data/data_source/monthly_spent_data_source.dart';
 import 'package:food_macros/data/data_source/recipe_data_source.dart';
@@ -34,8 +34,8 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'modules/api_modules.dart';
-part 'modules/remote_datasource_modules.dart';
-part 'modules/local_datasource_modules.dart';
+part 'modules/local_data_source_modules.dart';
+part 'modules/remote_data_source_modules.dart';
 part 'modules/repository_modules.dart';
 part 'modules/ui_modules.dart';
 

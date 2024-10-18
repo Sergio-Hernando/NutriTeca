@@ -149,57 +149,51 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.foreground,
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            controllers?['name'].text ?? '',
-            style: AppTheme.titleTextStyle,
-          ),
-        ),
-        backgroundColor: AppColors.background,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          if (!isEditing)
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.white),
-              onPressed: () => context.read<RecipeDetailBloc>().add(
-                  RecipeDetailEvent.deleteRecipe(
-                      controllers?['recipe'].id ?? 0)),
+    return BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
+      builder: (context, state) {
+        if (state.screenStatus.isLoading()) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (state.screenStatus.isError()) {
+          return const Center(child: Text('Error al cargar la receta'));
+        }
+
+        if (state.recipe != null && controllers == null) {
+          _initializeControllers(state.recipe as RecipeEntity);
+        }
+
+        if (controllers == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Scaffold(
+          backgroundColor: AppColors.foreground,
+          appBar: AppBar(
+            title: Center(
+              child: Text(
+                controllers?['name']?.text ?? 'Receta',
+                style: AppTheme.titleTextStyle,
+              ),
             ),
-        ],
-      ),
-      body: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
-        builder: (context, state) {
-          if (state.screenStatus.isLoading()) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.screenStatus.isError()) {
-            return const Center(child: Text('Error al cargar la receta'));
-          }
-
-          if (state.isEdited) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.pop();
-            });
-          }
-
-          if (state.isDeleted) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.pop();
-            });
-          }
-
-          if (state.recipe != null && controllers == null) {
-            _initializeControllers(state.recipe as RecipeEntity);
-          }
-
-          return SingleChildScrollView(
+            backgroundColor: AppColors.background,
+            leading: isEditing
+                ? const SizedBox()
+                : IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => context.pop(),
+                  ),
+            actions: [
+              if (!isEditing)
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.white),
+                  onPressed: () => context.read<RecipeDetailBloc>().add(
+                      RecipeDetailEvent.deleteRecipe(
+                          controllers?['recipe'].id ?? 0)),
+                ),
+            ],
+          ),
+          body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -208,23 +202,22 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   controllers: controllers,
                 ),
                 const SizedBox(height: 16.0),
-                if (controllers != null)
-                  AlimentsTable(
-                    aliments: controllers?['aliments'],
-                    isEditing: isEditing,
-                    onAddAliment: _showSelectAlimentOverlay,
-                    onRemoveAliment: _removeAliment,
-                  ),
+                AlimentsTable(
+                  aliments: controllers?['aliments'],
+                  isEditing: isEditing,
+                  onAddAliment: _showSelectAlimentOverlay,
+                  onRemoveAliment: _removeAliment,
+                ),
               ],
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingButtonRow(
-        isEditing: isEditing,
-        toggleEditModeOn: _toggleEditModeOn,
-        toggleEditModeOff: _toggleEditModeOff,
-      ),
+          ),
+          floatingActionButton: FloatingButtonRow(
+            isEditing: isEditing,
+            toggleEditModeOn: _toggleEditModeOn,
+            toggleEditModeOff: _toggleEditModeOff,
+          ),
+        );
+      },
     );
   }
 }

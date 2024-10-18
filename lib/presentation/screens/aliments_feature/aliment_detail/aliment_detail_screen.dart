@@ -135,10 +135,12 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
           ),
         ),
         backgroundColor: AppColors.background,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
+        leading: isEditing
+            ? const SizedBox()
+            : IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => context.pop(),
+              ),
         actions: [
           if (!isEditing)
             IconButton(

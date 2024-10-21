@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/presentation/screens/base_screen/widgets/app_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -86,6 +87,19 @@ class BaseScreenState extends State<BaseScreen> {
           ),
         ],
       ),
+      floatingActionButton: _selectedIndex == 1
+          ? null
+          : FloatingActionButton(
+              shape: const CircleBorder(),
+              onPressed: () => context.push(_selectedIndex == 0
+                  ? AppRoutesPath.addAliment
+                  : AppRoutesPath.addRecipe),
+              backgroundColor: AppColors.secondary,
+              child: const Icon(
+                Icons.add,
+                color: AppColors.foreground,
+              ),
+            ),
     );
   }
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
@@ -11,8 +9,7 @@ import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/b
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/widgets/aliments_table.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/widgets/recipe_detail_header.dart';
-import 'package:food_macros/presentation/widgets/floating_button_row.dart';
-import 'package:go_router/go_router.dart';
+import 'package:food_macros/presentation/widgets/common_detail_screen.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   const RecipeDetailScreen({Key? key}) : super(key: key);
@@ -149,57 +146,31 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.foreground,
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            controllers?['name'].text ?? '',
-            style: AppTheme.titleTextStyle,
-          ),
-        ),
-        backgroundColor: AppColors.background,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          if (!isEditing)
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.white),
-              onPressed: () => context.read<RecipeDetailBloc>().add(
-                  RecipeDetailEvent.deleteRecipe(
-                      controllers?['recipe'].id ?? 0)),
-            ),
-        ],
-      ),
-      body: BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
-        builder: (context, state) {
-          if (state.screenStatus.isLoading()) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return BlocBuilder<RecipeDetailBloc, RecipeDetailState>(
+      builder: (context, state) {
+        if (state.screenStatus.isLoading()) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (state.screenStatus.isError()) {
-            return const Center(child: Text('Error al cargar la receta'));
-          }
+        if (state.screenStatus.isError()) {
+          return const Center(child: Text('Error al cargar la receta'));
+        }
 
-          if (state.isEdited) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.pop();
-            });
-          }
+        if (state.recipe != null && controllers == null) {
+          _initializeControllers(state.recipe as RecipeEntity);
+        }
 
-          if (state.isDeleted) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.pop();
-            });
-          }
+        if (controllers == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (state.recipe != null && controllers == null) {
-            _initializeControllers(state.recipe as RecipeEntity);
-          }
-
-          return SingleChildScrollView(
+        return CommonDetailScreen(
+          title: controllers?['name']?.text ?? 'Receta',
+          onDelete: () => context.read<RecipeDetailBloc>().add(
+              RecipeDetailEvent.deleteRecipe(controllers?['recipe'].id ?? 0)),
+          onEditOn: _toggleEditModeOn,
+          onEditOff: _toggleEditModeOff,
+          body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -208,23 +179,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   controllers: controllers,
                 ),
                 const SizedBox(height: 16.0),
-                if (controllers != null)
-                  AlimentsTable(
-                    aliments: controllers?['aliments'],
-                    isEditing: isEditing,
-                    onAddAliment: _showSelectAlimentOverlay,
-                    onRemoveAliment: _removeAliment,
-                  ),
+                AlimentsTable(
+                  aliments: controllers?['aliments'],
+                  isEditing: isEditing,
+                  onAddAliment: _showSelectAlimentOverlay,
+                  onRemoveAliment: _removeAliment,
+                ),
               ],
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingButtonRow(
-        isEditing: isEditing,
-        toggleEditModeOn: _toggleEditModeOn,
-        toggleEditModeOff: _toggleEditModeOff,
-      ),
+          ),
+          isEditing: isEditing,
+        );
+      },
     );
   }
 }

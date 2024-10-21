@@ -44,10 +44,6 @@ final GlobalKey<NavigatorState> _shellAlimentsNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAliments');
 final GlobalKey<NavigatorState> _shellAlimentsBlocNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellAlimentsBloc');
-final GlobalKey<NavigatorState> _shellAddAlimentNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellAddAliment');
-final GlobalKey<NavigatorState> _shellAddAlimentBlocNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellAddAlimentBloc');
 final GlobalKey<NavigatorState> _shellRecipesNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellRecipes');
 final GlobalKey<NavigatorState> _shellRecipesBlocNavigatorKey =
@@ -125,13 +121,7 @@ GoRouter appRoutes = GoRouter(
                               },
                             ),
                             GoRoute(
-                              path: "filters",
-                              name: "Filters",
-                              parentNavigatorKey: _rootNavigatorKey,
-                              builder: (context, state) => const FilterScreen(),
-                            ),
-                            GoRoute(
-                              path: "detail",
+                              path: "alimentDetail",
                               name: "Aliment Detail",
                               parentNavigatorKey: _rootNavigatorKey,
                               builder: (context, state) {
@@ -146,6 +136,12 @@ GoRouter appRoutes = GoRouter(
                                   child: AlimentDetailScreen(aliment: aliment),
                                 );
                               },
+                            ),
+                            GoRoute(
+                              path: "filters",
+                              name: "Filters",
+                              parentNavigatorKey: _rootNavigatorKey,
+                              builder: (context, state) => const FilterScreen(),
                             ),
                           ],
                         ),
@@ -210,6 +206,7 @@ GoRouter appRoutes = GoRouter(
                               routes: [
                                 GoRoute(
                                   path: 'addRecipe',
+                                  name: 'Add Recipe',
                                   parentNavigatorKey: _rootNavigatorKey,
                                   builder: (context, state) {
                                     return BlocProvider(
@@ -227,7 +224,7 @@ GoRouter appRoutes = GoRouter(
                                   },
                                 ),
                                 GoRoute(
-                                  path: "detail",
+                                  path: "recipeDetail",
                                   name: "Recipe Detail",
                                   parentNavigatorKey: _rootNavigatorKey,
                                   builder: (context, state) {

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_event.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_state.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/widgets/custom_search_bar.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipes/widgets/recipe_list.dart';
-import 'package:go_router/go_router.dart';
 
 class RecipeScreen extends StatelessWidget {
   const RecipeScreen({super.key});
@@ -50,15 +48,6 @@ class RecipeScreen extends StatelessWidget {
             ],
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        onPressed: () => context.push(AppRoutesPath.addRecipe),
-        backgroundColor: AppColors.secondary,
-        child: const Icon(
-          Icons.add,
-          color: AppColors.foreground,
-        ),
       ),
     );
   }

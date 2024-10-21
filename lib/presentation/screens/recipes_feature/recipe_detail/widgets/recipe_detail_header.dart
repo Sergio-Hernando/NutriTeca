@@ -47,16 +47,19 @@ class RecipeDetailHeader extends StatelessWidget {
                   controller: controllers?['instructions'],
                   label: 'Instrucciones',
                 )
-              : Row(
+              : Column(
                   children: [
                     Text(
                       'Instrucciones: ',
                       style: AppTheme.detailTextStyle
                           .copyWith(fontFamily: 'Roboto'),
                     ),
-                    Text(
-                      controllers?['instructions'].text ?? '',
-                      style: AppTheme.detailTextStyle,
+                    SingleChildScrollView(
+                      child: Text(
+                        controllers?['instructions'].text ?? '',
+                        style: AppTheme.detailTextStyle,
+                        softWrap: true, // Permite que el texto se ajuste
+                      ),
                     ),
                   ],
                 ),

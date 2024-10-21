@@ -205,8 +205,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
         },
       );
     });
-
-    return getRecipe(result);
+    return getRecipe(updatedRecipe.id ?? 0);
   }
 
   @override

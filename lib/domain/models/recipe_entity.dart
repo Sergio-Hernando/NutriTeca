@@ -14,7 +14,6 @@ class RecipeEntity {
     this.aliments,
   });
 
-  // Método para convertir a modelo de datos
   RecipeDataEntity toDataModel() {
     return RecipeDataEntity(
       id: id,
@@ -28,7 +27,6 @@ class RecipeEntity {
     );
   }
 
-  // Método para convertir de modelo de datos a entidad de dominio
   static RecipeEntity toDomain(RecipeDataEntity? dataModel) {
     return RecipeEntity(
       id: dataModel?.id ?? 0,

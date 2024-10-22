@@ -18,7 +18,7 @@ class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({Key? key}) : super(key: key);
 
   @override
-  _AddRecipeScreenState createState() => _AddRecipeScreenState();
+  State<AddRecipeScreen> createState() => _AddRecipeScreenState();
 }
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {

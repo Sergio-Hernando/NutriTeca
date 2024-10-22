@@ -18,10 +18,10 @@ class ImageInput extends StatefulWidget {
   });
 
   @override
-  ImageInputState createState() => ImageInputState();
+  State<ImageInput> createState() => _ImageInputState();
 }
 
-class ImageInputState extends State<ImageInput> {
+class _ImageInputState extends State<ImageInput> {
   XFile? _selectedImage;
 
   @override

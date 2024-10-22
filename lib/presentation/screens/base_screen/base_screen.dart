@@ -18,10 +18,10 @@ class BaseScreen extends StatefulWidget {
   });
 
   @override
-  BaseScreenState createState() => BaseScreenState();
+  State<BaseScreen> createState() => _BaseScreenState();
 }
 
-class BaseScreenState extends State<BaseScreen> {
+class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 1;
 
   void _goBranch(int index) {
@@ -33,86 +33,84 @@ class BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(
-        goHome: () {
-          setState(() {
-            _selectedIndex = 1;
-          });
-          _goBranch(1);
-        },
-        screenIndex: _selectedIndex,
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: widget.navigationShell,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        backgroundColor: AppColors.background,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.foreground,
-        selectedLabelStyle: const TextStyle(fontSize: 18),
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          _goBranch(_selectedIndex);
-        },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/nutrition_icon.svg',
-              width: 24,
-              height: 24,
-              color: AppColors.foreground,
+    return PopScope(
+      onPopInvoked: (popDisposition) async {
+        await _showExitConfirmation(context);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: CustomAppBar(
+          goHome: () {
+            setState(() {
+              _selectedIndex = 1;
+            });
+            _goBranch(1);
+          },
+          screenIndex: _selectedIndex,
+        ),
+        body: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: widget.navigationShell,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: true,
+          backgroundColor: AppColors.background,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.foreground,
+          selectedLabelStyle: const TextStyle(fontSize: 18),
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            _goBranch(_selectedIndex);
+          },
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.foreground,
+                    BlendMode.srcIn,
+                  )),
+              activeIcon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.primary,
+                    BlendMode.srcIn,
+                  )),
+              label: context.localizations.alimentsScreen,
             ),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/nutrition_icon.svg',
-              width: 24,
-              height: 24,
-              color: AppColors.primary,
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: context.localizations.mainScreen,
             ),
-            label: context.localizations.alimentsScreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: context.localizations.mainScreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: context.localizations.recipesScreen,
-          ),
-        ],
-      ),
-      floatingActionButton: _selectedIndex == 1
-          ? null
-          : FloatingActionButton(
-              heroTag: 'añadir',
-              shape: const CircleBorder(),
-              onPressed: () => context.push(_selectedIndex == 0
-                  ? AppRoutesPath.addAliment
-                  : AppRoutesPath.addRecipe),
-              backgroundColor: AppColors.secondary,
-              child: const Icon(
-                Icons.add,
-                color: AppColors.foreground,
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.book),
+              label: context.localizations.recipesScreen,
+            ),
+          ],
+        ),
+        floatingActionButton: _selectedIndex == 1
+            ? null
+            : FloatingActionButton(
+                heroTag: 'añadir',
+                shape: const CircleBorder(),
+                onPressed: () => context.push(_selectedIndex == 0
+                    ? AppRoutesPath.addAliment
+                    : AppRoutesPath.addRecipe),
+                backgroundColor: AppColors.secondary,
+                child: const Icon(
+                  Icons.add,
+                  color: AppColors.foreground,
+                ),
               ),
-            ),
+      ),
     );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
-      final shouldExit = await _showExitConfirmation(context);
-      return shouldExit;
-    });
   }
 }
 

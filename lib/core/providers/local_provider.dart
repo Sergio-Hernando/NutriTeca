@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LocaleProvider {
@@ -10,7 +11,7 @@ class LocaleProvider {
   ];
 
   Locale getLocale() {
-    Locale? deviceLocale = WidgetsBinding.instance.window.locale;
+    Locale? deviceLocale = PlatformDispatcher.instance.locale;
 
     for (var locale in supportedLocales) {
       if (locale.languageCode == deviceLocale.languageCode) {

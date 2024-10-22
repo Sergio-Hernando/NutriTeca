@@ -15,7 +15,7 @@ class AlimentSelectionDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AlimentSelectionDialogState createState() => _AlimentSelectionDialogState();
+  State<AlimentSelectionDialog> createState() => _AlimentSelectionDialogState();
 }
 
 class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {

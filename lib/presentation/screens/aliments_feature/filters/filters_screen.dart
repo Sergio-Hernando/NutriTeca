@@ -8,10 +8,10 @@ class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
 
   @override
-  FilterScreenState createState() => FilterScreenState();
+  State<FilterScreen> createState() => _FilterScreenState();
 }
 
-class FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends State<FilterScreen> {
   bool highFats = false;
   bool highCarbohydrates = false;
   bool highProteins = false;

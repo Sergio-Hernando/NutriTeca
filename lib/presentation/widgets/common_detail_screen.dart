@@ -34,7 +34,7 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
       context: context,
       builder: (context) => ConfirmDeleteDialog(
         onConfirm: widget.onDelete,
-        moreContent: widget.recipeList,
+        moreContent: widget.recipeList ?? [],
       ),
     );
   }

@@ -7,7 +7,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
   final String? content;
   final String? mainButtonText;
   final Function() onConfirm;
-  final List<String>? moreContent;
+  final List<String> moreContent;
 
   const ConfirmDeleteDialog({
     Key? key,
@@ -15,7 +15,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
     this.content,
     this.mainButtonText,
     required this.onConfirm,
-    this.moreContent,
+    this.moreContent = const [],
   }) : super(key: key);
 
   @override
@@ -39,11 +39,11 @@ class ConfirmDeleteDialog extends StatelessWidget {
                 content ?? context.localizations.confirmDeleteMessage,
                 style: const TextStyle(color: AppColors.secondaryAccent),
               ),
-              moreContent != null
+              moreContent.isNotEmpty
                   ? Text(context.localizations.alimentsInRecipe,
                       style: const TextStyle(color: AppColors.background))
                   : const SizedBox(),
-              moreContent != null
+              moreContent.isNotEmpty
                   ? SizedBox(
                       height: 80,
                       child: Scrollbar(
@@ -53,13 +53,13 @@ class ConfirmDeleteDialog extends StatelessWidget {
                           controller: scrollController,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: moreContent!.length,
+                          itemCount: moreContent.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 2.0),
                               child: Text(
-                                moreContent![index],
+                                moreContent[index],
                                 style: const TextStyle(
                                     color: AppColors.secondaryAccent),
                               ),

@@ -207,14 +207,18 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
 
   Widget _buildSupermarketRow() {
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 24.0, right: 12, top: 16, bottom: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 16,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(context.localizations.supermarket,
               style: AppTheme.detailTextStyle),
-          const Spacer(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.25,
+          ),
           Expanded(
             child: isEditing
                 ? DropdownButtonFormField<String>(
@@ -243,6 +247,7 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
                         ? '-'
                         : controllers['supermarket'].value,
                     style: AppTheme.detailTextStyle,
+                    textAlign: TextAlign.end,
                   ),
           ),
         ],

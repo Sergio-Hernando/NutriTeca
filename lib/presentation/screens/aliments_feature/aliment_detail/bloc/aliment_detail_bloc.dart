@@ -37,14 +37,8 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final result = await _recipesRepository.getRecipesById(alimentId);
 
-    if (result.isEmpty) {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error(
-              'El alimento no se ha eliminado correctamente')));
-    } else {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.success(), recipes: result));
-    }
+    emit(state.copyWith(
+        screenStatus: const ScreenStatus.success(), recipes: result));
   }
 
   Future<void> _deleteAlimentEventToState(AlimentDetailEvent event,

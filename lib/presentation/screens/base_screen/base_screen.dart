@@ -34,8 +34,9 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (popDisposition) async {
-        await _showExitConfirmation(context);
+      canPop: false,
+      onPopInvoked: (popDisposition) {
+        _showExitConfirmation(context);
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -86,7 +87,10 @@ class _BaseScreenState extends State<BaseScreen> {
               label: context.localizations.alimentsScreen,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
+              icon: const Icon(
+                Icons.home,
+                size: 30,
+              ),
               label: context.localizations.mainScreen,
             ),
             BottomNavigationBarItem(

@@ -4,26 +4,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
+import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_event.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_state.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 
 class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
   final AlimentRepositoryContract _repository;
+  final RecipeRepositoryContract _recipesRepository;
   final StreamController<AlimentAction> _alimentController;
 
   AlimentDetailBloc({
     required AlimentRepositoryContract repositoryContract,
+    required RecipeRepositoryContract recipesRepository,
     required StreamController<AlimentAction> alimentController,
   })  : _repository = repositoryContract,
+        _recipesRepository = recipesRepository,
         _alimentController = alimentController,
         super(AlimentDetailState.initial()) {
     on<AlimentDetailEvent>((event, emit) async {
       await event.when(
           deleteAliment: (alimentId) =>
               _deleteAlimentEventToState(event, emit, alimentId),
-          editAliment: (aliment) => _editAlimentEventToState(emit, aliment));
+          editAliment: (aliment) => _editAlimentEventToState(emit, aliment),
+          searchRecipes: (alimentId) =>
+              _searchRecipesEventToState(emit, alimentId));
     });
+  }
+
+  Future<void> _searchRecipesEventToState(
+      Emitter<AlimentDetailState> emit, int alimentId) async {
+    emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
+    final result = await _recipesRepository.getRecipesById(alimentId);
+
+    if (result.isEmpty) {
+      emit(state.copyWith(
+          screenStatus: const ScreenStatus.error(
+              'El alimento no se ha eliminado correctamente')));
+    } else {
+      emit(state.copyWith(
+          screenStatus: const ScreenStatus.success(), recipes: result));
+    }
   }
 
   Future<void> _deleteAlimentEventToState(AlimentDetailEvent event,
@@ -49,7 +70,8 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
 
     if (result != null) {
       _alimentController.add(AlimentAction(aliment: result, isAdd: true));
-      emit(state.copyWith(screenStatus: const ScreenStatus.success()));
+      emit(state.copyWith(
+          screenStatus: const ScreenStatus.success(), aliment: result));
     } else {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.error(

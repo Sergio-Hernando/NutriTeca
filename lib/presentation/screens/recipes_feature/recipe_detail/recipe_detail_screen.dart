@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
@@ -97,22 +98,22 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     if (state.screenStatus.isLoading()) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('Cargando alimentos...'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsLoading),
         ),
       );
     } else if (state.screenStatus.isError()) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('Error al cargar alimentos'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsError),
         ),
       );
     } else if (state.aliments.isEmpty) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('No hay alimentos disponibles'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsNotAvailable),
         ),
       );
     } else {
@@ -153,7 +154,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
         }
 
         if (state.screenStatus.isError()) {
-          return const Center(child: Text('Error al cargar la receta'));
+          return Center(child: Text(context.localizations.recipeError));
         }
 
         if (state.recipe != null && controllers == null) {
@@ -165,7 +166,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
         }
 
         return CommonDetailScreen(
-          title: controllers?['name']?.text ?? 'Receta',
+          title: controllers?['name']?.text ?? context.localizations.recipe,
           onDelete: () => context.read<RecipeDetailBloc>().add(
               RecipeDetailEvent.deleteRecipe(controllers?['recipe'].id ?? 0)),
           onEditOn: _toggleEditModeOn,

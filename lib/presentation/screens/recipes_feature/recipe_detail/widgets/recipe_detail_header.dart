@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 
 class RecipeDetailHeader extends StatelessWidget {
@@ -23,12 +24,12 @@ class RecipeDetailHeader extends StatelessWidget {
           isEditing
               ? CustomTextField(
                   controller: controllers?['name'],
-                  label: 'Nombre de la receta',
+                  label: context.localizations.recipeName,
                 )
               : Row(
                   children: [
                     Text(
-                      'Nombre: ',
+                      context.localizations.name,
                       style: AppTheme.titleTextStyle.copyWith(
                           color: AppColors.secondaryAccent,
                           fontFamily: 'Roboto'),
@@ -45,12 +46,12 @@ class RecipeDetailHeader extends StatelessWidget {
           isEditing
               ? CustomTextField(
                   controller: controllers?['instructions'],
-                  label: 'Instrucciones',
+                  label: context.localizations.instructions,
                 )
               : Column(
                   children: [
                     Text(
-                      'Instrucciones: ',
+                      context.localizations.instructions,
                       style: AppTheme.detailTextStyle
                           .copyWith(fontFamily: 'Roboto'),
                     ),
@@ -58,7 +59,7 @@ class RecipeDetailHeader extends StatelessWidget {
                       child: Text(
                         controllers?['instructions'].text ?? '',
                         style: AppTheme.detailTextStyle,
-                        softWrap: true, // Permite que el texto se ajuste
+                        softWrap: true,
                       ),
                     ),
                   ],

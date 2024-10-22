@@ -5,6 +5,8 @@ part 'aliment_detail_event.freezed.dart';
 
 @freezed
 class AlimentDetailEvent with _$AlimentDetailEvent {
+  const factory AlimentDetailEvent.searchRecipes(int alimentId) =
+      _SearchRecipes;
   const factory AlimentDetailEvent.deleteAliment(int alimentId) =
       _DeleteAliment;
   const factory AlimentDetailEvent.editAliment(AlimentEntity aliment) =

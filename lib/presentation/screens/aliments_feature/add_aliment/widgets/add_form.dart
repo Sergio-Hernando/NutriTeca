@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
@@ -10,8 +11,8 @@ import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bl
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_state.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/advanced_fields.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/custom_dropdown.dart';
-import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/image_picker.dart';
+import 'package:food_macros/presentation/widgets/custom_text_field.dart';
 import 'package:go_router/go_router.dart';
 
 class AddAlimentForm extends StatelessWidget {
@@ -20,9 +21,9 @@ class AddAlimentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    final imagePickerKey = GlobalKey<ImagePickerTextFieldState>();
     final controllers = _buildControllers();
 
+    //TODO hacer esta lista comun a toda la app y no repetirla
     final list = ['Mercadona', 'Lidl', 'Aldi', 'Eroski', 'Dia', 'Alcampo'];
 
     void submitForm() {
@@ -68,8 +69,6 @@ class AddAlimentForm extends StatelessWidget {
 
         context.read<AddAlimentBloc>().add(AddAlimentEvent.addAliment(aliment));
 
-        imagePickerKey.currentState?.clearImage();
-
         context.pop();
       }
     }
@@ -78,14 +77,14 @@ class AddAlimentForm extends StatelessWidget {
       listener: (context, state) {
         if (state.screenStatus.isSuccess()) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Formulario enviado')),
+            SnackBar(content: Text(context.localizations.formSent)),
           );
           controllers.forEach((key, controller) {
             controller.clear();
           });
         } else if (state.screenStatus.isSuccess()) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('El formulario no se ha enviado')),
+            SnackBar(content: Text(context.localizations.formNotSent)),
           );
           controllers.forEach((key, controller) {
             controller.clear();
@@ -93,6 +92,7 @@ class AddAlimentForm extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        //TODO revisar todas las exclamaciones
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -103,8 +103,8 @@ class AddAlimentForm extends StatelessWidget {
                 children: [
                   CustomTextField(
                     controller: controllers['name']!,
-                    label: 'Nombre del Alimento',
-                    validator: _requiredValidator,
+                    label: context.localizations.alimentName,
+                    validator: (p0) => _requiredValidator(p0, context),
                   ),
                   const SizedBox(height: 16),
                   CustomSupermarketDropdown(
@@ -112,32 +112,35 @@ class AddAlimentForm extends StatelessWidget {
                     list: list,
                   ),
                   const SizedBox(height: 16),
-                  ImagePickerTextField(
-                    key: imagePickerKey,
-                    controller: controllers['image']!,
+                  ImageInput(
+                    onImageSelected: (base64Image) {
+                      if (base64Image != null) {
+                        controllers['image'].text = base64Image;
+                      }
+                    },
                   ),
                   CustomTextField(
                     controller: controllers['calories']!,
-                    label: 'Calorías',
-                    validator: _requiredValidator,
+                    label: context.localizations.calories,
+                    validator: (p0) => _requiredValidator(p0, context),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: controllers['fats']!,
-                    label: 'Grasas',
-                    validator: _requiredValidator,
+                    label: context.localizations.fats,
+                    validator: (p0) => _requiredValidator(p0, context),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: controllers['carbohydrates']!,
-                    label: 'Carbohidratos',
-                    validator: _requiredValidator,
+                    label: context.localizations.carbohydrates,
+                    validator: (p0) => _requiredValidator(p0, context),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: controllers['proteins']!,
-                    label: 'Proteínas',
-                    validator: _requiredValidator,
+                    label: context.localizations.proteins,
+                    validator: (p0) => _requiredValidator(p0, context),
                   ),
                   const SizedBox(height: 16),
                   AdvancedFields(controllers: controllers),
@@ -152,7 +155,7 @@ class AddAlimentForm extends StatelessWidget {
                             horizontal: 32.0, vertical: 12.0),
                         backgroundColor: AppColors.secondaryAccent,
                         foregroundColor: Colors.white),
-                    child: const Text('Submit'),
+                    child: Text(context.localizations.submit),
                   ),
                 ],
               ),
@@ -190,9 +193,9 @@ class AddAlimentForm extends StatelessWidget {
     }
   }
 
-  String? _requiredValidator(String? value) {
+  String? _requiredValidator(String? value, BuildContext context) {
     if (value == null || value.isEmpty) {
-      return 'Este campo es obligatorio';
+      return context.localizations.mandatory;
     }
     return null;
   }

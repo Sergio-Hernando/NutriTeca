@@ -4,7 +4,7 @@ import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/custom_search_bar.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/aliment_search_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 
@@ -30,6 +30,7 @@ class SearchBarWidget extends StatelessWidget {
               },
             ),
           ),
+          //TODO revisar este metodo, ¿se puede quitar async y await?
           IconButton(
             onPressed: () async {
               final selectedFilters = await context.push(AppRoutesPath.filters,

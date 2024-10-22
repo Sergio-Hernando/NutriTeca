@@ -34,6 +34,17 @@ class RecipeRepository implements RecipeRepositoryContract {
   }
 
   @override
+  Future<List<RecipeEntity>> getRecipesById(int id) async {
+    final recipes = await _recipeDataSourceContract.getRecipesById(id);
+
+    return recipes
+        .map(
+          (e) => RecipeEntity.toDomain(e),
+        )
+        .toList();
+  }
+
+  @override
   Future<RecipeEntity?> updateRecipe(RecipeEntity recipe) async {
     final result =
         await _recipeDataSourceContract.updateRecipe(recipe.toDataModel());

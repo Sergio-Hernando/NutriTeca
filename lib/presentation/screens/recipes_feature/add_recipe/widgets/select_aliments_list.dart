@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 
 class SelectedAlimentsList extends StatelessWidget {
@@ -41,10 +42,10 @@ class SelectedAlimentsList extends StatelessWidget {
               );
             },
           )
-        : const Center(
+        : Center(
             child: Text(
-              'No hay alimentos añadidos',
-              style: TextStyle(color: AppColors.secondary, fontSize: 24),
+              context.localizations.noAlimentsAdded,
+              style: const TextStyle(color: AppColors.secondary, fontSize: 24),
             ),
           );
   }

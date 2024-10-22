@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/aliment_card.dart';
 
@@ -19,10 +20,10 @@ class AlimentList extends StatelessWidget {
               ),
             ),
           )
-        : const Center(
+        : Center(
             child: Text(
-              'No results found',
-              style: TextStyle(color: Colors.grey),
+              context.localizations.noResults,
+              style: const TextStyle(color: Colors.grey),
             ),
           );
   }

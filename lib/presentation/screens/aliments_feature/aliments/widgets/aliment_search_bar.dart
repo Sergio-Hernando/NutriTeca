@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/widgets/generic_search_bar.dart';
 
@@ -18,7 +19,7 @@ class AlimentSearchBar extends StatelessWidget {
       allItems: allItems,
       getItemName: (AlimentEntity item) => item.name ?? '',
       onResults: onResults,
-      hintText: 'Buscar Alimento',
+      hintText: context.localizations.searchAliment,
     );
   }
 }

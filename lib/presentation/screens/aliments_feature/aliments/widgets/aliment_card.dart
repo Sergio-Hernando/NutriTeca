@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/macro_row.dart';
@@ -95,11 +96,18 @@ class CustomCard extends StatelessWidget {
                       .copyWith(color: AppColors.foreground),
                 ),
                 const SizedBox(height: 10),
-                MacroRow(label: 'Calories', value: '${aliment.calories} kcal'),
-                MacroRow(label: 'Fats', value: '${aliment.fats}g'),
                 MacroRow(
-                    label: 'Carbohydrates', value: '${aliment.carbohydrates}g'),
-                MacroRow(label: 'Proteins', value: '${aliment.proteins}g'),
+                    label: context.localizations.calories,
+                    value: '${aliment.calories} kcal'),
+                MacroRow(
+                    label: context.localizations.fats,
+                    value: '${aliment.fats}g'),
+                MacroRow(
+                    label: context.localizations.carbohydrates,
+                    value: '${aliment.carbohydrates}g'),
+                MacroRow(
+                    label: context.localizations.proteins,
+                    value: '${aliment.proteins}g'),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => overlayEntry.remove(),
@@ -107,7 +115,7 @@ class CustomCard extends StatelessWidget {
                       backgroundColor: AppColors.secondaryAccent,
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontWeight: FontWeight.w800)),
-                  child: const Text('Close'),
+                  child: Text(context.localizations.close),
                 ),
               ],
             ),

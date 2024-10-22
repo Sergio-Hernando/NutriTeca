@@ -134,11 +134,39 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
+  Future<List<RecipeDataEntity>> getRecipesById(int id) async {
+    final db = await dbHandler.database;
+
+    final List<Map<String, dynamic>> allRecipes =
+        await db.query('recipe', columns: ['id', 'name']);
+
+    final List<Map<String, dynamic>> allRecipeAliments =
+        await db.query('recipe_aliment', columns: ['id_recipe', 'id_aliment']);
+
+    List<RecipeDataEntity> recipes = [];
+
+    for (var recipe in allRecipes) {
+      if (allRecipeAliments.any((recipeAliment) =>
+          recipeAliment['id_recipe'] == recipe['id'] &&
+          recipeAliment['id_aliment'] == id)) {
+        recipes.add(RecipeDataEntity(
+          id: recipe['id'] as int,
+          name: recipe['name'] as String,
+          instructions: '',
+          aliments: [],
+        ));
+      }
+    }
+
+    return recipes;
+  }
+
+  @override
   Future<RecipeDataEntity?> updateRecipe(RecipeDataEntity updatedRecipe) async {
     final db = await dbHandler.database;
 
     // Empezamos una transacción
-    final result = await db.transaction((txn) async {
+    await db.transaction((txn) async {
       // 1. Actualizar el nombre de la receta si ha cambiado
       if (updatedRecipe.name!.isNotEmpty) {
         await txn.update(

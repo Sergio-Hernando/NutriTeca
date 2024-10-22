@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 
 class AlimentSelectionDialog extends StatefulWidget {
@@ -36,9 +37,9 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      title: const Text(
-        'Seleccionar Alimento',
-        style: TextStyle(
+      title: Text(
+        context.localizations.selectAliment,
+        style: const TextStyle(
           color: AppColors.background,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
@@ -55,17 +56,17 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
               style: const TextStyle(
                 color: AppColors.secondaryAccent,
               ),
-              decoration: const InputDecoration(
-                labelText: 'Cantidad',
-                labelStyle: TextStyle(
+              decoration: InputDecoration(
+                labelText: context.localizations.quantity,
+                labelStyle: const TextStyle(
                   color: AppColors.secondaryAccent,
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.secondary,
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.primary,
                   ),
@@ -104,7 +105,7 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
           style: TextButton.styleFrom(
             foregroundColor: AppColors.background,
           ),
-          child: const Text('Cancelar'),
+          child: Text(context.localizations.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -115,10 +116,10 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
               Navigator.of(context).pop();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text(
-                    'Por favor, selecciona un alimento y ingresa una cantidad.',
-                    style: TextStyle(color: AppColors.foreground),
+                    context.localizations.selectAlimentQuantity,
+                    style: const TextStyle(color: AppColors.foreground),
                   ),
                   backgroundColor: AppColors.secondary,
                 ),
@@ -128,7 +129,7 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
           style: TextButton.styleFrom(
             foregroundColor: AppColors.background,
           ),
-          child: const Text('Aceptar'),
+          child: Text(context.localizations.accept),
         ),
       ],
     );

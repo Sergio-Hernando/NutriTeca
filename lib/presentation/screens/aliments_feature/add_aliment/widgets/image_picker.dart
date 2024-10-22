@@ -1,124 +1,192 @@
-import 'package:flutter/material.dart';
-import 'package:food_macros/presentation/widgets/custom_text_field.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'package:permission_handler/permission_handler.dart';
+class ImageInput extends StatefulWidget {
+  final Function(XFile?) onImageSelected;
+  final bool isSingleImage;
+  final bool isEditing;
+  final XFile? image;
 
-class ImagePickerTextField extends StatefulWidget {
-  final TextEditingController controller;
-  const ImagePickerTextField({Key? key, required this.controller})
-      : super(key: key);
+  const ImageInput({
+    super.key,
+    required this.onImageSelected,
+    this.isSingleImage = true,
+    this.isEditing = true,
+    this.image,
+  });
 
   @override
-  ImagePickerTextFieldState createState() => ImagePickerTextFieldState();
+  State<ImageInput> createState() => _ImageInputState();
 }
 
-class ImagePickerTextFieldState extends State<ImagePickerTextField> {
-  File? _image;
+class _ImageInputState extends State<ImageInput> {
+  XFile? _selectedImage;
 
-  Future<void> _requestPermissions() async {
-    await Permission.camera.request();
-    await Permission.storage.request();
+  @override
+  void initState() {
+    super.initState();
+    _initializeImage();
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: source);
+  void _initializeImage() {
+    _selectedImage = widget.image;
+  }
 
-      if (pickedFile != null) {
-        setState(() {
-          _image = File(pickedFile.path);
-        });
+  void resetImage(XFile? newImage) {
+    setState(() {
+      _selectedImage = newImage;
+    });
+    widget.onImageSelected(_selectedImage);
+  }
 
-        final bytes = await _image!.readAsBytes();
-        final base64Image = base64Encode(bytes);
+  @override
+  void didUpdateWidget(covariant ImageInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-        widget.controller.text = base64Image;
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al seleccionar imagen: $e')),
-      );
+    if (widget.image != oldWidget.image) {
+      _initializeImage();
     }
   }
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _pickImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final selectedSource = await _showImageSourceDialog(context);
+
+    if (selectedSource != null) {
+      XFile? image;
+      if (widget.isSingleImage) {
+        image = await picker.pickImage(source: selectedSource);
+      } else {
+        final List<XFile> images = await picker.pickMultiImage();
+        image = images.isNotEmpty ? images.first : null;
+      }
+
+      setState(() {
+        _selectedImage = image;
+      });
+      widget.onImageSelected(image);
+    }
+  }
+
+  Future<ImageSource?> _showImageSourceDialog(BuildContext context) {
+    return showDialog<ImageSource>(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Cámara'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _requestPermissions();
-                  _pickImage(ImageSource.camera);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.image),
-                title: const Text('Galería'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _requestPermissions();
-                  _pickImage(ImageSource.gallery);
-                },
-              ),
-            ],
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          content: SizedBox(
+            height: 120,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildImageSourceOption(
+                  context,
+                  Icons.camera_alt,
+                  context.localizations.camera,
+                  ImageSource.camera,
+                ),
+                _buildImageSourceOption(
+                  context,
+                  Icons.photo,
+                  context.localizations.gallery,
+                  ImageSource.gallery,
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  void clearImage() {
-    setState(() {
-      _image = null;
-    });
-    widget.controller.clear(); // Esto también vacía el controlador
+  Widget _buildImageSourceOption(
+      BuildContext context, IconData icon, String label, ImageSource source) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(icon, size: 40),
+          onPressed: () => Navigator.of(context).pop(source),
+        ),
+        Text(label),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomTextField(
-          controller: widget.controller,
-          label: 'Imagen del Alimento',
-          icon: IconButton(
-            icon: const Icon(
-              Icons.camera_alt,
-              color: Colors.white,
+        GestureDetector(
+          onTap: widget.isEditing ? () => _pickImage(context) : null,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            height: _selectedImage == null ? 100 : 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color: appTheme.inputDecorationTheme.fillColor,
+              image: _selectedImage != null
+                  ? DecorationImage(
+                      image: FileImage(File(_selectedImage!.path)),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
+              border: Border.all(
+                color: appTheme
+                        .inputDecorationTheme.enabledBorder?.borderSide.color ??
+                    appTheme.colorScheme.onSurface,
+              ),
             ),
-            onPressed: () => _showBottomSheet(context),
+            child: _selectedImage == null
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_a_photo,
+                            color: Theme.of(context).unselectedWidgetColor,
+                            size: 50),
+                        const SizedBox(height: 10),
+                        Text(
+                          context.localizations.selectOne,
+                          style: appTheme.textTheme.bodyMedium?.copyWith(
+                              color: appTheme.colorScheme.onSurfaceVariant),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: widget.isEditing
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: appTheme.colorScheme.onSurface
+                                      .withOpacity(0.7),
+                                ),
+                                onPressed: () {
+                                  resetImage(null);
+                                },
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
           ),
         ),
-        _image != null
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: Image.file(
-                    _image!,
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Container(),
-              ),
+        const SizedBox(height: 10),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,16 +8,17 @@ class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
 
   @override
-  FilterScreenState createState() => FilterScreenState();
+  State<FilterScreen> createState() => _FilterScreenState();
 }
 
-class FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends State<FilterScreen> {
   bool highFats = false;
   bool highCarbohydrates = false;
   bool highProteins = false;
   bool highCalories = false;
   String? selectedSupermarket;
 
+//TODO cambiar a lista generica
   final supermarkets = ['Mercadona', 'Alcampo', 'Lidl'];
 
   @override
@@ -26,7 +28,7 @@ class FilterScreenState extends State<FilterScreen> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: AppColors.background,
-        title: const Center(child: Text('Filtros')),
+        title: Center(child: Text(context.localizations.filters)),
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
@@ -49,7 +51,8 @@ class FilterScreenState extends State<FilterScreen> {
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Supermercado'),
+              decoration:
+                  InputDecoration(labelText: context.localizations.supermarket),
               items: supermarkets.map((supermarket) {
                 return DropdownMenuItem<String>(
                   value: supermarket,
@@ -63,7 +66,7 @@ class FilterScreenState extends State<FilterScreen> {
               },
             ),
             SwitchListTile(
-              title: const Text('Altos en grasas'),
+              title: Text(context.localizations.filtersHighFat),
               value: highFats,
               onChanged: (value) {
                 setState(() {
@@ -72,7 +75,7 @@ class FilterScreenState extends State<FilterScreen> {
               },
             ),
             SwitchListTile(
-              title: const Text('Altos en proteínas'),
+              title: Text(context.localizations.filtersHighProtein),
               value: highProteins,
               onChanged: (value) {
                 setState(() {
@@ -81,7 +84,7 @@ class FilterScreenState extends State<FilterScreen> {
               },
             ),
             SwitchListTile(
-              title: const Text('Altos en carbohidratos'),
+              title: Text(context.localizations.filtersHighCarbo),
               value: highCarbohydrates,
               onChanged: (value) {
                 setState(() {
@@ -90,7 +93,7 @@ class FilterScreenState extends State<FilterScreen> {
               },
             ),
             SwitchListTile(
-              title: const Text('Altos en calorías'),
+              title: Text(context.localizations.filtersHighKcal),
               value: highCalories,
               onChanged: (value) {
                 setState(() {

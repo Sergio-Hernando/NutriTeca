@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
@@ -62,22 +63,22 @@ class _FilterChipsState extends State<FilterChips> {
       children: [
         if (widget.activeFilters.highFats)
           _buildStyledChip(
-            'High Fats',
+            context.localizations.filtersHighFat,
             'highFats',
           ),
         if (widget.activeFilters.highProteins)
           _buildStyledChip(
-            'High Proteins',
+            context.localizations.filtersHighProtein,
             'highProteins',
           ),
         if (widget.activeFilters.highCarbohydrates)
           _buildStyledChip(
-            'High Carbohydrates',
+            context.localizations.filtersHighCarbo,
             'highCarbohydrates',
           ),
         if (widget.activeFilters.highCalories)
           _buildStyledChip(
-            'High Calories',
+            context.localizations.filtersHighKcal,
             'highCalories',
           ),
         if (widget.activeFilters.supermarket != null &&

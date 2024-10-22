@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_assets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -19,13 +20,13 @@ class SplashScreen extends StatelessWidget {
                 image: AssetImage(AppAssets.mainLogo),
               ),
               Text(
-                'FOODMACROS',
+                context.localizations.splashTitle,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Text(
-                  'La aplicación perfecta para controlar lo que comes y mucho más',
+                  context.localizations.splashText,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),

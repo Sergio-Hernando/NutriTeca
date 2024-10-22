@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
@@ -17,7 +18,7 @@ class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({Key? key}) : super(key: key);
 
   @override
-  _AddRecipeScreenState createState() => _AddRecipeScreenState();
+  State<AddRecipeScreen> createState() => _AddRecipeScreenState();
 }
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
@@ -50,36 +51,35 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       context.pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Por favor, completa el nombre y añade al menos un alimento.'),
+        SnackBar(
+          content: Text(context.localizations.addOneAliment),
         ),
       );
     }
   }
 
-  void _showSelectAlimentOverlay() {
+  void _showSelectAlimentOverlay(BuildContext context) {
     final state = context.read<AddRecipeBloc>().state;
 
     if (state.screenStatus.isLoading()) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('Cargando alimentos...'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsLoading),
         ),
       );
     } else if (state.screenStatus.isError()) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('Error al cargar alimentos'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsError),
         ),
       );
     } else if (state.aliments.isEmpty) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          content: Text('No hay alimentos disponibles'),
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsNotAvailable),
         ),
       );
     } else {
@@ -110,7 +110,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: AppColors.background,
-        title: const Text('Añadir Receta'),
+        title: Text(context.localizations.addRecipe),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -119,22 +119,22 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           children: [
             CustomTextField(
               controller: _recipeNameController,
-              label: 'Nombre de la receta',
+              label: context.localizations.recipeName,
             ),
             const SizedBox(height: 16.0),
             InstructionsTextField(controller: _instructionsController),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _showSelectAlimentOverlay,
+              onPressed: () => _showSelectAlimentOverlay(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondaryAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              child: const Text(
-                'Añadir Alimento',
-                style: TextStyle(color: AppColors.foreground),
+              child: Text(
+                context.localizations.addAliment,
+                style: const TextStyle(color: AppColors.foreground),
               ),
             ),
             const SizedBox(height: 16.0),

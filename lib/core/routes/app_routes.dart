@@ -132,8 +132,10 @@ GoRouter appRoutes = GoRouter(
                                     alimentController: uiModulesDi<
                                             StreamController<AlimentAction>>(
                                         instanceName: 'alimentEventController'),
+                                    recipesRepository: uiModulesDi(),
                                   ),
-                                  child: AlimentDetailScreen(aliment: aliment),
+                                  child: AlimentDetailScreen(
+                                      alimentEntity: aliment),
                                 );
                               },
                             ),

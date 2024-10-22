@@ -20,9 +20,20 @@ class AdditiveCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(
+                  Icons.info,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          ),
           Text(
             additiveNumber,
             style: const TextStyle(
@@ -31,9 +42,8 @@ class AdditiveCard extends StatelessWidget {
                 color: Colors.white,
                 fontFamily: 'Roboto'),
           ),
-          const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
             child: Text(
               maxLines: 1,
               name,

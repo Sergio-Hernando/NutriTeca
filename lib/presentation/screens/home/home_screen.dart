@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/additive_entity.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: AppColors.secondaryAccent,
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontWeight: FontWeight.w800)),
-                  child: const Text('Close'),
+                  child: Text(context.localizations.close),
                 ),
               ],
             ),
@@ -106,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
               if (state.screenStatus.isError()) {
-                return const Center(
-                  child: Text('Error en la home'),
+                return Center(
+                  child: Text(context.localizations.homeError),
                 );
               }
 
@@ -155,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             dataSource: chartData,
                             xValueMapper: (_ChartData data, _) => data.x,
                             yValueMapper: (_ChartData data, _) => data.y,
-                            name: 'Alimento',
+                            name: context.localizations.aliment,
                             color: AppColors.secondary,
                           ),
                         ],
@@ -164,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              "No hay información disponible",
+                              context.localizations.informationNotAvailable,
                               style: TextStyle(
                                 fontSize: 28,
                                 color: Colors.black.withOpacity(0.6),

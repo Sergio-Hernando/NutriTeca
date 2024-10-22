@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GenericSearchBar<T> extends StatefulWidget {
   final List<T> allItems;
-  final String Function(T) getItemName; // Para obtener el nombre del item
+  final String Function(T) getItemName;
   final void Function(List<T>) onResults;
   final String hintText;
 
@@ -15,7 +15,7 @@ class GenericSearchBar<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GenericSearchBarState<T> createState() => _GenericSearchBarState<T>();
+  State<GenericSearchBar<T>> createState() => _GenericSearchBarState<T>();
 }
 
 class _GenericSearchBarState<T> extends State<GenericSearchBar<T>> {

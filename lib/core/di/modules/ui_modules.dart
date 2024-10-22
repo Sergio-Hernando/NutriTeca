@@ -61,6 +61,7 @@ void _uiModulesInit() {
     () => AlimentDetailBloc(
       repositoryContract: uiModulesDi(),
       alimentController: uiModulesDi(instanceName: 'alimentEventController'),
+      recipesRepository: uiModulesDi(),
     ),
   );
   uiModulesDi.registerFactory(

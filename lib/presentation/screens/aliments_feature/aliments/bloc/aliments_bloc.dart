@@ -34,7 +34,6 @@ class AlimentsBloc extends Bloc<AlimentsEvent, AlimentsState> {
       );
     });
 
-    // Suscripción al StreamController para escuchar eventos de nuevos alimentos
     _alimentController.stream.listen((aliment) {
       add(AlimentsEvent.refreshAllAlimentsList(aliment));
     });

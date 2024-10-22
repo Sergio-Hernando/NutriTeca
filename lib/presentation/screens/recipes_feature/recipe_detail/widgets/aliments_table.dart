@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 
 class AlimentsTable extends StatelessWidget {
@@ -23,15 +24,15 @@ class AlimentsTable extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DataTable(
-          columns: _buildAlimentsColumns(),
+          columns: _buildAlimentsColumns(context),
           rows: _buildAlimentsRows(),
         ),
         if (aliments.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Center(
               child: Text(
-                'No hay alimentos en la receta.',
+                context.localizations.alimentsEmpty,
                 style: AppTheme.detailTextStyle,
               ),
             ),
@@ -40,13 +41,15 @@ class AlimentsTable extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _buildAlimentsColumns() {
+  List<DataColumn> _buildAlimentsColumns(BuildContext context) {
     return [
-      const DataColumn(
-        label: Text('Alimento', style: AppTheme.detailTextStyle),
+      DataColumn(
+        label: Text(context.localizations.aliment,
+            style: AppTheme.detailTextStyle),
       ),
-      const DataColumn(
-        label: Text('Cantidad', style: AppTheme.detailTextStyle),
+      DataColumn(
+        label: Text(context.localizations.quantity,
+            style: AppTheme.detailTextStyle),
       ),
       if (isEditing)
         DataColumn(
@@ -67,14 +70,14 @@ class AlimentsTable extends StatelessWidget {
         DataCell(
           isEditing
               ? TextFormField(
-                  initialValue: '${aliment.quantity}',
+                  initialValue: aliment.quantity,
                   style: AppTheme.detailTextStyle,
                   onChanged: (newValue) {
                     aliment.quantity =
                         int.tryParse(newValue)?.toString() ?? aliment.quantity;
                   },
                 )
-              : Text('${aliment.quantity}', style: AppTheme.detailTextStyle),
+              : Text(aliment.quantity ?? '', style: AppTheme.detailTextStyle),
         ),
         if (isEditing)
           DataCell(

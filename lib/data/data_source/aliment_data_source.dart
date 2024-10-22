@@ -41,14 +41,14 @@ class AlimentDataSource implements AlimentDataSourceContract {
   @override
   Future<AlimentDataEntity?> updateAliment(AlimentDataEntity aliment) async {
     final db = await dbHandler.database;
-    final id = await db.update(
+    await db.update(
       'aliment',
       aliment.toMap(),
       where: 'id = ?',
       whereArgs: [aliment.id],
     );
 
-    return getAliment(id);
+    return getAliment(aliment.id ?? 0);
   }
 
   @override

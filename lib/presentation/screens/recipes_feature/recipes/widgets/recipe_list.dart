@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipes/widgets/custom_card.dart';
+import 'package:food_macros/presentation/screens/recipes_feature/recipes/widgets/recipe_card.dart';
 
 class RecipesList extends StatelessWidget {
   final List<RecipeEntity> recipes;
@@ -14,15 +15,15 @@ class RecipesList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(
               itemCount: recipes.length,
-              itemBuilder: (context, index) => CustomCard(
+              itemBuilder: (context, index) => RecipeCard(
                 recipe: recipes[index],
               ),
             ),
           )
-        : const Center(
+        : Center(
             child: Text(
-              'No results found',
-              style: TextStyle(color: Colors.grey),
+              context.localizations.noResults,
+              style: const TextStyle(color: Colors.grey),
             ),
           );
   }

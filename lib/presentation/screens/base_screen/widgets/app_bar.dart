@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_macros/core/constants/app_assets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/monthly_spent_entity.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
@@ -17,37 +18,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.screenIndex,
   });
 
-  void _showSelectAlimentDialog(BuildContext builContext) {
-    final state = builContext.read<BaseScreenBloc>().state;
+  void _showSelectAlimentDialog(BuildContext buildContext) {
+    final state = buildContext.read<BaseScreenBloc>().state;
 
     if (state.screenStatus.isLoading()) {
       showDialog(
-        context: builContext,
-        builder: (context) => const AlertDialog(
-          content: Text('Cargando alimentos...'),
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsLoading),
         ),
       );
     } else if (state.screenStatus.isError()) {
       showDialog(
-        context: builContext,
-        builder: (context) => const AlertDialog(
-          content: Text('Error al cargar alimentos'),
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsError),
         ),
       );
     } else if (state.aliments.isEmpty) {
       showDialog(
-        context: builContext,
-        builder: (context) => const AlertDialog(
-          content: Text('No hay alimentos disponibles'),
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsNotAvailable),
         ),
       );
     } else {
       showDialog(
-        context: builContext,
+        context: buildContext,
         builder: (context) => AlimentSelectionDialog(
           aliments: state.aliments,
           onSelectAliment: (int alimentId, String name, int quantity) {
-            builContext.read<BaseScreenBloc>().add(
+            buildContext.read<BaseScreenBloc>().add(
                   BaseScreenEvent.addMonthlySpent(MonthlySpentEntity(
                     alimentId: alimentId,
                     alimentName: name,

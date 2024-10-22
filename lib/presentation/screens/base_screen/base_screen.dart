@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
@@ -49,12 +50,59 @@ class _BaseScreenState extends State<BaseScreen> {
           },
           screenIndex: _selectedIndex,
         ),
-        body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: widget.navigationShell,
+        body: widget.navigationShell,
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: AppColors.foreground,
+          color: AppColors.background,
+          buttonBackgroundColor:
+              AppColors.secondary, // Color del botón seleccionado
+          height: 60,
+          animationDuration: const Duration(milliseconds: 300),
+          index: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            _goBranch(_selectedIndex);
+          },
+          items: <Widget>[
+            SvgPicture.asset(
+              'assets/icons/nutrition_icon.svg',
+              width: 24,
+              height: 24,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.home,
+              size: 30,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.book,
+              size: 30,
+              color: Colors.white,
+            ),
+          ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
+
+        /*  CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          animationDuration: const Duration(milliseconds: 300),
+          color: Colors.white,
+          height: 70,
+          items: const [
+            Icon(Icons.tv, size: 30),
+            Icon(Icons.search, size: 30),
+            Icon(Icons.bookmark_outline, size: 30),
+          ],
+          onTap: (value) {
+            setState(() {
+              _selectedIndex = value;
+            });
+            _goBranch(_selectedIndex);
+          },
+        ), */
+        /* BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: true,
           backgroundColor: AppColors.background,
@@ -98,7 +146,7 @@ class _BaseScreenState extends State<BaseScreen> {
               label: context.localizations.recipesScreen,
             ),
           ],
-        ),
+        ), */
         floatingActionButton: _selectedIndex == 1
             ? null
             : FloatingActionButton(

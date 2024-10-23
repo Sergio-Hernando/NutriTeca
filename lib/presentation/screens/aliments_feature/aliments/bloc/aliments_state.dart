@@ -10,12 +10,14 @@ class AlimentsState with _$AlimentsState {
   const factory AlimentsState(
       {required ScreenStatus screenStatus,
       required List<AlimentEntity> aliments,
+      required List<AlimentEntity> allAliments,
       required FiltersEntity filters}) = _AlimentsState;
 
   factory AlimentsState.initial() {
     return AlimentsState(
         screenStatus: const ScreenStatus.initial(),
         aliments: [],
+        allAliments: [],
         filters: FiltersEntity(
             highCalories: false,
             highCarbohydrates: false,

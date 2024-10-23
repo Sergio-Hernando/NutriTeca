@@ -9,6 +9,6 @@ class RecipeEvent with _$RecipeEvent {
   const factory RecipeEvent.getRecipes() = _GetRecipes;
   const factory RecipeEvent.refreshRecipes(RecipeAction recipe) =
       _RefreshRecipes;
-  const factory RecipeEvent.updateSearch(List<RecipeEntity> searchResults) =
-      _UpdateSearch;
+  const factory RecipeEvent.updateSearch(
+      List<RecipeEntity> searchResults, String enteredKeyword) = _UpdateSearch;
 }

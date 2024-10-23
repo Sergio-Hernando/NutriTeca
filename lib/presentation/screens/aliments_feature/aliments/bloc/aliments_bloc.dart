@@ -27,8 +27,8 @@ class AlimentsBloc extends Bloc<AlimentsEvent, AlimentsState> {
             _applyFiltersToState(filters, emit),
         resetFilters: () => _resetFiltersToState(emit),
         updateFilters: (FiltersEntity filters) => _updateFilters(emit, filters),
-        updateSearch: (List<AlimentEntity> searchResults) =>
-            _mapUpdateSearchToState(event, emit, searchResults),
+        updateSearch: (List<AlimentEntity> searchResults, enteredKeyword) =>
+            _mapUpdateSearchToState(event, emit, searchResults, enteredKeyword),
         refreshAllAlimentsList: (aliment) =>
             _mapRefreshAllAlimentsListEventToState(aliment, emit),
       );
@@ -47,6 +47,7 @@ class AlimentsBloc extends Bloc<AlimentsEvent, AlimentsState> {
     emit(state.copyWith(
       screenStatus: const ScreenStatus.success(),
       aliments: data,
+      allAliments: data,
     ));
   }
 
@@ -76,9 +77,14 @@ class AlimentsBloc extends Bloc<AlimentsEvent, AlimentsState> {
     emit(state.copyWith(filters: filters));
   }
 
-  Future<void> _mapUpdateSearchToState(AlimentsEvent event,
-      Emitter<AlimentsState> emit, List<AlimentEntity> searchResults) async {
-    emit(state.copyWith(aliments: searchResults));
+  Future<void> _mapUpdateSearchToState(
+      AlimentsEvent event,
+      Emitter<AlimentsState> emit,
+      List<AlimentEntity> searchResults,
+      String enteredKeyword) async {
+    enteredKeyword == ''
+        ? emit(state.copyWith(aliments: state.allAliments))
+        : emit(state.copyWith(aliments: searchResults));
   }
 
   Future<void> _mapRefreshAllAlimentsListEventToState(

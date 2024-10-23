@@ -11,10 +11,14 @@ class RecipeState with _$RecipeState {
     required ScreenStatus screenStatus,
     required List<AlimentEntity> aliments,
     required List<RecipeEntity> recipes,
+    required List<RecipeEntity> allRecipes,
   }) = _RecipeState;
 
   factory RecipeState.initial() {
     return const RecipeState(
-        screenStatus: ScreenStatus.initial(), aliments: [], recipes: []);
+        screenStatus: ScreenStatus.initial(),
+        aliments: [],
+        recipes: [],
+        allRecipes: []);
   }
 }

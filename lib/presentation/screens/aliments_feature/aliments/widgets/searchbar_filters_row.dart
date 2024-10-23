@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/aliment_search_bar.dart';
+import 'package:food_macros/presentation/widgets/generic_search_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_macros/core/routes/app_paths.dart';
 
@@ -21,13 +22,15 @@ class SearchBarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: AlimentSearchBar(
+            child: GenericSearchBar<AlimentEntity>(
               allItems: allItems,
-              onResults: (results) {
+              getItemName: (AlimentEntity item) => item.name ?? '',
+              onResults: (results, enteredKeyword) {
                 context
                     .read<AlimentsBloc>()
-                    .add(AlimentsEvent.updateSearch(results));
+                    .add(AlimentsEvent.updateSearch(results, enteredKeyword));
               },
+              hintText: context.localizations.searchAliment,
             ),
           ),
           IconButton(

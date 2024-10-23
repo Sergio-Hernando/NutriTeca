@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GenericSearchBar<T> extends StatefulWidget {
   final List<T> allItems;
   final String Function(T) getItemName;
-  final void Function(List<T>) onResults;
+  final void Function(List<T>, String) onResults;
   final String hintText;
 
   const GenericSearchBar({
@@ -27,19 +27,31 @@ class _GenericSearchBarState<T> extends State<GenericSearchBar<T>> {
     _foundItems = widget.allItems;
   }
 
+  @override
+  void didUpdateWidget(GenericSearchBar<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.allItems != widget.allItems) {
+      setState(() {
+        _foundItems = widget.allItems;
+      });
+    }
+  }
+
   void _runFilter(String enteredKeyword) {
     List<T> results = [];
+
     if (enteredKeyword.isEmpty) {
-      results = _foundItems;
+      results = widget.allItems;
     } else {
-      results = _foundItems
-          .where((item) => widget
-              .getItemName(item)
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
+      results = _foundItems.where((item) {
+        return widget
+            .getItemName(item)
+            .toLowerCase()
+            .contains(enteredKeyword.toLowerCase());
+      }).toList();
     }
-    widget.onResults(results);
+
+    widget.onResults(results, enteredKeyword);
   }
 
   @override

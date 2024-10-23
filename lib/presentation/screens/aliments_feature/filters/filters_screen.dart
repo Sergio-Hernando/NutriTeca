@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/domain/models/filters_entity.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
 import 'package:go_router/go_router.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -17,9 +18,6 @@ class _FilterScreenState extends State<FilterScreen> {
   bool highProteins = false;
   bool highCalories = false;
   String? selectedSupermarket;
-
-//TODO cambiar a lista generica
-  final supermarkets = ['Mercadona', 'Alcampo', 'Lidl'];
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +48,8 @@ class _FilterScreenState extends State<FilterScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            DropdownButtonFormField<String>(
-              decoration:
-                  InputDecoration(labelText: context.localizations.supermarket),
-              items: supermarkets.map((supermarket) {
-                return DropdownMenuItem<String>(
-                  value: supermarket,
-                  child: Text(supermarket),
-                );
-              }).toList(),
+            SupermarketDropdown(
+              selectedValue: selectedSupermarket,
               onChanged: (value) {
                 setState(() {
                   selectedSupermarket = value;

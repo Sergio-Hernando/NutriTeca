@@ -6,6 +6,7 @@ import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/extensions/string_extensions.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:food_macros/domain/utils/xfile_converter.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_event.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_state.dart';
@@ -23,48 +24,52 @@ class AddAlimentForm extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     final controllers = _buildControllers();
 
-    //TODO hacer esta lista comun a toda la app y no repetirla
-    final list = ['Mercadona', 'Lidl', 'Aldi', 'Eroski', 'Dia', 'Alcampo'];
-
     void submitForm() {
       if (formKey.currentState?.validate() ?? false) {
         final aliment = AlimentEntity(
           name:
               (controllers['name'] as TextEditingController).text.capitalize(),
-          imageBase64: (controllers['image'] as TextEditingController).text,
+          imageBase64: (controllers['image']).text,
           supermarket:
               (controllers['supermarket'] as SingleSelectController<String>)
                       .value ??
                   '',
-          calories: _parseToInt(
-                  (controllers['calories'] as TextEditingController).text) ??
+          calories: (controllers['calories'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
-          fats: _parseToInt(
-                  (controllers['fats'] as TextEditingController).text) ??
+          fats: (controllers['fats'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
-          fatsSaturated: _parseToInt(
-              (controllers['fatsSaturated'] as TextEditingController).text),
-          fatsPolyunsaturated: _parseToInt(
+          fatsSaturated: (controllers['fatsSaturated'] as TextEditingController)
+              .text
+              .parseToInt(),
+          fatsPolyunsaturated:
               (controllers['fatsPolyunsaturated'] as TextEditingController)
-                  .text),
-          fatsMonounsaturated: _parseToInt(
+                  .text
+                  .parseToInt(),
+          fatsMonounsaturated:
               (controllers['fatsMonounsaturated'] as TextEditingController)
-                  .text),
-          fatsTrans: _parseToInt(
-              (controllers['fatsTrans'] as TextEditingController).text),
-          carbohydrates: _parseToInt(
-                  (controllers['carbohydrates'] as TextEditingController)
-                      .text) ??
+                  .text
+                  .parseToInt(),
+          fatsTrans: (controllers['fatsTrans'] as TextEditingController)
+              .text
+              .parseToInt(),
+          carbohydrates: (controllers['carbohydrates'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
           fiber:
-              _parseToInt((controllers['fiber'] as TextEditingController).text),
+              (controllers['fiber'] as TextEditingController).text.parseToInt(),
           sugar:
-              _parseToInt((controllers['sugar'] as TextEditingController).text),
-          proteins: _parseToInt(
-                  (controllers['proteins'] as TextEditingController).text) ??
+              (controllers['sugar'] as TextEditingController).text.parseToInt(),
+          proteins: (controllers['proteins'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
           salt:
-              _parseToInt((controllers['salt'] as TextEditingController).text),
+              (controllers['salt'] as TextEditingController).text.parseToInt(),
         );
 
         context.read<AddAlimentBloc>().add(AddAlimentEvent.addAliment(aliment));
@@ -92,7 +97,6 @@ class AddAlimentForm extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        //TODO revisar todas las exclamaciones
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -102,60 +106,69 @@ class AddAlimentForm extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomTextField(
-                    controller: controllers['name']!,
+                    controller: controllers['name'],
                     label: context.localizations.alimentName,
                     validator: (p0) => _requiredValidator(p0, context),
                   ),
-                  const SizedBox(height: 16),
-                  CustomSupermarketDropdown(
-                    controllers: controllers,
-                    list: list,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: CustomSupermarketDropdown(
+                      controllers: controllers,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  ImageInput(
-                    onImageSelected: (base64Image) {
-                      if (base64Image != null) {
-                        controllers['image'].text = base64Image;
-                      }
-                    },
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: ImageInput(
+                      onImageSelected: (base64Image) async {
+                        if (base64Image != null) {
+                          controllers['image'].text = await XFileConverter()
+                              .convertImageToBase64(base64Image);
+                        }
+                      },
+                    ),
                   ),
                   CustomTextField(
-                    controller: controllers['calories']!,
+                    controller: controllers['calories'],
                     label: context.localizations.calories,
                     validator: (p0) => _requiredValidator(p0, context),
                   ),
-                  const SizedBox(height: 16),
                   CustomTextField(
-                    controller: controllers['fats']!,
+                    controller: controllers['fats'],
                     label: context.localizations.fats,
                     validator: (p0) => _requiredValidator(p0, context),
                   ),
-                  const SizedBox(height: 16),
                   CustomTextField(
-                    controller: controllers['carbohydrates']!,
+                    controller: controllers['carbohydrates'],
                     label: context.localizations.carbohydrates,
                     validator: (p0) => _requiredValidator(p0, context),
                   ),
-                  const SizedBox(height: 16),
                   CustomTextField(
-                    controller: controllers['proteins']!,
+                    controller: controllers['proteins'],
                     label: context.localizations.proteins,
                     validator: (p0) => _requiredValidator(p0, context),
                   ),
-                  const SizedBox(height: 16),
-                  AdvancedFields(controllers: controllers),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: submitForm,
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32.0, vertical: 12.0),
-                        backgroundColor: AppColors.secondaryAccent,
-                        foregroundColor: Colors.white),
-                    child: Text(context.localizations.submit),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: AdvancedFields(controllers: controllers),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: ElevatedButton(
+                      onPressed: submitForm,
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32.0, vertical: 12.0),
+                          backgroundColor: AppColors.secondaryAccent,
+                          foregroundColor: Colors.white),
+                      child: Text(context.localizations.submit),
+                    ),
                   ),
                 ],
               ),
@@ -183,14 +196,6 @@ class AddAlimentForm extends StatelessWidget {
       'proteins': TextEditingController(),
       'salt': TextEditingController(),
     };
-  }
-
-  int? _parseToInt(String text) {
-    try {
-      return int.tryParse(text);
-    } catch (e) {
-      return null;
-    }
   }
 
   String? _requiredValidator(String? value, BuildContext context) {

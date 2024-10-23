@@ -9,45 +9,37 @@ class AdvancedFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO delete sizedbox
     return ExpansionTile(
       title: Text(context.localizations.advanced),
       children: [
         CustomTextField(
-          controller: controllers['fatsSaturated']!,
+          controller: controllers['fatsSaturated'],
           label: context.localizations.fatsSaturated,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['fatsPolyunsaturated']!,
+          controller: controllers['fatsPolyunsaturated'],
           label: context.localizations.fatsPolyunsaturated,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['fatsMonounsaturated']!,
+          controller: controllers['fatsMonounsaturated'],
           label: context.localizations.fatsMonounsaturated,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['fatsTrans']!,
+          controller: controllers['fatsTrans'],
           label: context.localizations.fatsTrans,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['fiber']!,
+          controller: controllers['fiber'],
           label: context.localizations.fiber,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['sugar']!,
+          controller: controllers['sugar'],
           label: context.localizations.sugar,
         ),
-        const SizedBox(height: 16),
         CustomTextField(
-          controller: controllers['salt']!,
+          controller: controllers['salt'],
           label: context.localizations.salt,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -75,6 +76,7 @@ class _ImageInputState extends State<ImageInput> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: AppColors.foreground,
           contentPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -84,37 +86,39 @@ class _ImageInputState extends State<ImageInput> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildImageSourceOption(
-                  context,
-                  Icons.camera_alt,
-                  context.localizations.camera,
-                  ImageSource.camera,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.camera_alt, size: 40),
+                      onPressed: () =>
+                          Navigator.of(context).pop(ImageSource.camera),
+                    ),
+                    Text(
+                      context.localizations.camera,
+                      style: const TextStyle(color: AppColors.secondaryAccent),
+                    ),
+                  ],
                 ),
-                _buildImageSourceOption(
-                  context,
-                  Icons.photo,
-                  context.localizations.gallery,
-                  ImageSource.gallery,
-                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.photo, size: 40),
+                      onPressed: () =>
+                          Navigator.of(context).pop(ImageSource.gallery),
+                    ),
+                    Text(
+                      context.localizations.gallery,
+                      style: const TextStyle(color: AppColors.secondaryAccent),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _buildImageSourceOption(
-      BuildContext context, IconData icon, String label, ImageSource source) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(icon, size: 40),
-          onPressed: () => Navigator.of(context).pop(source),
-        ),
-        Text(label),
-      ],
     );
   }
 
@@ -136,7 +140,7 @@ class _ImageInputState extends State<ImageInput> {
               color: appTheme.inputDecorationTheme.fillColor,
               image: _selectedImage != null
                   ? DecorationImage(
-                      image: FileImage(File(_selectedImage!.path)),
+                      image: FileImage(File(_selectedImage?.path ?? '')),
                       fit: BoxFit.cover,
                     )
                   : null,
@@ -154,7 +158,6 @@ class _ImageInputState extends State<ImageInput> {
                         Icon(Icons.add_a_photo,
                             color: Theme.of(context).unselectedWidgetColor,
                             size: 50),
-                        const SizedBox(height: 10),
                         Text(
                           context.localizations.selectOne,
                           style: appTheme.textTheme.bodyMedium?.copyWith(
@@ -186,7 +189,6 @@ class _ImageInputState extends State<ImageInput> {
                   ),
           ),
         ),
-        const SizedBox(height: 10),
       ],
     );
   }

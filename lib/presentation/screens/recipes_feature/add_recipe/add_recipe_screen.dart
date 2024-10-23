@@ -8,7 +8,7 @@ import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_event.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
+import 'package:food_macros/presentation/widgets/aliments_selection_dialog.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/instructions_text_input.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/select_aliments_list.dart';
 import 'package:food_macros/presentation/widgets/custom_text_field.dart';
@@ -121,23 +121,28 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               controller: _recipeNameController,
               label: context.localizations.recipeName,
             ),
-            const SizedBox(height: 16.0),
-            InstructionsTextField(controller: _instructionsController),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () => _showSelectAlimentOverlay(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondaryAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.016),
+              child: InstructionsTextField(controller: _instructionsController),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height * 0.01),
+              child: ElevatedButton(
+                onPressed: () => _showSelectAlimentOverlay(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondaryAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                child: Text(
+                  context.localizations.addAliment,
+                  style: const TextStyle(color: AppColors.foreground),
                 ),
               ),
-              child: Text(
-                context.localizations.addAliment,
-                style: const TextStyle(color: AppColors.foreground),
-              ),
             ),
-            const SizedBox(height: 16.0),
             Expanded(
               child: SelectedAlimentsList(
                 selectedAliments: _selectedAliments,

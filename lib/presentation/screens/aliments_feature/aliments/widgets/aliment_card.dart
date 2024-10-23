@@ -38,17 +38,22 @@ class CustomCard extends StatelessWidget {
                   radius: 30,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () =>
-                      context.go(AppRoutesPath.alimentDetail, extra: aliment),
-                  child: Text(
-                    aliment.name ?? '',
-                    style: AppTheme.bodyTextStyle.copyWith(color: Colors.white),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.height * 0.02),
+                child: Expanded(
+                  child: GestureDetector(
+                    onTap: () =>
+                        context.go(AppRoutesPath.alimentDetail, extra: aliment),
+                    child: Text(
+                      aliment.name ?? '',
+                      style:
+                          AppTheme.bodyTextStyle.copyWith(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
+              const Spacer(),
               GestureDetector(
                 onTap: () =>
                     context.go(AppRoutesPath.alimentDetail, extra: aliment),
@@ -90,12 +95,15 @@ class CustomCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  aliment.name ?? '',
-                  style: AppTheme.titleTextStyle
-                      .copyWith(color: AppColors.foreground),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.01),
+                  child: Text(
+                    aliment.name ?? '',
+                    style: AppTheme.titleTextStyle
+                        .copyWith(color: AppColors.foreground),
+                  ),
                 ),
-                const SizedBox(height: 10),
                 MacroRow(
                     label: context.localizations.calories,
                     value: '${aliment.calories} kcal'),
@@ -108,14 +116,18 @@ class CustomCard extends StatelessWidget {
                 MacroRow(
                     label: context.localizations.proteins,
                     value: '${aliment.proteins}g'),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => overlayEntry.remove(),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondaryAccent,
-                      foregroundColor: Colors.white,
-                      textStyle: const TextStyle(fontWeight: FontWeight.w800)),
-                  child: Text(context.localizations.close),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.01),
+                  child: ElevatedButton(
+                    onPressed: () => overlayEntry.remove(),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.secondaryAccent,
+                        foregroundColor: Colors.white,
+                        textStyle:
+                            const TextStyle(fontWeight: FontWeight.w800)),
+                    child: Text(context.localizations.close),
+                  ),
                 ),
               ],
             ),

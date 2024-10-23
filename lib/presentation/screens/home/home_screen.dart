@@ -9,6 +9,7 @@ import 'package:food_macros/domain/models/additive_entity.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:food_macros/presentation/screens/home/bloc/home_state.dart';
 import 'package:food_macros/presentation/screens/home/widgets/additive_card.dart';
+import 'package:food_macros/presentation/screens/home/widgets/monthly_spent_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,12 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: AppTheme.titleTextStyle
                       .copyWith(color: AppColors.foreground),
                 ),
-                const SizedBox(height: 10),
                 Text(
                   additive.description,
                   style: const TextStyle(fontFamily: 'Roboto'),
                 ),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => {
                     setState(() {
@@ -112,8 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
 
-              final List<_ChartData> chartData = state.monthlySpent
-                  .map((monthlySpent) => _ChartData(
+              final List<ChartData> chartData = state.monthlySpent
+                  .map((monthlySpent) => ChartData(
                         monthlySpent.alimentName,
                         monthlySpent.quantity.toDouble(),
                         monthlySpent.id,
@@ -141,40 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       enlargeCenterPage: true,
                     ),
                   ),
-                  Stack(
-                    children: [
-                      SfCartesianChart(
-                        primaryYAxis: const NumericAxis(
-                          minimum: 0,
-                          maximum: 5000,
-                          interval: 500,
-                        ),
-                        primaryXAxis: const CategoryAxis(),
-                        tooltipBehavior: _tooltip,
-                        series: <CartesianSeries<_ChartData, String>>[
-                          BarSeries<_ChartData, String>(
-                            dataSource: chartData,
-                            xValueMapper: (_ChartData data, _) => data.x,
-                            yValueMapper: (_ChartData data, _) => data.y,
-                            name: context.localizations.aliment,
-                            color: AppColors.secondary,
-                          ),
-                        ],
-                      ),
-                      if (chartData.isEmpty)
-                        Positioned.fill(
-                          child: Center(
-                            child: Text(
-                              context.localizations.informationNotAvailable,
-                              style: TextStyle(
-                                fontSize: 28,
-                                color: Colors.black.withOpacity(0.6),
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  )
+                  MonthlySpentChart(tooltip: _tooltip, chartData: chartData)
                 ],
               );
             },
@@ -183,12 +149,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-class _ChartData {
-  _ChartData(this.x, this.y, this.id);
-
-  final String x;
-  final double y;
-  final int? id;
 }

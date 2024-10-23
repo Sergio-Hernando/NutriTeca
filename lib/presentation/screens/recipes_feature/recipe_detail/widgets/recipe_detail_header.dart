@@ -34,26 +34,32 @@ class RecipeDetailHeader extends StatelessWidget {
                           color: AppColors.secondaryAccent,
                           fontFamily: 'Roboto'),
                     ),
-                    Text(
-                      controllers?['name'].text ?? '',
-                      style: AppTheme.titleTextStyle.copyWith(
-                        color: AppColors.secondaryAccent,
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.height * 0.02),
+                      child: Text(
+                        controllers?['name'].text ?? '',
+                        style: AppTheme.titleTextStyle.copyWith(
+                          color: AppColors.secondaryAccent,
+                        ),
                       ),
                     ),
                   ],
                 ),
-          const SizedBox(height: 16.0),
           isEditing
               ? CustomTextField(
                   controller: controllers?['instructions'],
                   label: context.localizations.instructions,
                 )
               : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       context.localizations.instructions,
-                      style: AppTheme.detailTextStyle
-                          .copyWith(fontFamily: 'Roboto'),
+                      style: AppTheme.titleTextStyle.copyWith(
+                          color: AppColors.secondaryAccent,
+                          fontFamily: 'Roboto'),
                     ),
                     SingleChildScrollView(
                       child: Text(

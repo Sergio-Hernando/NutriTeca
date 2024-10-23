@@ -4,7 +4,7 @@ import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
 import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
+import 'package:food_macros/presentation/widgets/aliments_selection_dialog.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
 import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
@@ -179,7 +179,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   isEditing: isEditing,
                   controllers: controllers,
                 ),
-                const SizedBox(height: 16.0),
                 AlimentsTable(
                   aliments: controllers?['aliments'],
                   isEditing: isEditing,

@@ -21,8 +21,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<RecipeEvent>((event, emit) async {
       await event.when(
         getRecipes: () => _getRecipesEventToState(emit),
-        updateSearch: (searchResults) =>
-            _mapUpdateSearchToState(emit, searchResults),
+        updateSearch: (searchResults, enteredKeyword) =>
+            _mapUpdateSearchToState(emit, searchResults, enteredKeyword),
         refreshRecipes: (recipe) => _mapRefreshRecipeEventToState(recipe, emit),
       );
     });
@@ -47,6 +47,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         emit(state.copyWith(
           screenStatus: const ScreenStatus.success(),
           recipes: recipes,
+          allRecipes: recipes,
         ));
       }
     } catch (e) {
@@ -54,9 +55,11 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     }
   }
 
-  Future<void> _mapUpdateSearchToState(
-      Emitter<RecipeState> emit, List<RecipeEntity> searchResults) async {
-    emit(state.copyWith(recipes: searchResults));
+  Future<void> _mapUpdateSearchToState(Emitter<RecipeState> emit,
+      List<RecipeEntity> searchResults, String enteredKeyword) async {
+    enteredKeyword == ''
+        ? emit(state.copyWith(recipes: state.allRecipes))
+        : emit(state.copyWith(recipes: searchResults));
   }
 
   Future<void> _mapRefreshRecipeEventToState(

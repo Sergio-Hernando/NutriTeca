@@ -15,6 +15,6 @@ class AlimentsEvent with _$AlimentsEvent {
   const factory AlimentsEvent.resetFilters() = _ResetFilters;
   const factory AlimentsEvent.updateFilters(FiltersEntity filters) =
       _UpdateFilters;
-  const factory AlimentsEvent.updateSearch(List<AlimentEntity> searchResults) =
-      _UpdateSearch;
+  const factory AlimentsEvent.updateSearch(
+      List<AlimentEntity> searchResults, String enteredKeyword) = _UpdateSearch;
 }

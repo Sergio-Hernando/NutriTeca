@@ -179,7 +179,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   isEditing: isEditing,
                   controllers: controllers,
                 ),
-                const SizedBox(height: 16.0),
                 AlimentsTable(
                   aliments: controllers?['aliments'],
                   isEditing: isEditing,

@@ -4,14 +4,13 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 
 class CustomSupermarketDropdown extends StatelessWidget {
-  const CustomSupermarketDropdown(
-      {super.key, required this.controllers, required this.list});
+  const CustomSupermarketDropdown({super.key, required this.controllers});
 
   final Map<String, dynamic> controllers;
-  final List<String> list;
 
   @override
   Widget build(BuildContext context) {
+    final list = ['Mercadona', 'Lidl', 'Aldi', 'Eroski', 'Dia', 'Alcampo'];
     return CustomDropdown<String>.search(
       controller: controllers['supermarket'],
       hintText: context.localizations.selectSupermarket,

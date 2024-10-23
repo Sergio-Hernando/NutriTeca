@@ -62,12 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: AppTheme.titleTextStyle
                       .copyWith(color: AppColors.foreground),
                 ),
-                const SizedBox(height: 10),
                 Text(
                   additive.description,
                   style: const TextStyle(fontFamily: 'Roboto'),
                 ),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => {
                     setState(() {

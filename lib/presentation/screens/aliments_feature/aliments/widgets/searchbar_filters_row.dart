@@ -30,16 +30,19 @@ class SearchBarWidget extends StatelessWidget {
               },
             ),
           ),
-          //TODO revisar este metodo, ¿se puede quitar async y await?
           IconButton(
             onPressed: () async {
-              final selectedFilters = await context.push(AppRoutesPath.filters,
+              final currentContext = context;
+
+              final selectedFilters = await currentContext.push(
+                  AppRoutesPath.filters,
                   extra: allItems) as FiltersEntity?;
-              if (selectedFilters != null) {
-                context
+
+              if (selectedFilters != null && currentContext.mounted) {
+                currentContext
                     .read<AlimentsBloc>()
                     .add(AlimentsEvent.updateFilters(selectedFilters));
-                context
+                currentContext
                     .read<AlimentsBloc>()
                     .add(AlimentsEvent.applyFilters(selectedFilters));
               }

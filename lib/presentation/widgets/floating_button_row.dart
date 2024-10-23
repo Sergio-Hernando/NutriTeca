@@ -23,14 +23,17 @@ class FloatingButtonRow extends StatelessWidget {
             backgroundColor: Colors.red,
             child: const Icon(Icons.cancel, color: AppColors.foreground),
           ),
-        const SizedBox(width: 16),
-        FloatingActionButton(
-          shape: const CircleBorder(),
-          onPressed: toggleEditModeOn,
-          backgroundColor: AppColors.secondary,
-          child: Icon(
-            isEditing ? Icons.save : Icons.edit,
-            color: AppColors.foreground,
+        Padding(
+          padding:
+              EdgeInsets.only(left: MediaQuery.of(context).size.height * 0.016),
+          child: FloatingActionButton(
+            shape: const CircleBorder(),
+            onPressed: toggleEditModeOn,
+            backgroundColor: AppColors.secondary,
+            child: Icon(
+              isEditing ? Icons.save : Icons.edit,
+              color: AppColors.foreground,
+            ),
           ),
         ),
       ],

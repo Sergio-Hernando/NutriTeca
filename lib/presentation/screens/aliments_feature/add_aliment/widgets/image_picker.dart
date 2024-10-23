@@ -136,7 +136,7 @@ class _ImageInputState extends State<ImageInput> {
               color: appTheme.inputDecorationTheme.fillColor,
               image: _selectedImage != null
                   ? DecorationImage(
-                      image: FileImage(File(_selectedImage!.path)),
+                      image: FileImage(File(_selectedImage?.path ?? '')),
                       fit: BoxFit.cover,
                     )
                   : null,
@@ -154,7 +154,6 @@ class _ImageInputState extends State<ImageInput> {
                         Icon(Icons.add_a_photo,
                             color: Theme.of(context).unselectedWidgetColor,
                             size: 50),
-                        const SizedBox(height: 10),
                         Text(
                           context.localizations.selectOne,
                           style: appTheme.textTheme.bodyMedium?.copyWith(
@@ -186,7 +185,6 @@ class _ImageInputState extends State<ImageInput> {
                   ),
           ),
         ),
-        const SizedBox(height: 10),
       ],
     );
   }

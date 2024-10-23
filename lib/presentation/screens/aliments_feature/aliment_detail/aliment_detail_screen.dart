@@ -1,7 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
@@ -11,6 +10,7 @@ import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/wi
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_event.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_state.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
 import 'package:food_macros/presentation/widgets/common_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,16 +31,6 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
 
   late Map<String, dynamic> controllers;
   XFile? _selectedImage;
-
-//TODO mover lista a generica
-  final List<String> supermarkets = [
-    'Mercadona',
-    'Lidl',
-    'Aldi',
-    'Eroski',
-    'Dia',
-    'Alcampo'
-  ];
 
   @override
   void initState() {
@@ -135,8 +125,8 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
       _selectedImage = image;
     });
     if (_selectedImage != null) {
-      controllers['image'].text = await XFileConverter()
-          .convertImageToBase64(_selectedImage!); // TODO quitar exclamacion
+      controllers['image'].text =
+          await XFileConverter().convertImageToBase64(_selectedImage!);
     }
   }
 
@@ -221,8 +211,8 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
           ),
           Expanded(
             child: isEditing
-                ? DropdownButtonFormField<String>(
-                    value: controllers['supermarket'].value.isEmpty
+                ? SupermarketDropdown(
+                    selectedValue: controllers['supermarket'].value.isEmpty
                         ? null
                         : controllers['supermarket'].value,
                     onChanged: (newValue) {
@@ -230,17 +220,6 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
                         controllers['supermarket'].value = newValue;
                       });
                     },
-                    items: supermarkets
-                        .map((supermarket) => DropdownMenuItem(
-                            value: supermarket, child: Text(supermarket)))
-                        .toList(),
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: AppColors.secondaryAccent,
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30.0))),
-                    ),
                   )
                 : Text(
                     controllers['supermarket'].value.isEmpty

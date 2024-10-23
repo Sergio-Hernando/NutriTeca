@@ -73,7 +73,6 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 16.0),
             Expanded(
               child: ListView.builder(
                 itemCount: widget.aliments.length,
@@ -111,8 +110,8 @@ class _AlimentSelectionDialogState extends State<AlimentSelectionDialog> {
           onPressed: () {
             final quantity = quantityController.text;
             if (selectedAlimentId != null && quantity.isNotEmpty) {
-              widget.onSelectAliment(
-                  selectedAlimentId!, selectedAlimentName, int.parse(quantity));
+              widget.onSelectAliment(selectedAlimentId ?? 0,
+                  selectedAlimentName, int.parse(quantity));
               Navigator.of(context).pop();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(

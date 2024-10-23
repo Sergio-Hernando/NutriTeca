@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
@@ -23,6 +24,7 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 1;
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   void _goBranch(int index) {
     widget.navigationShell.goBranch(
@@ -49,53 +51,38 @@ class _BaseScreenState extends State<BaseScreen> {
           },
           screenIndex: _selectedIndex,
         ),
-        body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: widget.navigationShell,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          backgroundColor: AppColors.background,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.foreground,
-          selectedLabelStyle: const TextStyle(fontSize: 18),
-          currentIndex: _selectedIndex,
+        body: widget.navigationShell,
+        bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          backgroundColor: AppColors.foreground,
+          color: AppColors.background,
+          buttonBackgroundColor: AppColors.secondary,
+          height: 60,
+          animationDuration: const Duration(milliseconds: 300),
+          index: _selectedIndex,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
             });
             _goBranch(_selectedIndex);
           },
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
-                  width: 24,
-                  height: 24,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.foreground,
-                    BlendMode.srcIn,
-                  )),
-              activeIcon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
-                  width: 24,
-                  height: 24,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.primary,
-                    BlendMode.srcIn,
-                  )),
-              label: context.localizations.alimentsScreen,
+          items: <Widget>[
+            SvgPicture.asset('assets/icons/nutrition_icon.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.foreground,
+                  BlendMode.srcIn,
+                )),
+            const Icon(
+              Icons.home,
+              size: 30,
+              color: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.home,
-                size: 30,
-              ),
-              label: context.localizations.mainScreen,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.book),
-              label: context.localizations.recipesScreen,
+            const Icon(
+              Icons.book,
+              size: 30,
+              color: Colors.white,
             ),
           ],
         ),

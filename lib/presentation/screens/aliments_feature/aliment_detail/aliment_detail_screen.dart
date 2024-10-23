@@ -1,7 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/aliment_entity.dart';
@@ -10,7 +9,8 @@ import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/wi
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_bloc.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_event.dart';
 import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_state.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/widgets/nutrient_table.dart';
+import 'package:food_macros/presentation/screens/aliments_feature/aliment_detail/widgets/supermarket_row.dart';
 import 'package:food_macros/presentation/widgets/common_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,7 +65,7 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
       'salt': TextEditingController(text: '${currentAliment.salt ?? '-'}'),
     };
 
-// TODO quitar exclamacion
+    // TODO quitar exclamacion
     if (currentAliment.imageBase64 != null &&
         currentAliment.imageBase64!.isNotEmpty) {
       _selectedImage = await XFileConverter()
@@ -184,8 +184,19 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
                               image: _selectedImage,
                             ),
                 ),
-                _buildSupermarketRow(),
-                _buildNutrientDataTable(),
+                SupermarketRowWidget(
+                  isEditing: isEditing,
+                  controllers: controllers,
+                  onChanged: (newValue) {
+                    setState(() {
+                      controllers['supermarket']!.value = newValue!;
+                    });
+                  },
+                ),
+                NutrientDataTableWidget(
+                  isEditing: isEditing,
+                  controllers: controllers,
+                ),
               ],
             ),
           ),
@@ -193,88 +204,6 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
         );
       },
     );
-  }
-
-  Widget _buildSupermarketRow() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24.0,
-        vertical: 16,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(context.localizations.supermarket,
-              style: AppTheme.detailTextStyle),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.25,
-          ),
-          Expanded(
-            child: isEditing
-                ? SupermarketDropdown(
-                    selectedValue: controllers['supermarket'].value.isEmpty
-                        ? null
-                        : controllers['supermarket'].value,
-                    onChanged: (newValue) {
-                      setState(() {
-                        controllers['supermarket'].value = newValue;
-                      });
-                    },
-                  )
-                : Text(
-                    controllers['supermarket'].value.isEmpty
-                        ? '-'
-                        : controllers['supermarket'].value,
-                    style: AppTheme.detailTextStyle,
-                    textAlign: TextAlign.end,
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNutrientDataTable() {
-    return DataTable(
-      columns: [
-        DataColumn(
-            label: Text(context.localizations.nutrient,
-                style: AppTheme.detailTextStyle)),
-        DataColumn(
-            label: Text(context.localizations.nutrientValue,
-                style: AppTheme.detailTextStyle)),
-      ],
-      rows: [
-        _buildDataRow(context.localizations.calories, controllers['calories']),
-        _buildDataRow(context.localizations.fats, controllers['fats']),
-        _buildDataRow(
-            context.localizations.fatsSaturated, controllers['fatsSaturated']),
-        _buildDataRow(context.localizations.fatsPolyunsaturated,
-            controllers['fatsPolyunsaturated']),
-        _buildDataRow(context.localizations.fatsMonounsaturated,
-            controllers['fatsMonounsaturated']),
-        _buildDataRow(
-            context.localizations.fatsTrans, controllers['fatsTrans']),
-        _buildDataRow(
-            context.localizations.carbohydrates, controllers['carbohydrates']),
-        _buildDataRow(context.localizations.fiber, controllers['fiber']),
-        _buildDataRow(context.localizations.sugar, controllers['sugar']),
-        _buildDataRow(context.localizations.proteins, controllers['proteins']),
-        _buildDataRow(context.localizations.salt, controllers['salt']),
-      ],
-    );
-  }
-
-  DataRow _buildDataRow(String nutrient, TextEditingController controller) {
-    return DataRow(cells: [
-      DataCell(Text(nutrient, style: AppTheme.detailTextStyle, maxLines: 1)),
-      DataCell(
-        isEditing
-            ? TextFormField(
-                controller: controller, style: AppTheme.detailTextStyle)
-            : Text(controller.text, style: AppTheme.detailTextStyle),
-      ),
-    ]);
   }
 
   int? _parseToInt(String text) => int.tryParse(text);

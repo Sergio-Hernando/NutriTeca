@@ -29,40 +29,47 @@ class AddAlimentForm extends StatelessWidget {
         final aliment = AlimentEntity(
           name:
               (controllers['name'] as TextEditingController).text.capitalize(),
-          imageBase64: (controllers['image'] as TextEditingController).text,
+          imageBase64: (controllers['image']).text,
           supermarket:
               (controllers['supermarket'] as SingleSelectController<String>)
                       .value ??
                   '',
-          calories: _parseToInt(
-                  (controllers['calories'] as TextEditingController).text) ??
+          calories: (controllers['calories'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
-          fats: _parseToInt(
-                  (controllers['fats'] as TextEditingController).text) ??
+          fats: (controllers['fats'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
-          fatsSaturated: _parseToInt(
-              (controllers['fatsSaturated'] as TextEditingController).text),
-          fatsPolyunsaturated: _parseToInt(
+          fatsSaturated: (controllers['fatsSaturated'] as TextEditingController)
+              .text
+              .parseToInt(),
+          fatsPolyunsaturated:
               (controllers['fatsPolyunsaturated'] as TextEditingController)
-                  .text),
-          fatsMonounsaturated: _parseToInt(
+                  .text
+                  .parseToInt(),
+          fatsMonounsaturated:
               (controllers['fatsMonounsaturated'] as TextEditingController)
-                  .text),
-          fatsTrans: _parseToInt(
-              (controllers['fatsTrans'] as TextEditingController).text),
-          carbohydrates: _parseToInt(
-                  (controllers['carbohydrates'] as TextEditingController)
-                      .text) ??
+                  .text
+                  .parseToInt(),
+          fatsTrans: (controllers['fatsTrans'] as TextEditingController)
+              .text
+              .parseToInt(),
+          carbohydrates: (controllers['carbohydrates'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
           fiber:
-              _parseToInt((controllers['fiber'] as TextEditingController).text),
+              (controllers['fiber'] as TextEditingController).text.parseToInt(),
           sugar:
-              _parseToInt((controllers['sugar'] as TextEditingController).text),
-          proteins: _parseToInt(
-                  (controllers['proteins'] as TextEditingController).text) ??
+              (controllers['sugar'] as TextEditingController).text.parseToInt(),
+          proteins: (controllers['proteins'] as TextEditingController)
+                  .text
+                  .parseToInt() ??
               0,
           salt:
-              _parseToInt((controllers['salt'] as TextEditingController).text),
+              (controllers['salt'] as TextEditingController).text.parseToInt(),
         );
 
         context.read<AddAlimentBloc>().add(AddAlimentEvent.addAliment(aliment));
@@ -189,14 +196,6 @@ class AddAlimentForm extends StatelessWidget {
       'proteins': TextEditingController(),
       'salt': TextEditingController(),
     };
-  }
-
-  int? _parseToInt(String text) {
-    try {
-      return int.tryParse(text);
-    } catch (e) {
-      return null;
-    }
   }
 
   String? _requiredValidator(String? value, BuildContext context) {

@@ -24,7 +24,7 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 1;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   void _goBranch(int index) {
     widget.navigationShell.goBranch(
@@ -89,7 +89,7 @@ class _BaseScreenState extends State<BaseScreen> {
         floatingActionButton: _selectedIndex == 1
             ? null
             : FloatingActionButton(
-                heroTag: 'añadir',
+                heroTag: 'add',
                 shape: const CircleBorder(),
                 onPressed: () => context.push(_selectedIndex == 0
                     ? AppRoutesPath.addAliment

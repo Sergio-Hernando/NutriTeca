@@ -5,7 +5,7 @@ import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/core/types/screen_status.dart';
 import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/add_recipe/widgets/aliments_selection_dialog.dart';
+import 'package:food_macros/presentation/widgets/aliments_selection_dialog.dart';
 import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
 import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_event.dart';
 

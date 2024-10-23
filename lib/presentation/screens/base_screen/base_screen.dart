@@ -24,6 +24,7 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 1;
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   void _goBranch(int index) {
     widget.navigationShell.goBranch(
@@ -52,10 +53,10 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
         body: widget.navigationShell,
         bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
           backgroundColor: AppColors.foreground,
           color: AppColors.background,
-          buttonBackgroundColor:
-              AppColors.secondary, // Color del botón seleccionado
+          buttonBackgroundColor: AppColors.secondary,
           height: 60,
           animationDuration: const Duration(milliseconds: 300),
           index: _selectedIndex,
@@ -66,12 +67,13 @@ class _BaseScreenState extends State<BaseScreen> {
             _goBranch(_selectedIndex);
           },
           items: <Widget>[
-            SvgPicture.asset(
-              'assets/icons/nutrition_icon.svg',
-              width: 24,
-              height: 24,
-              color: Colors.white,
-            ),
+            SvgPicture.asset('assets/icons/nutrition_icon.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.foreground,
+                  BlendMode.srcIn,
+                )),
             const Icon(
               Icons.home,
               size: 30,
@@ -84,69 +86,6 @@ class _BaseScreenState extends State<BaseScreen> {
             ),
           ],
         ),
-
-        /*  CurvedNavigationBar(
-          backgroundColor: Colors.transparent,
-          animationDuration: const Duration(milliseconds: 300),
-          color: Colors.white,
-          height: 70,
-          items: const [
-            Icon(Icons.tv, size: 30),
-            Icon(Icons.search, size: 30),
-            Icon(Icons.bookmark_outline, size: 30),
-          ],
-          onTap: (value) {
-            setState(() {
-              _selectedIndex = value;
-            });
-            _goBranch(_selectedIndex);
-          },
-        ), */
-        /* BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          backgroundColor: AppColors.background,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.foreground,
-          selectedLabelStyle: const TextStyle(fontSize: 18),
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-            _goBranch(_selectedIndex);
-          },
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
-                  width: 24,
-                  height: 24,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.foreground,
-                    BlendMode.srcIn,
-                  )),
-              activeIcon: SvgPicture.asset('assets/icons/nutrition_icon.svg',
-                  width: 24,
-                  height: 24,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.primary,
-                    BlendMode.srcIn,
-                  )),
-              label: context.localizations.alimentsScreen,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.home,
-                size: 30,
-              ),
-              label: context.localizations.mainScreen,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.book),
-              label: context.localizations.recipesScreen,
-            ),
-          ],
-        ), */
         floatingActionButton: _selectedIndex == 1
             ? null
             : FloatingActionButton(

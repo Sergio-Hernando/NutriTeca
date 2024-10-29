@@ -8,15 +8,13 @@ import 'package:food_macros/core/routes/app_routes.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:food_macros/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:food_macros/core/di/di.dart' as app_di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sp = await SharedPreferences.getInstance();
   final db = DatabaseHandler();
-  app_di.initDi(instance: sp, dbInstance: db);
+  app_di.initDi(dbInstance: db);
   runApp(const MainApp());
 }
 

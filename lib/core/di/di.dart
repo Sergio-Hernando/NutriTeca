@@ -31,7 +31,6 @@ import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:food_macros/presentation/shared/aliment_action.dart';
 import 'package:food_macros/presentation/shared/recipe_action.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'modules/api_modules.dart';
 part 'modules/local_data_source_modules.dart';
@@ -39,12 +38,10 @@ part 'modules/remote_data_source_modules.dart';
 part 'modules/repository_modules.dart';
 part 'modules/ui_modules.dart';
 
-void initDi(
-    {required SharedPreferences instance,
-    required DatabaseHandler dbInstance}) {
+void initDi({required DatabaseHandler dbInstance}) {
   _apiModulesInit();
   _remoteDataSourceModulesInit();
-  _localDataSourceModulesInit(instance: instance, dbInstance: dbInstance);
+  _localDataSourceModulesInit(dbInstance: dbInstance);
   _repositoryModulesInit();
   _uiModulesInit();
 }

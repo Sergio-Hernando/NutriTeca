@@ -14,30 +14,37 @@ class AdvancedFields extends StatelessWidget {
       children: [
         CustomTextField(
           controller: controllers['fatsSaturated'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.fatsSaturated,
         ),
         CustomTextField(
           controller: controllers['fatsPolyunsaturated'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.fatsPolyunsaturated,
         ),
         CustomTextField(
           controller: controllers['fatsMonounsaturated'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.fatsMonounsaturated,
         ),
         CustomTextField(
           controller: controllers['fatsTrans'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.fatsTrans,
         ),
         CustomTextField(
           controller: controllers['fiber'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.fiber,
         ),
         CustomTextField(
           controller: controllers['sugar'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.sugar,
         ),
         CustomTextField(
           controller: controllers['salt'],
+          keyboardType: const TextInputType.numberWithOptions(),
           label: context.localizations.salt,
         ),
       ],

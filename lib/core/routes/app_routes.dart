@@ -116,7 +116,7 @@ GoRouter appRoutes = GoRouter(
                                             StreamController<AlimentAction>>(
                                         instanceName: 'alimentEventController'),
                                   ),
-                                  child: const AddAlimentScreen(),
+                                  child: AddAlimentScreen(),
                                 );
                               },
                             ),

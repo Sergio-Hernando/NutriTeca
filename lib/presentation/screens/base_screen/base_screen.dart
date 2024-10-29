@@ -71,7 +71,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 width: 24,
                 height: 24,
                 colorFilter: const ColorFilter.mode(
-                  AppColors.foreground,
+                  Colors.white,
                   BlendMode.srcIn,
                 )),
             const Icon(
@@ -97,7 +97,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 backgroundColor: AppColors.secondary,
                 child: const Icon(
                   Icons.add,
-                  color: AppColors.foreground,
+                  color: Colors.white,
                 ),
               ),
       ),

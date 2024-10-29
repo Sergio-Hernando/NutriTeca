@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:food_macros/core/extensions/context_extension.dart';
 import 'package:food_macros/presentation/widgets/common_dialog.dart';
 import 'package:food_macros/presentation/widgets/floating_button_row.dart';
 import 'package:go_router/go_router.dart';
@@ -39,37 +40,53 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
     );
   }
 
+  Future<void> showExitConfirmation() {
+    return (showDialog(
+      context: context,
+      builder: (context) => ConfirmDeleteDialog(
+        title: context.localizations.exitTitle,
+        content: context.localizations.exitContent,
+        mainButtonText: context.localizations.exit,
+        onConfirm: () => context.pop(),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.foreground,
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            widget.title,
-            style: AppTheme.titleTextStyle,
-          ),
-        ),
-        backgroundColor: AppColors.background,
-        leading: widget.isEditing
-            ? const SizedBox()
-            : IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => context.pop(),
-              ),
-        actions: [
-          if (!widget.isEditing)
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.white),
-              onPressed: _confirmDelete,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) => showExitConfirmation(),
+      child: Scaffold(
+        backgroundColor: AppColors.foreground,
+        appBar: AppBar(
+          title: Center(
+            child: Text(
+              widget.title,
+              style: AppTheme.titleTextStyle,
             ),
-        ],
-      ),
-      body: widget.body,
-      floatingActionButton: FloatingButtonRow(
-        isEditing: widget.isEditing,
-        toggleEditModeOn: widget.onEditOn,
-        toggleEditModeOff: widget.onEditOff,
+          ),
+          backgroundColor: AppColors.background,
+          leading: widget.isEditing
+              ? const SizedBox()
+              : IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => showExitConfirmation(),
+                ),
+          actions: [
+            if (!widget.isEditing)
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.white),
+                onPressed: _confirmDelete,
+              ),
+          ],
+        ),
+        body: widget.body,
+        floatingActionButton: FloatingButtonRow(
+          isEditing: widget.isEditing,
+          toggleEditModeOn: widget.onEditOn,
+          toggleEditModeOff: widget.onEditOff,
+        ),
       ),
     );
   }

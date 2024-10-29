@@ -24,22 +24,22 @@ class NutrientDataTableWidget extends StatelessWidget {
                 style: AppTheme.detailTextStyle)),
       ],
       rows: [
-        _buildDataRow(context.localizations.calories, controllers['calories']!),
-        _buildDataRow(context.localizations.fats, controllers['fats']!),
+        _buildDataRow(context.localizations.calories, controllers['calories']),
+        _buildDataRow(context.localizations.fats, controllers['fats']),
         _buildDataRow(
-            context.localizations.fatsSaturated, controllers['fatsSaturated']!),
+            context.localizations.fatsSaturated, controllers['fatsSaturated']),
         _buildDataRow(context.localizations.fatsPolyunsaturated,
-            controllers['fatsPolyunsaturated']!),
+            controllers['fatsPolyunsaturated']),
         _buildDataRow(context.localizations.fatsMonounsaturated,
-            controllers['fatsMonounsaturated']!),
+            controllers['fatsMonounsaturated']),
         _buildDataRow(
-            context.localizations.fatsTrans, controllers['fatsTrans']!),
+            context.localizations.fatsTrans, controllers['fatsTrans']),
         _buildDataRow(
-            context.localizations.carbohydrates, controllers['carbohydrates']!),
-        _buildDataRow(context.localizations.fiber, controllers['fiber']!),
-        _buildDataRow(context.localizations.sugar, controllers['sugar']!),
-        _buildDataRow(context.localizations.proteins, controllers['proteins']!),
-        _buildDataRow(context.localizations.salt, controllers['salt']!),
+            context.localizations.carbohydrates, controllers['carbohydrates']),
+        _buildDataRow(context.localizations.fiber, controllers['fiber']),
+        _buildDataRow(context.localizations.sugar, controllers['sugar']),
+        _buildDataRow(context.localizations.proteins, controllers['proteins']),
+        _buildDataRow(context.localizations.salt, controllers['salt']),
       ],
     );
   }
@@ -50,7 +50,9 @@ class NutrientDataTableWidget extends StatelessWidget {
       DataCell(
         isEditing
             ? TextFormField(
-                controller: controller, style: AppTheme.detailTextStyle)
+                controller: controller,
+                keyboardType: const TextInputType.numberWithOptions(),
+                style: AppTheme.detailTextStyle)
             : Text(controller.text, style: AppTheme.detailTextStyle),
       ),
     ]);

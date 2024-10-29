@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:food_macros/core/constants/app_assets.dart';
 import 'package:food_macros/core/constants/app_colors.dart';
 import 'package:food_macros/core/constants/app_theme.dart';
 import 'package:food_macros/core/extensions/context_extension.dart';
@@ -32,10 +33,13 @@ class CustomCard extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () => _showMacroOverlay(context),
-                child: CircleAvatar(
-                  backgroundImage:
-                      MemoryImage(base64Decode(aliment.imageBase64 ?? '')),
-                  radius: 30,
+                child: ClipOval(
+                  child: Image(
+                    image: _getImageProvider(),
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Padding(
@@ -68,6 +72,14 @@ class CustomCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ImageProvider<Object> _getImageProvider() {
+    if (aliment.imageBase64 != null && aliment.imageBase64!.isNotEmpty) {
+      return MemoryImage(base64Decode(aliment.imageBase64 ?? ''));
+    } else {
+      return AssetImage(AppAssets.mainLogo);
+    }
   }
 
   void _showMacroOverlay(BuildContext context) {

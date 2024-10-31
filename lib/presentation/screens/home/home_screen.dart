@@ -1,15 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/additive_entity.dart';
-import 'package:food_macros/presentation/screens/home/bloc/home_bloc.dart';
-import 'package:food_macros/presentation/screens/home/bloc/home_state.dart';
-import 'package:food_macros/presentation/screens/home/widgets/additive_card.dart';
-import 'package:food_macros/presentation/screens/home/widgets/monthly_spent_chart.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/additive_entity.dart';
+import 'package:nutri_teca/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:nutri_teca/presentation/screens/home/bloc/home_state.dart';
+import 'package:nutri_teca/presentation/screens/home/widgets/additive_card.dart';
+import 'package:nutri_teca/presentation/screens/home/widgets/monthly_spent_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreen extends StatefulWidget {

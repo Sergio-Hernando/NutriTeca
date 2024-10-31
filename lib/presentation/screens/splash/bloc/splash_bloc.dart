@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_event.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_state.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_event.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc() : super(SplashState.initial()) {

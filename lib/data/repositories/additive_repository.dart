@@ -1,6 +1,6 @@
-import 'package:food_macros/data/data_source_contracts/additives_data_source_contract.dart';
-import 'package:food_macros/domain/models/additive_entity.dart';
-import 'package:food_macros/domain/repository_contracts/additive_repository_contract.dart';
+import 'package:nutri_teca/data/data_source_contracts/additives_data_source_contract.dart';
+import 'package:nutri_teca/domain/models/additive_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/additive_repository_contract.dart';
 
 class AdditiveRepository implements AdditiveRepositoryContract {
   final AdditivesDataSourceContract _additivesDataSourceContract;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/routes/app_paths.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
 import 'package:go_router/go_router.dart';
 
 class RecipeCard extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'aliment_detail_event.freezed.dart';

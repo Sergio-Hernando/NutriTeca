@@ -1,5 +1,5 @@
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'base_screen_state.freezed.dart';

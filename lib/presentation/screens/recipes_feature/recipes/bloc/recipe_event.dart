@@ -1,5 +1,5 @@
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/shared/recipe_action.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/presentation/shared/recipe_action.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe_event.freezed.dart';

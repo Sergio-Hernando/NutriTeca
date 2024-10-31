@@ -1,4 +1,4 @@
-import 'package:food_macros/data/models/aliment_data_entity.dart';
+import 'package:nutri_teca/data/models/aliment_data_entity.dart';
 
 class RecipeDataEntity {
   final int? id;

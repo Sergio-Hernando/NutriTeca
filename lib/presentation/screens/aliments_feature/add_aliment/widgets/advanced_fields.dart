@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/presentation/widgets/custom_text_field.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/presentation/widgets/custom_text_field.dart';
 
 class AdvancedFields extends StatelessWidget {
   final Map<String, dynamic> controllers;

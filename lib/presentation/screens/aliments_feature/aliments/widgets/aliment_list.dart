@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/aliment_card.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/widgets/aliment_card.dart';
 
 class AlimentList extends StatelessWidget {
   final List<AlimentEntity> aliments;

@@ -1,6 +1,6 @@
-import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
+import 'package:nutri_teca/data/data_source_contracts/aliment_data_source_contract.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/aliment_repository_contract.dart';
 
 class AlimentRepository implements AlimentRepositoryContract {
   final AlimentDataSourceContract _alimentDataSourceContract;

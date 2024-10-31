@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_assets.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/widgets/macro_row.dart';
+import 'package:nutri_teca/core/constants/app_assets.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/routes/app_paths.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/widgets/macro_row.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomCard extends StatelessWidget {
@@ -78,7 +78,7 @@ class CustomCard extends StatelessWidget {
     if (aliment.imageBase64 != null && aliment.imageBase64!.isNotEmpty) {
       return MemoryImage(base64Decode(aliment.imageBase64 ?? ''));
     } else {
-      return AssetImage(AppAssets.mainLogo);
+      return const AssetImage(AppAssets.mainLogo);
     }
   }
 

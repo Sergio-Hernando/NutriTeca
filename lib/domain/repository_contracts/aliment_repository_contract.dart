@@ -1,4 +1,4 @@
-import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
 
 abstract class AlimentRepositoryContract {
   Future<AlimentEntity?> createAliment(AlimentEntity aliment);

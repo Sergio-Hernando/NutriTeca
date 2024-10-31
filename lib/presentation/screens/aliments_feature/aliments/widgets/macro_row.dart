@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
 
 class MacroRow extends StatelessWidget {
   final String label;

@@ -1,6 +1,6 @@
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/domain/models/filters_entity.dart';
-import 'package:food_macros/presentation/shared/aliment_action.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/models/filters_entity.dart';
+import 'package:nutri_teca/presentation/shared/aliment_action.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'aliments_event.freezed.dart';

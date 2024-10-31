@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/domain/repository_contracts/additive_repository_contract.dart';
-import 'package:food_macros/domain/repository_contracts/monthly_spent_repository_contract.dart';
-import 'package:food_macros/presentation/screens/home/bloc/home_event.dart';
-import 'package:food_macros/presentation/screens/home/bloc/home_state.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/additive_repository_contract.dart';
+import 'package:nutri_teca/domain/repository_contracts/monthly_spent_repository_contract.dart';
+import 'package:nutri_teca/presentation/screens/home/bloc/home_event.dart';
+import 'package:nutri_teca/presentation/screens/home/bloc/home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final MonthlySpentRepositoryContract _monthlySpentRepository;

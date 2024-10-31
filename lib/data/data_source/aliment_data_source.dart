@@ -1,6 +1,6 @@
-import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/aliment_data_entity.dart';
-import 'package:food_macros/data/data_source_contracts/aliment_data_source_contract.dart';
+import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/models/aliment_data_entity.dart';
+import 'package:nutri_teca/data/data_source_contracts/aliment_data_source_contract.dart';
 
 class AlimentDataSource implements AlimentDataSourceContract {
   final DatabaseHandler dbHandler;

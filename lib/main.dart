@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
-import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/core/providers/local_provider.dart';
-import 'package:food_macros/core/routes/app_routes.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_event.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/core/providers/local_provider.dart';
+import 'package:nutri_teca/core/routes/app_routes.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_bloc.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:food_macros/core/di/di.dart' as app_di;
+import 'package:nutri_teca/core/di/di.dart' as app_di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
           return MaterialApp.router(
             routerConfig: appRoutes,
             debugShowCheckedModeBanner: false,
-            title: 'FoodMacros',
+            title: 'NutriTeca',
             theme: AppTheme.mainTheme,
             localizationsDelegates: const [
               AppLocalizations.delegate,

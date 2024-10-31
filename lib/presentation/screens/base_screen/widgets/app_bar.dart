@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_assets.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/presentation/widgets/aliments_selection_dialog.dart';
-import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
-import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_event.dart';
+import 'package:nutri_teca/core/constants/app_assets.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
+import 'package:nutri_teca/presentation/widgets/aliments_selection_dialog.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_event.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function() goHome;

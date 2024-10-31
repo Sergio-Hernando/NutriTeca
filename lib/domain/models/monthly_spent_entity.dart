@@ -1,4 +1,4 @@
-import 'package:food_macros/data/models/monthly_spent_data_entity.dart';
+import 'package:nutri_teca/data/models/monthly_spent_data_entity.dart';
 
 class MonthlySpentEntity {
   final int? id;

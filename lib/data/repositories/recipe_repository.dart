@@ -1,6 +1,6 @@
-import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
+import 'package:nutri_teca/data/data_source_contracts/recipe_data_source_contract.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/recipe_repository_contract.dart';
 
 class RecipeRepository implements RecipeRepositoryContract {
   final RecipeDataSourceContract _recipeDataSourceContract;

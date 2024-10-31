@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/add_aliment/widgets/add_form.dart';
-import 'package:food_macros/presentation/widgets/base_add_screen.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/widgets/add_form.dart';
+import 'package:nutri_teca/presentation/widgets/base_add_screen.dart';
 
 class AddAlimentScreen extends StatelessWidget {
   AddAlimentScreen({Key? key}) : super(key: key);

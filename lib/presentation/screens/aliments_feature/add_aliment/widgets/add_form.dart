@@ -106,16 +106,24 @@ class AddAlimentFormState extends State<AddAlimentForm> {
                         ? 'This field is required'
                         : null,
                   ),
-                  CustomSupermarketDropdown(
-                    controllers: _controllers,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: CustomSupermarketDropdown(
+                      controllers: _controllers,
+                    ),
                   ),
-                  ImageInput(
-                    onImageSelected: (base64Image) async {
-                      if (base64Image != null) {
-                        _controllers['image'].text = await XFileConverter()
-                            .convertImageToBase64(base64Image);
-                      }
-                    },
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: ImageInput(
+                      onImageSelected: (base64Image) async {
+                        if (base64Image != null) {
+                          _controllers['image'].text = await XFileConverter()
+                              .convertImageToBase64(base64Image);
+                        }
+                      },
+                    ),
                   ),
                   CustomTextField(
                     controller: _controllers['calories'],

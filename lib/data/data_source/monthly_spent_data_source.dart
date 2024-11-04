@@ -49,4 +49,16 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
       whereArgs: [id],
     );
   }
+
+  @override
+  Future<bool> deleteSpentIfNewMonth() async {
+    var result = 0;
+    final DateTime now = DateTime.now();
+    if (now.day == 1) {
+      final db = await dbHandler.database;
+      result = await db.delete('spent');
+    }
+
+    return result > 0 ? true : false;
+  }
 }

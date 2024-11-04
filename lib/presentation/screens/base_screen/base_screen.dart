@@ -7,8 +7,10 @@ import 'package:nutri_teca/core/constants/app_colors.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/presentation/screens/base_screen/widgets/app_bar.dart';
+import 'package:nutri_teca/presentation/widgets/ad_widgets/ad_banner.dart';
 import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutri_teca/presentation/widgets/ad_widgets/intersticial_ad.dart';
 
 class BaseScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -51,7 +53,18 @@ class _BaseScreenState extends State<BaseScreen> {
           },
           screenIndex: _selectedIndex,
         ),
-        body: widget.navigationShell,
+        body: Column(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: widget.navigationShell,
+              ),
+            ),
+            const AdBanner(),
+          ],
+        ),
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           backgroundColor: AppColors.foreground,
@@ -91,9 +104,7 @@ class _BaseScreenState extends State<BaseScreen> {
             : FloatingActionButton(
                 heroTag: 'add',
                 shape: const CircleBorder(),
-                onPressed: () => context.push(_selectedIndex == 0
-                    ? AppRoutesPath.addAliment
-                    : AppRoutesPath.addRecipe),
+                onPressed: () => _navigateWithAd(context),
                 backgroundColor: AppColors.secondary,
                 child: const Icon(
                   Icons.add,
@@ -102,6 +113,17 @@ class _BaseScreenState extends State<BaseScreen> {
               ),
       ),
     );
+  }
+
+  void _navigateWithAd(BuildContext context) {
+    final interstitialAdWidget = InterstitialAdWidgetState();
+    interstitialAdWidget.loadAd();
+    // Navegar al detalle de alimento después de un corto retraso para permitir que el anuncio se muestre.
+    Future.delayed(const Duration(seconds: 2), () {
+      context.push(_selectedIndex == 0
+          ? AppRoutesPath.addAliment
+          : AppRoutesPath.addRecipe);
+    });
   }
 }
 

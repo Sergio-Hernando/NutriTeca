@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nutri_teca/core/constants/app_assets.dart';
 import 'package:nutri_teca/core/constants/app_colors.dart';
@@ -8,14 +9,17 @@ import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/widgets/macro_row.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutri_teca/presentation/widgets/ad_widgets/intersticial_ad.dart';
 
 class CustomCard extends StatelessWidget {
   final AlimentEntity aliment;
+  final InterstitialAdWidget interstitialAdWidget;
 
-  const CustomCard({
+  CustomCard({
     required this.aliment,
     Key? key,
-  }) : super(key: key);
+  })  : interstitialAdWidget = InterstitialAdWidget(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +51,7 @@ class CustomCard extends StatelessWidget {
                     horizontal: MediaQuery.of(context).size.height * 0.02),
                 child: Expanded(
                   child: GestureDetector(
-                    onTap: () =>
-                        context.go(AppRoutesPath.alimentDetail, extra: aliment),
+                    onTap: () => _navigateWithAd(context),
                     child: Text(
                       aliment.name ?? '',
                       style:
@@ -59,8 +62,7 @@ class CustomCard extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () =>
-                    context.go(AppRoutesPath.alimentDetail, extra: aliment),
+                onTap: () => _navigateWithAd(context),
                 child: const Icon(
                   Icons.chevron_right,
                   color: Colors.white,
@@ -149,5 +151,14 @@ class CustomCard extends StatelessWidget {
     );
 
     overlay.insert(overlayEntry);
+  }
+
+  void _navigateWithAd(BuildContext context) {
+    final interstitialAdWidget = InterstitialAdWidgetState();
+    interstitialAdWidget.loadAd();
+    // Navegar al detalle de alimento después de un corto retraso para permitir que el anuncio se muestre.
+    Future.delayed(const Duration(seconds: 2), () {
+      context.go(AppRoutesPath.alimentDetail, extra: aliment);
+    });
   }
 }

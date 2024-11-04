@@ -68,5 +68,7 @@
     "name": "Nome:",
     "searchRecipe": "Buscar Receita",
     "splashText": "O aplicativo perfeito para controlar o que você come e muito mais",
-    "splashTitle": "NUTRITECA"
+    "splashTitle": "NUTRITECA",
+    "cancelTitle": "Tem certeza que deseja voltar?",
+    "cancelContent": "Se você sair desta tela a ação que você está realizando será cancelada"
 }

@@ -6,4 +6,5 @@ abstract class MonthlySpentRepositoryContract {
   Future<MonthlySpentEntity?> getMonthlySpent(int id);
   Future<List<MonthlySpentEntity>> getAllMonthlySpent();
   Future<int> deleteMonthlySpent(int id);
+  Future<bool> deleteSpentIfNewMonth();
 }

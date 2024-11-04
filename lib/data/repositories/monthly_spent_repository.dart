@@ -40,4 +40,9 @@ class MonthlySpentRepository implements MonthlySpentRepositoryContract {
   Future<int> deleteMonthlySpent(int id) async {
     return await _alimentDataSourceContract.deleteMonthlySpent(id);
   }
+
+  @override
+  Future<bool> deleteSpentIfNewMonth() async {
+    return await _alimentDataSourceContract.deleteSpentIfNewMonth();
+  }
 }

@@ -167,7 +167,8 @@ GoRouter appRoutes = GoRouter(
                                         'monthlySpentNotificationController'),
                                 additiveRepositoryContract: uiModulesDi())
                               ..add(const HomeEvent.getAllMonthlySpent())
-                              ..add(const HomeEvent.getAdditives()),
+                              ..add(const HomeEvent.getAdditives())
+                              ..add(const HomeEvent.checkMonthFirstDay()),
                             child: child,
                           );
                         },

@@ -25,10 +25,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await event.when(
           getAllMonthlySpent: () =>
               _getAllMonthlySpentEventToState(event, emit),
-          getAdditives: () => _getAadditivesEventToState(event, emit),
+          getAdditives: () => _getAdditivesEventToState(event, emit),
           deleteMonthlySpent: (id) => _deleteMonthlySpentEventToState(id, emit),
           refreshMonthlySpent: (monthlySpentEntity) =>
-              _refreshMonthlySpentEventToState(monthlySpentEntity, emit));
+              _refreshMonthlySpentEventToState(monthlySpentEntity, emit),
+          checkMonthFirstDay: () => _checkIfIsMonthFirst());
     });
     _monthlySpentController.stream.listen((aliment) {
       add(HomeEvent.refreshMonthlySpent(aliment));
@@ -89,7 +90,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         monthlySpent: monthlySpent));
   }
 
-  Future<void> _getAadditivesEventToState(
+  Future<void> _getAdditivesEventToState(
       HomeEvent event, Emitter<HomeState> emit) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final data = await _additiveRepositoryContract.getAdditives();
@@ -102,5 +103,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           screenStatus:
               const ScreenStatus.error('Los aditivos no se han recuperado')));
     }
+  }
+
+  Future<void> _checkIfIsMonthFirst() async {
+    await _monthlySpentRepository.deleteSpentIfNewMonth();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/core/database/database_handler.dart';
 import 'package:nutri_teca/core/providers/local_provider.dart';
@@ -13,6 +14,7 @@ import 'package:nutri_teca/core/di/di.dart' as app_di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   final db = DatabaseHandler();
   app_di.initDi(dbInstance: db);
   runApp(const MainApp());

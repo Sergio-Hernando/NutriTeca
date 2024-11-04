@@ -10,4 +10,5 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.deleteMonthlySpent(int id) = _DeleteMonthlySpent;
   const factory HomeEvent.refreshMonthlySpent(MonthlySpentEntity monthlySpent) =
       _RefreshMonthlySpent;
+  const factory HomeEvent.checkMonthFirstDay() = _CheckMonthFirstDay;
 }

@@ -40,12 +40,12 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
     );
   }
 
-  Future<void> showExitConfirmation() {
-    return (showDialog(
+  Future<void> showExitConfirmation() async {
+    return await (showDialog(
       context: context,
       builder: (context) => ConfirmDeleteDialog(
-        title: context.localizations.exitTitle,
-        content: context.localizations.exitContent,
+        title: context.localizations.cancelTitle,
+        content: context.localizations.cancelContent,
         mainButtonText: context.localizations.exit,
         onConfirm: () => context.pop(),
       ),
@@ -55,7 +55,7 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: widget.isEditing ? false : true,
       onPopInvoked: (didPop) => showExitConfirmation(),
       child: Scaffold(
         backgroundColor: AppColors.foreground,
@@ -71,7 +71,7 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
               ? const SizedBox()
               : IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => showExitConfirmation(),
+                  onPressed: () => context.pop(),
                 ),
           actions: [
             if (!widget.isEditing)

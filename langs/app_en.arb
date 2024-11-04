@@ -68,5 +68,7 @@
     "name": "Name:",
     "searchRecipe": "Search Recipe",
     "splashText": "The perfect app to control what you eat and more",
-    "splashTitle": "NUTRITECA"
+    "splashTitle": "NUTRITECA",
+    "cancelTitle": "Are you sure you want to come back?",
+    "cancelContent": "If you leave this screen the action you are carrying out will be canceled"
 }

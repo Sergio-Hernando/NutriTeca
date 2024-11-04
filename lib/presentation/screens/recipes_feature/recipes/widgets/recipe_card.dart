@@ -3,6 +3,7 @@ import 'package:nutri_teca/core/constants/app_colors.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/domain/models/recipe_entity.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutri_teca/presentation/widgets/ad_widgets/intersticial_ad.dart';
 
 class RecipeCard extends StatelessWidget {
   final RecipeEntity recipe;
@@ -15,7 +16,7 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go(AppRoutesPath.recipeDetail, extra: recipe.id),
+      onTap: () => _navigateWithAd(context),
       child: Card(
         color: AppColors.secondary,
         shape: RoundedRectangleBorder(
@@ -61,5 +62,14 @@ class RecipeCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateWithAd(BuildContext context) {
+    final interstitialAdWidget = InterstitialAdWidgetState();
+    interstitialAdWidget.loadAd();
+    // Navegar al detalle de alimento después de un corto retraso para permitir que el anuncio se muestre.
+    Future.delayed(const Duration(seconds: 2), () {
+      context.go(AppRoutesPath.recipeDetail, extra: recipe.id);
+    });
   }
 }

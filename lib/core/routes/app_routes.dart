@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutri_teca/core/di/di.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
@@ -33,6 +34,7 @@ import 'package:nutri_teca/presentation/shared/aliment_action.dart';
 import 'package:nutri_teca/presentation/screens/base_screen/base_screen.dart';
 import 'package:nutri_teca/presentation/shared/recipe_action.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -224,6 +226,26 @@ GoRouter appRoutes = GoRouter(
                                       ),
                                       child: const AddRecipeScreen(),
                                     );
+                                  },
+                                  onExit: (context, state) async {
+                                    bool confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) =>
+                                              ConfirmDeleteDialog(
+                                            title: context
+                                                .localizations.cancelTitle,
+                                            content: context
+                                                .localizations.cancelContent,
+                                            mainButtonText:
+                                                context.localizations.exit,
+                                            onConfirm: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                          ),
+                                        ) ??
+                                        false;
+
+                                    return confirm;
                                   },
                                 ),
                                 GoRoute(

@@ -49,14 +49,11 @@ class CustomCard extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.height * 0.02),
-                child: Expanded(
-                  child: GestureDetector(
-                    onTap: () => _navigateWithAd(context),
-                    child: Text(
-                      aliment.name ?? '',
-                      style:
-                          AppTheme.bodyTextStyle.copyWith(color: Colors.white),
-                    ),
+                child: GestureDetector(
+                  onTap: () => _navigateWithAd(context),
+                  child: Text(
+                    aliment.name ?? '',
+                    style: AppTheme.bodyTextStyle.copyWith(color: Colors.white),
                   ),
                 ),
               ),

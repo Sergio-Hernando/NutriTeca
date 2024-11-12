@@ -70,5 +70,6 @@
     "splashText": "L'application parfaite pour contrôler ce que vous mangez et bien plus",
     "splashTitle": "NUTRITECA",
     "cancelTitle": "Etes-vous sûr de vouloir revenir ?",
-    "cancelContent": "Si vous quittez cet écran, l'action que vous effectuez sera annulée"
+    "cancelContent": "Si vous quittez cet écran, l'action que vous effectuez sera annulée",
+    "fieldRequired": "Ce champ est obligatoire"
 }

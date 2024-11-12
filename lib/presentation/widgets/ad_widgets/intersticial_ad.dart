@@ -53,7 +53,7 @@ class InterstitialAdWidgetState extends State<InterstitialAdWidget> {
 
   bool _shouldShowAd() {
     Random random = Random();
-    return random.nextDouble() < 0.7;
+    return random.nextDouble() < 0.4;
   }
 
   @override

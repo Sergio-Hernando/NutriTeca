@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/extensions/string_extensions.dart';
 import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
@@ -101,9 +102,9 @@ class AddAlimentFormState extends State<AddAlimentForm> {
                 children: [
                   CustomTextField(
                     controller: _controllers['name'],
-                    label: "Aliment Name",
+                    label: context.localizations.alimentName,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'This field is required'
+                        ? context.localizations.fieldRequired
                         : null,
                   ),
                   Padding(
@@ -127,34 +128,34 @@ class AddAlimentFormState extends State<AddAlimentForm> {
                   ),
                   CustomTextField(
                     controller: _controllers['calories'],
-                    label: "Calories",
+                    label: context.localizations.calories,
                     keyboardType: TextInputType.number,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'This field is required'
+                        ? context.localizations.fieldRequired
                         : null,
                   ),
                   CustomTextField(
                     controller: _controllers['fats'],
-                    label: "Fats",
+                    label: context.localizations.fats,
                     keyboardType: TextInputType.number,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'This field is required'
+                        ? context.localizations.fieldRequired
                         : null,
                   ),
                   CustomTextField(
                     controller: _controllers['carbohydrates'],
-                    label: "Carbohydrates",
+                    label: context.localizations.carbohydrates,
                     keyboardType: TextInputType.number,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'This field is required'
+                        ? context.localizations.fieldRequired
                         : null,
                   ),
                   CustomTextField(
                     controller: _controllers['proteins'],
-                    label: "Proteins",
+                    label: context.localizations.proteins,
                     keyboardType: TextInputType.number,
                     validator: (value) => value == null || value.isEmpty
-                        ? 'This field is required'
+                        ? context.localizations.fieldRequired
                         : null,
                   ),
                   AdvancedFields(controllers: _controllers),

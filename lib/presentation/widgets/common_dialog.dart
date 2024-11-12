@@ -84,10 +84,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop(true);
-            onConfirm();
-          },
+          onPressed: onConfirm,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.background,
           ),

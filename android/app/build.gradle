@@ -51,12 +51,32 @@ android {
         versionName flutterVersionName
     }
 
-    buildTypes {
+    def Properties properties = new Properties()
+    file("../key.properties").withInputStream { stream ->
+        properties.load(stream)
+    }
+
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            storeFile file(properties.getProperty("KEYSTORE_PATH"))
+            storePassword properties.getProperty("KEYSTORE_PASSWORD")
+            keyAlias "nutri_teca_key"
+            keyPassword properties.getProperty("KEY_PASSWORD")
         }
+    }
+
+
+    packagingOptions {
+        exclude 'META-INF/*'
+    }
+
+    buildTypes {
+    release {
+        signingConfig = signingConfigs.release
+        minifyEnabled true
+        shrinkResources true
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
     }
 }
 

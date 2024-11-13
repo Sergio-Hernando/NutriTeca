@@ -38,6 +38,10 @@ import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<AddAlimentScreenState> addAlimentScreenKey =
+    GlobalKey<AddAlimentScreenState>(debugLabel: 'addAliment');
+final GlobalKey<AddRecipeScreenState> addRecipeScreenKey =
+    GlobalKey<AddRecipeScreenState>(debugLabel: 'addRecipe');
 final GlobalKey<NavigatorState> _shellHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final GlobalKey<NavigatorState> _shellHomeBlocNavigatorKey =
@@ -118,8 +122,36 @@ GoRouter appRoutes = GoRouter(
                                             StreamController<AlimentAction>>(
                                         instanceName: 'alimentEventController'),
                                   ),
-                                  child: AddAlimentScreen(),
+                                  child: AddAlimentScreen(
+                                    key: addAlimentScreenKey,
+                                  ),
                                 );
+                              },
+                              onExit: (context, state) async {
+                                final AddAlimentScreenState? homeScreenState =
+                                    addAlimentScreenKey.currentState;
+                                final isSaved =
+                                    homeScreenState?.isSaving ?? false;
+                                if (isSaved) {
+                                  return true;
+                                }
+                                bool confirm = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) => ConfirmDeleteDialog(
+                                        title:
+                                            context.localizations.cancelTitle,
+                                        content:
+                                            context.localizations.cancelContent,
+                                        mainButtonText:
+                                            context.localizations.exit,
+                                        onConfirm: () {
+                                          Navigator.of(context).pop(true);
+                                        },
+                                      ),
+                                    ) ??
+                                    false;
+
+                                return confirm;
                               },
                             ),
                             GoRoute(
@@ -224,10 +256,20 @@ GoRouter appRoutes = GoRouter(
                                             instanceName:
                                                 'recipeNotificationController'),
                                       ),
-                                      child: const AddRecipeScreen(),
+                                      child: AddRecipeScreen(
+                                        key: addRecipeScreenKey,
+                                      ),
                                     );
                                   },
                                   onExit: (context, state) async {
+                                    final AddRecipeScreenState?
+                                        addRecipeScreenState =
+                                        addRecipeScreenKey.currentState;
+                                    final isSaved =
+                                        addRecipeScreenState?.isSaving ?? false;
+                                    if (isSaved) {
+                                      return true;
+                                    }
                                     bool confirm = await showDialog<bool>(
                                           context: context,
                                           builder: (context) =>

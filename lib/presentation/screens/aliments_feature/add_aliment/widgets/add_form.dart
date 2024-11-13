@@ -24,7 +24,16 @@ class AddAlimentForm extends StatefulWidget {
 class AddAlimentFormState extends State<AddAlimentForm> {
   final _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _controllers = _buildControllers();
+  bool isFormValid = false;
 
+  // Validar el formulario
+  void validateForm() {
+    setState(() {
+      isFormValid = _formKey.currentState?.validate() ?? false;
+    });
+  }
+
+  // Enviar el formulario si es válido
   void submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       final aliment = AlimentEntity(
@@ -71,8 +80,13 @@ class AddAlimentFormState extends State<AddAlimentForm> {
       );
 
       context.read<AddAlimentBloc>().add(AddAlimentEvent.addAliment(aliment));
-      Navigator.pop(context);
     }
+  }
+
+  String? validateRequiredField(String? value, BuildContext context) {
+    return value == null || value.isEmpty
+        ? context.localizations.fieldRequired
+        : null;
   }
 
   @override
@@ -98,14 +112,13 @@ class AddAlimentFormState extends State<AddAlimentForm> {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey,
+              onChanged: validateForm,
               child: Column(
                 children: [
                   CustomTextField(
                     controller: _controllers['name'],
                     label: context.localizations.alimentName,
-                    validator: (value) => value == null || value.isEmpty
-                        ? context.localizations.fieldRequired
-                        : null,
+                    validator: (value) => validateRequiredField(value, context),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -130,33 +143,25 @@ class AddAlimentFormState extends State<AddAlimentForm> {
                     controller: _controllers['calories'],
                     label: context.localizations.calories,
                     keyboardType: TextInputType.number,
-                    validator: (value) => value == null || value.isEmpty
-                        ? context.localizations.fieldRequired
-                        : null,
+                    validator: (value) => validateRequiredField(value, context),
                   ),
                   CustomTextField(
                     controller: _controllers['fats'],
                     label: context.localizations.fats,
                     keyboardType: TextInputType.number,
-                    validator: (value) => value == null || value.isEmpty
-                        ? context.localizations.fieldRequired
-                        : null,
+                    validator: (value) => validateRequiredField(value, context),
                   ),
                   CustomTextField(
                     controller: _controllers['carbohydrates'],
                     label: context.localizations.carbohydrates,
                     keyboardType: TextInputType.number,
-                    validator: (value) => value == null || value.isEmpty
-                        ? context.localizations.fieldRequired
-                        : null,
+                    validator: (value) => validateRequiredField(value, context),
                   ),
                   CustomTextField(
                     controller: _controllers['proteins'],
                     label: context.localizations.proteins,
                     keyboardType: TextInputType.number,
-                    validator: (value) => value == null || value.isEmpty
-                        ? context.localizations.fieldRequired
-                        : null,
+                    validator: (value) => validateRequiredField(value, context),
                   ),
                   AdvancedFields(controllers: _controllers),
                 ],

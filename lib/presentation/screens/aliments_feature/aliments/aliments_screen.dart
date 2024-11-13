@@ -32,6 +32,7 @@ class AlimentsScreen extends StatelessWidget {
           final foundAliments = state.aliments;
 
           return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               SearchBarWidget(
                 allItems: foundAliments,

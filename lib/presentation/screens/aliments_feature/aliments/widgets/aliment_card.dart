@@ -13,13 +13,11 @@ import 'package:nutri_teca/presentation/widgets/ad_widgets/intersticial_ad.dart'
 
 class CustomCard extends StatelessWidget {
   final AlimentEntity aliment;
-  final InterstitialAdWidget interstitialAdWidget;
 
-  CustomCard({
+  const CustomCard({
     required this.aliment,
     Key? key,
-  })  : interstitialAdWidget = InterstitialAdWidget(),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +151,6 @@ class CustomCard extends StatelessWidget {
   void _navigateWithAd(BuildContext context) {
     final interstitialAdWidget = InterstitialAdWidgetState();
     interstitialAdWidget.loadAd();
-    // Navegar al detalle de alimento después de un corto retraso para permitir que el anuncio se muestre.
     Future.delayed(const Duration(seconds: 2), () {
       context.go(AppRoutesPath.alimentDetail, extra: aliment);
     });

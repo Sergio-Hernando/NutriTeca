@@ -65,7 +65,6 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
       'salt': TextEditingController(text: '${currentAliment.salt ?? '-'}'),
     };
 
-    // TODO quitar exclamacion
     if (currentAliment.imageBase64 != null &&
         currentAliment.imageBase64!.isNotEmpty) {
       _selectedImage = await XFileConverter()

@@ -38,10 +38,10 @@ class AdBannerState extends State<AdBanner> {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.foreground,
-      height: 50, // Ajusta la altura según lo que necesites
+      height: MediaQuery.of(context).size.height * 0.065,
       child: _bannerAd != null
           ? AdWidget(ad: _bannerAd!)
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 

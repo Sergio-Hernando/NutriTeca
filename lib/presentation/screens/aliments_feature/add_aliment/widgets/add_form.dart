@@ -26,14 +26,12 @@ class AddAlimentFormState extends State<AddAlimentForm> {
   final Map<String, dynamic> _controllers = _buildControllers();
   bool isFormValid = false;
 
-  // Validar el formulario
   void validateForm() {
     setState(() {
       isFormValid = _formKey.currentState?.validate() ?? false;
     });
   }
 
-  // Enviar el formulario si es válido
   void submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       final aliment = AlimentEntity(

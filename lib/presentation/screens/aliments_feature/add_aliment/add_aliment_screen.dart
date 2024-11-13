@@ -17,21 +17,6 @@ class AddAlimentScreenState extends State<AddAlimentScreen> {
 
   bool isSaving = false;
 
-  void _submit() {
-    setState(() {
-      isSaving = true;
-      _formKey.currentState?.submitForm();
-    });
-
-    if (_formKey.currentState?.isFormValid ?? false) {
-      GoRouter.of(context).pop(true);
-    } else {
-      setState(() {
-        isSaving = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

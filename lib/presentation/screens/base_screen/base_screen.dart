@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -115,15 +116,27 @@ class _BaseScreenState extends State<BaseScreen> {
     );
   }
 
-  void _navigateWithAd(BuildContext context) {
-    final interstitialAdWidget = InterstitialAdWidgetState();
-    interstitialAdWidget.loadAd();
-    // Navegar al detalle de alimento después de un corto retraso para permitir que el anuncio se muestre.
-    Future.delayed(const Duration(seconds: 2), () {
+  void _navigateWithAd(BuildContext context) async {
+    await _showInterstitialAd(context, 0.35);
+    if (context.mounted) {
       context.push(_selectedIndex == 0
           ? AppRoutesPath.addAliment
           : AppRoutesPath.addRecipe);
-    });
+    }
+  }
+
+  Future<void> _showInterstitialAd(
+      BuildContext context, double probability) async {
+    double randomValue = Random().nextDouble();
+
+    if (randomValue <= probability) {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const InterstitialAdWidget();
+        },
+      );
+    }
   }
 }
 

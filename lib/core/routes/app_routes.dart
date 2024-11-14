@@ -172,6 +172,23 @@ GoRouter appRoutes = GoRouter(
                                       alimentEntity: aliment),
                                 );
                               },
+                              onExit: (context, state) async {
+                                bool confirm = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) => ConfirmDeleteDialog(
+                                        title:
+                                            context.localizations.cancelTitle,
+                                        content:
+                                            context.localizations.cancelContent,
+                                        mainButtonText:
+                                            context.localizations.exit,
+                                        onConfirm: () =>
+                                            Navigator.of(context).pop(true),
+                                      ),
+                                    ) ??
+                                    false;
+                                return confirm;
+                              },
                             ),
                             GoRoute(
                               path: "filters",
@@ -312,6 +329,24 @@ GoRouter appRoutes = GoRouter(
                                             .getAliments()),
                                       child: const RecipeDetailScreen(),
                                     );
+                                  },
+                                  onExit: (context, state) async {
+                                    bool confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) =>
+                                              ConfirmDeleteDialog(
+                                            title: context
+                                                .localizations.cancelTitle,
+                                            content: context
+                                                .localizations.cancelContent,
+                                            mainButtonText:
+                                                context.localizations.exit,
+                                            onConfirm: () =>
+                                                Navigator.of(context).pop(true),
+                                          ),
+                                        ) ??
+                                        false;
+                                    return confirm;
                                   },
                                 ),
                               ]),

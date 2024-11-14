@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_event.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipes/bloc/recipe_state.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipes/widgets/recipe_list.dart';
-import 'package:food_macros/presentation/widgets/generic_search_bar.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/bloc/recipe_bloc.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/bloc/recipe_event.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/bloc/recipe_state.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/widgets/recipe_list.dart';
+import 'package:nutri_teca/presentation/widgets/generic_search_bar.dart';
 
 class RecipeScreen extends StatelessWidget {
   const RecipeScreen({super.key});

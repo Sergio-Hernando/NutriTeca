@@ -1,4 +1,4 @@
-import 'package:food_macros/core/types/screen_status.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'splash_state.freezed.dart';

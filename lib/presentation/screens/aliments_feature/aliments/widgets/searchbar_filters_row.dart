@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/domain/models/filters_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
-import 'package:food_macros/presentation/widgets/generic_search_bar.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/models/filters_entity.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
+import 'package:nutri_teca/presentation/widgets/generic_search_bar.dart';
 import 'package:go_router/go_router.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
+import 'package:nutri_teca/core/routes/app_paths.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final List<AlimentEntity> allItems;
@@ -19,6 +19,7 @@ class SearchBarWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(

@@ -1,4 +1,4 @@
-package com.example.food_macros
+package com.shcdevelopment.nutri_teca
 
 import io.flutter.embedding.android.FlutterActivity
 

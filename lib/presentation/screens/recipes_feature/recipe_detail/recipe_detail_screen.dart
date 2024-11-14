@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/presentation/widgets/aliments_selection_dialog.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/widgets/aliments_table.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/widgets/recipe_detail_header.dart';
-import 'package:food_macros/presentation/widgets/common_detail_screen.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/presentation/widgets/aliments_selection_dialog.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_bloc.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/widgets/aliments_table.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/widgets/recipe_detail_header.dart';
+import 'package:nutri_teca/presentation/widgets/common_detail_screen.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   const RecipeDetailScreen({Key? key}) : super(key: key);

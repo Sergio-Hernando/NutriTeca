@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String? Function(String?)? validator;
   final Widget? icon;
+  final TextInputType? keyboardType;
 
   const CustomTextField({
     super.key,
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     this.validator,
     this.icon,
+    this.keyboardType,
   });
 
   @override
@@ -23,6 +25,7 @@ class CustomTextField extends StatelessWidget {
           vertical: MediaQuery.of(context).size.height * 0.01),
       child: TextFormField(
         controller: controller,
+        keyboardType: keyboardType,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             hintText: label,

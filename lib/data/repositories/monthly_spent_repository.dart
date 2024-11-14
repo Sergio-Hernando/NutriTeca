@@ -1,6 +1,6 @@
-import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
-import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/domain/repository_contracts/monthly_spent_repository_contract.dart';
+import 'package:nutri_teca/data/data_source_contracts/monthly_spent_data_source_contract.dart';
+import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/monthly_spent_repository_contract.dart';
 
 class MonthlySpentRepository implements MonthlySpentRepositoryContract {
   final MonthlySpentDataSourceContract _alimentDataSourceContract;
@@ -39,5 +39,10 @@ class MonthlySpentRepository implements MonthlySpentRepositoryContract {
   @override
   Future<int> deleteMonthlySpent(int id) async {
     return await _alimentDataSourceContract.deleteMonthlySpent(id);
+  }
+
+  @override
+  Future<bool> deleteSpentIfNewMonth() async {
+    return await _alimentDataSourceContract.deleteSpentIfNewMonth();
   }
 }

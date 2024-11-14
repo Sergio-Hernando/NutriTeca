@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/recipe_entity.dart';
-import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
-import 'package:food_macros/domain/repository_contracts/recipe_repository_contract.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
-import 'package:food_macros/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
-import 'package:food_macros/presentation/shared/recipe_action.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/recipe_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/aliment_repository_contract.dart';
+import 'package:nutri_teca/domain/repository_contracts/recipe_repository_contract.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_event.dart';
+import 'package:nutri_teca/presentation/screens/recipes_feature/recipe_detail/bloc/recipe_detail_state.dart';
+import 'package:nutri_teca/presentation/shared/recipe_action.dart';
 
 class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
   final RecipeRepositoryContract _repository;

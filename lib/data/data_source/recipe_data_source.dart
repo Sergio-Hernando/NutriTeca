@@ -1,7 +1,7 @@
-import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/aliment_data_entity.dart';
-import 'package:food_macros/data/models/recipe_data_entity.dart';
-import 'package:food_macros/data/data_source_contracts/recipe_data_source_contract.dart';
+import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/models/aliment_data_entity.dart';
+import 'package:nutri_teca/data/models/recipe_data_entity.dart';
+import 'package:nutri_teca/data/data_source_contracts/recipe_data_source_contract.dart';
 
 class RecipeDataSource implements RecipeDataSourceContract {
   final DatabaseHandler dbHandler;

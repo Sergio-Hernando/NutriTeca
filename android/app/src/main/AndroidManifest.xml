@@ -7,9 +7,13 @@
     
     <application
         android:enableOnBackInvokedCallback="true"
-        android:label="food_macros"
+        android:label="NutriTeca"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-3193440126606963~8553963852"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

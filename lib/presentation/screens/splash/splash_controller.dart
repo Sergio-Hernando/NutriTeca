@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/routes/app_paths.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_bloc.dart';
-import 'package:food_macros/presentation/screens/splash/bloc/splash_state.dart';
-import 'package:food_macros/presentation/screens/splash/splash_screen.dart';
+import 'package:nutri_teca/core/routes/app_paths.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_bloc.dart';
+import 'package:nutri_teca/presentation/screens/splash/bloc/splash_state.dart';
+import 'package:nutri_teca/presentation/screens/splash/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashController extends StatelessWidget {

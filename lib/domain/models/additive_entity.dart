@@ -1,4 +1,4 @@
-import 'package:food_macros/data/models/additives_data_entity.dart';
+import 'package:nutri_teca/data/models/additives_data_entity.dart';
 
 class AdditiveEntity {
   final int id;

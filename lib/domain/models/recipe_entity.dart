@@ -1,5 +1,5 @@
-import 'package:food_macros/data/models/recipe_data_entity.dart';
-import 'package:food_macros/domain/models/aliment_entity.dart';
+import 'package:nutri_teca/data/models/recipe_data_entity.dart';
+import 'package:nutri_teca/domain/models/aliment_entity.dart';
 
 class RecipeEntity {
   final int? id;

@@ -1,6 +1,6 @@
-import 'package:food_macros/core/database/database_handler.dart';
-import 'package:food_macros/data/models/monthly_spent_data_entity.dart';
-import 'package:food_macros/data/data_source_contracts/monthly_spent_data_source_contract.dart';
+import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/models/monthly_spent_data_entity.dart';
+import 'package:nutri_teca/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 
 class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   final DatabaseHandler dbHandler;
@@ -48,5 +48,17 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<bool> deleteSpentIfNewMonth() async {
+    var result = 0;
+    final DateTime now = DateTime.now();
+    if (now.day == 1) {
+      final db = await dbHandler.database;
+      result = await db.delete('spent');
+    }
+
+    return result > 0 ? true : false;
   }
 }

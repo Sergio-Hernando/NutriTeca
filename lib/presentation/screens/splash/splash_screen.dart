@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_assets.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
+import 'package:nutri_teca/core/constants/app_assets.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

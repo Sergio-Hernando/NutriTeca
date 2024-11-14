@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_theme.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
 
 class SupermarketRowWidget extends StatelessWidget {
   final bool isEditing;
@@ -28,7 +28,7 @@ class SupermarketRowWidget extends StatelessWidget {
           Text(context.localizations.supermarket,
               style: AppTheme.detailTextStyle),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.25,
+            width: MediaQuery.of(context).size.width * 0.18,
           ),
           Expanded(
             child: isEditing

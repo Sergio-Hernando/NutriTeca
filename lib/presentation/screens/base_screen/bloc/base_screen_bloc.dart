@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_macros/core/types/screen_status.dart';
-import 'package:food_macros/domain/models/monthly_spent_entity.dart';
-import 'package:food_macros/domain/repository_contracts/aliment_repository_contract.dart';
-import 'package:food_macros/domain/repository_contracts/monthly_spent_repository_contract.dart';
-import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_event.dart';
-import 'package:food_macros/presentation/screens/base_screen/bloc/base_screen_state.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
+import 'package:nutri_teca/domain/repository_contracts/aliment_repository_contract.dart';
+import 'package:nutri_teca/domain/repository_contracts/monthly_spent_repository_contract.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_event.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_state.dart';
 
 class BaseScreenBloc extends Bloc<BaseScreenEvent, BaseScreenState> {
   final AlimentRepositoryContract _alimentsRepository;

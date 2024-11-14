@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_macros/core/constants/app_colors.dart';
-import 'package:food_macros/core/extensions/context_extension.dart';
-import 'package:food_macros/domain/models/filters_entity.dart';
-import 'package:food_macros/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/extensions/context_extension.dart';
+import 'package:nutri_teca/domain/models/filters_entity.dart';
+import 'package:nutri_teca/presentation/screens/aliments_feature/widgets/supermarket_dropdown.dart';
 import 'package:go_router/go_router.dart';
 
 class FilterScreen extends StatefulWidget {

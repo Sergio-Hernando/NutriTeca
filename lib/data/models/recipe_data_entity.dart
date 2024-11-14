@@ -13,7 +13,7 @@ class RecipeDataEntity {
     this.aliments,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
@@ -21,7 +21,7 @@ class RecipeDataEntity {
     };
   }
 
-  Map<String, dynamic> alimentsToMap(int recipeId, AlimentDataEntity aliment) {
+  Map<String, dynamic> alimentstoJson(int recipeId, AlimentDataEntity aliment) {
     return {
       'id_recipe': recipeId,
       'id_aliment': aliment.id,
@@ -29,7 +29,7 @@ class RecipeDataEntity {
     };
   }
 
-  factory RecipeDataEntity.fromMap(Map<String, dynamic> map) {
+  factory RecipeDataEntity.fromJson(Map<String, dynamic> map) {
     return RecipeDataEntity(
       id: map['id'],
       name: map['name'],

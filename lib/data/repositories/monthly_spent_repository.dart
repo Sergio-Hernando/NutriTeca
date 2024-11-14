@@ -17,13 +17,6 @@ class MonthlySpentRepository implements MonthlySpentRepositoryContract {
   }
 
   @override
-  Future<MonthlySpentEntity?> getMonthlySpent(int id) async {
-    final data = await _alimentDataSourceContract.getMonthlySpent(id);
-
-    return MonthlySpentEntity.toDomain(data);
-  }
-
-  @override
   Future<List<MonthlySpentEntity>> getAllMonthlySpent() async {
     final data = await _alimentDataSourceContract.getAllMonthlySpent();
 
@@ -43,6 +36,6 @@ class MonthlySpentRepository implements MonthlySpentRepositoryContract {
 
   @override
   Future<bool> deleteSpentIfNewMonth() async {
-    return await _alimentDataSourceContract.deleteSpentIfNewMonth();
+    return await _alimentDataSourceContract.deleteSpentIfNewMonth() > 0;
   }
 }

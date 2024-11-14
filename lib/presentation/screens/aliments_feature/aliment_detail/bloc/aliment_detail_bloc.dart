@@ -35,7 +35,7 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
   Future<void> _searchRecipesEventToState(
       Emitter<AlimentDetailState> emit, int alimentId) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
-    final result = await _recipesRepository.getRecipesById(alimentId);
+    final result = await _recipesRepository.getRecipesByAlimentId(alimentId);
 
     emit(state.copyWith(
         screenStatus: const ScreenStatus.success(), recipes: result));

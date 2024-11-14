@@ -13,12 +13,12 @@ class RecipeDataSource implements RecipeDataSourceContract {
     final db = await dbHandler.database;
 
     final result = await db.transaction((txn) async {
-      final recipeId = await txn.insert('recipe', recipe.toMap());
+      final recipeId = await txn.insert('recipe', recipe.toJson());
 
       recipe.aliments?.forEach((element) async {
         await txn.insert(
           'recipe_aliment',
-          recipe.alimentsToMap(recipeId, element) as Map<String, Object?>,
+          recipe.alimentstoJson(recipeId, element) as Map<String, Object?>,
         );
       });
 
@@ -134,7 +134,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
   }
 
   @override
-  Future<List<RecipeDataEntity>> getRecipesById(int id) async {
+  Future<List<RecipeDataEntity>> getRecipesByAlimentId(int alimentId) async {
     final db = await dbHandler.database;
 
     final List<Map<String, dynamic>> allRecipes =
@@ -148,7 +148,7 @@ class RecipeDataSource implements RecipeDataSourceContract {
     for (var recipe in allRecipes) {
       if (allRecipeAliments.any((recipeAliment) =>
           recipeAliment['id_recipe'] == recipe['id'] &&
-          recipeAliment['id_aliment'] == id)) {
+          recipeAliment['id_aliment'] == alimentId)) {
         recipes.add(RecipeDataEntity(
           id: recipe['id'] as int,
           name: recipe['name'] as String,

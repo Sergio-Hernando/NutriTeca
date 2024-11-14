@@ -1,11 +1,16 @@
 import 'dart:async';
 
+import 'package:nutri_teca/core/constants/app_urls.dart';
 import 'package:nutri_teca/core/database/database_handler.dart';
 import 'package:nutri_teca/core/network/dio_http_client.dart';
-import 'package:nutri_teca/data/data_source/additives_data_source.dart';
-import 'package:nutri_teca/data/data_source/aliment_data_source.dart';
-import 'package:nutri_teca/data/data_source/monthly_spent_data_source.dart';
-import 'package:nutri_teca/data/data_source/recipe_data_source.dart';
+import 'package:nutri_teca/data/data_source/local_data_source/additives_data_source.dart';
+import 'package:nutri_teca/data/data_source/local_data_source/aliment_data_source.dart';
+import 'package:nutri_teca/data/data_source/local_data_source/monthly_spent_data_source.dart';
+import 'package:nutri_teca/data/data_source/local_data_source/recipe_data_source.dart';
+import 'package:nutri_teca/data/data_source/remote_data_source/api/additives_api.dart';
+import 'package:nutri_teca/data/data_source/remote_data_source/api/aliment_api.dart';
+import 'package:nutri_teca/data/data_source/remote_data_source/api/monthly_spent_api.dart';
+import 'package:nutri_teca/data/data_source/remote_data_source/api/recipe_api.dart';
 import 'package:nutri_teca/data/data_source_contracts/additives_data_source_contract.dart';
 import 'package:nutri_teca/data/repositories/additive_repository.dart';
 import 'package:nutri_teca/data/repositories/aliment_repository.dart';

@@ -34,8 +34,9 @@ class RecipeRepository implements RecipeRepositoryContract {
   }
 
   @override
-  Future<List<RecipeEntity>> getRecipesById(int id) async {
-    final recipes = await _recipeDataSourceContract.getRecipesById(id);
+  Future<List<RecipeEntity>> getRecipesByAlimentId(int alimentId) async {
+    final recipes =
+        await _recipeDataSourceContract.getRecipesByAlimentId(alimentId);
 
     return recipes
         .map(

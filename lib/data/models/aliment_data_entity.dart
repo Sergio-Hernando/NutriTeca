@@ -39,7 +39,7 @@ class AlimentDataEntity {
     this.quantity,
   });
 
-  factory AlimentDataEntity.fromMap(Map<String, dynamic> map) {
+  factory AlimentDataEntity.fromJson(Map<String, dynamic> map) {
     return AlimentDataEntity(
       id: map['id'],
       name: map['name'],
@@ -59,7 +59,7 @@ class AlimentDataEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'image_base64': imageBase64,

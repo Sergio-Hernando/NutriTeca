@@ -23,7 +23,10 @@ class AdditiveCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(
+              top: 6,
+              right: 8,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -37,18 +40,18 @@ class AdditiveCard extends StatelessWidget {
           Text(
             additiveNumber,
             style: const TextStyle(
-                fontSize: 48,
+                fontSize: 36,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 fontFamily: 'Roboto'),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
             child: Text(
               maxLines: 1,
               name,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 color: Colors.white,
                 fontFamily: 'Roboto',
               ),

@@ -10,15 +10,12 @@ class RecipeDetailState with _$RecipeDetailState {
     required ScreenStatus screenStatus,
     required RecipeEntity? recipe,
     required List<AlimentEntity> aliments,
-    required bool isDeleted,
-    required bool isEdited,
   }) = _RecipeDetailState;
   factory RecipeDetailState.initial() {
     return const RecipeDetailState(
-        screenStatus: ScreenStatus.initial(),
-        recipe: null,
-        aliments: [],
-        isEdited: false,
-        isDeleted: false);
+      screenStatus: ScreenStatus.initial(),
+      recipe: null,
+      aliments: [],
+    );
   }
 }

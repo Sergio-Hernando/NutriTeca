@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nutri_teca/core/constants/app_colors.dart';
-import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 import 'package:nutri_teca/presentation/widgets/floating_button_row.dart';
 import 'package:go_router/go_router.dart';
@@ -44,12 +43,6 @@ class _CommonDetailScreenState extends State<CommonDetailScreen> {
     return Scaffold(
       backgroundColor: AppColors.foreground,
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            widget.title,
-            style: AppTheme.titleTextStyle,
-          ),
-        ),
         backgroundColor: AppColors.background,
         leading: widget.isEditing
             ? const SizedBox()

@@ -122,25 +122,46 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CarouselSlider(
-                    items: state.additives
-                        .map((additive) => GestureDetector(
-                              onTap: () => _showAdditiveDialog(additive),
-                              child: AdditiveCard(
-                                additiveNumber: additive.additiveNumber,
-                                name: additive.name,
-                              ),
-                            ))
-                        .toList(),
-                    options: CarouselOptions(
-                      height: 200,
-                      viewportFraction: 0.8,
-                      autoPlay: !_isOverlayOpen,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      enlargeCenterPage: true,
-                    ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          context.localizations.additives,
+                          style: const TextStyle(
+                              color: AppColors.background, fontSize: 30),
+                        ),
+                      ),
+                      CarouselSlider(
+                        items: state.additives
+                            .map((additive) => GestureDetector(
+                                  onTap: () => _showAdditiveDialog(additive),
+                                  child: AdditiveCard(
+                                    additiveNumber: additive.additiveNumber,
+                                    name: additive.name,
+                                  ),
+                                ))
+                            .toList(),
+                        options: CarouselOptions(
+                          height: 150,
+                          viewportFraction: 0.7,
+                          autoPlay: !_isOverlayOpen,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          enlargeCenterPage: true,
+                        ),
+                      ),
+                    ],
                   ),
-                  MonthlySpentChart(tooltip: _tooltip, chartData: chartData)
+                  Column(
+                    children: [
+                      Text(
+                        context.localizations.monthlySpentChart,
+                        style: const TextStyle(
+                            color: AppColors.background, fontSize: 30),
+                      ),
+                      MonthlySpentChart(tooltip: _tooltip, chartData: chartData)
+                    ],
+                  ),
                 ],
               );
             },

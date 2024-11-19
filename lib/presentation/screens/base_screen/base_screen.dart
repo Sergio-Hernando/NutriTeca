@@ -8,7 +8,6 @@ import 'package:nutri_teca/core/constants/app_colors.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/presentation/screens/base_screen/widgets/app_bar.dart';
-import 'package:nutri_teca/presentation/widgets/ad_widgets/ad_banner.dart';
 import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutri_teca/presentation/widgets/ad_widgets/intersticial_ad.dart';
@@ -63,7 +62,6 @@ class _BaseScreenState extends State<BaseScreen> {
                 child: widget.navigationShell,
               ),
             ),
-            const AdBanner(),
           ],
         ),
         bottomNavigationBar: CurvedNavigationBar(

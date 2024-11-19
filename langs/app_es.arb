@@ -71,5 +71,7 @@
     "splashTitle": "NUTRITECA",
     "cancelTitle": "¿Está seguro que deséa volver?",
     "cancelContent": "Si sale de esta pantalla se cancelará la acción que esta llevando a cabo",
-    "fieldRequired": "Este campo es obligatorio"
+    "fieldRequired": "Este campo es obligatorio",
+    "additives": "Aditivos",
+    "monthlySpentChart": "Grafico de gastos mensuales"
 }

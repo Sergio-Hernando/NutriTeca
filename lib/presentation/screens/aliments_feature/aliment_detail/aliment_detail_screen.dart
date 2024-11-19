@@ -1,6 +1,8 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
@@ -14,6 +16,7 @@ import 'package:nutri_teca/presentation/screens/aliments_feature/aliment_detail/
 import 'package:nutri_teca/presentation/widgets/common_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nutri_teca/presentation/widgets/custom_text_field.dart';
 
 class AlimentDetailScreen extends StatefulWidget {
   final AlimentEntity alimentEntity;
@@ -149,9 +152,13 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
         }
         return CommonDetailScreen(
           title: controllers['name']?.text,
-          onDelete: () => context
-              .read<AlimentDetailBloc>()
-              .add(AlimentDetailEvent.deleteAliment(currentAliment.id ?? 0)),
+          onDelete: () {
+            context
+                .read<AlimentDetailBloc>()
+                .add(AlimentDetailEvent.deleteAliment(currentAliment.id ?? 0));
+            context.pop();
+            context.pop();
+          },
           recipeList:
               state.recipes?.map((recipe) => recipe.name ?? '').toList(),
           onEditOn: _toggleEditModeOn,
@@ -182,6 +189,37 @@ class _AlimentDetailScreenState extends State<AlimentDetailScreen> {
                               isEditing: isEditing,
                               image: _selectedImage,
                             ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                  ),
+                  child: isEditing
+                      ? CustomTextField(
+                          controller: controllers['name'],
+                          label: context.localizations.recipeName,
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              context.localizations.name,
+                              style: AppTheme.detailTextStyle,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.height *
+                                          0.02),
+                              child: Text(
+                                controllers['name'].text ?? '',
+                                style: AppTheme.titleTextStyle.copyWith(
+                                  color: AppColors.secondaryAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
                 SupermarketRowWidget(
                   isEditing: isEditing,

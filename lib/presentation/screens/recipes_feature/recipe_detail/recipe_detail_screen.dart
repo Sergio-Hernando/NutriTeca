@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
@@ -167,8 +168,12 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
         return CommonDetailScreen(
           title: controllers?['name']?.text ?? context.localizations.recipe,
-          onDelete: () => context.read<RecipeDetailBloc>().add(
-              RecipeDetailEvent.deleteRecipe(controllers?['recipe'].id ?? 0)),
+          onDelete: () {
+            context.read<RecipeDetailBloc>().add(
+                RecipeDetailEvent.deleteRecipe(controllers?['recipe'].id ?? 0));
+            context.pop();
+            context.pop();
+          },
           onEditOn: _toggleEditModeOn,
           onEditOff: _toggleEditModeOff,
           body: SingleChildScrollView(

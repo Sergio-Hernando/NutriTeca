@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:nutri_teca/core/constants/app_assets.dart';
@@ -148,11 +149,24 @@ class CustomCard extends StatelessWidget {
     overlay.insert(overlayEntry);
   }
 
-  void _navigateWithAd(BuildContext context) {
-    final interstitialAdWidget = InterstitialAdWidgetState();
-    interstitialAdWidget.loadAd();
-    Future.delayed(const Duration(seconds: 2), () {
+  void _navigateWithAd(BuildContext context) async {
+    await _showInterstitialAd(context, 0.35);
+    if (context.mounted) {
       context.go(AppRoutesPath.alimentDetail, extra: aliment);
-    });
+    }
+  }
+
+  Future<void> _showInterstitialAd(
+      BuildContext context, double probability) async {
+    double randomValue = Random().nextDouble();
+
+    if (randomValue <= probability) {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const InterstitialAdWidget();
+        },
+      );
+    }
   }
 }

@@ -71,6 +71,8 @@
     "splashTitle": "NUTRITECA",
     "cancelTitle": "Are you sure you want to come back?",
     "cancelContent": "If you leave this screen the action you are carrying out will be canceled",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "additives": "Additives",
+    "monthlySpentChart": "Monthly SpentChart"
 
 }

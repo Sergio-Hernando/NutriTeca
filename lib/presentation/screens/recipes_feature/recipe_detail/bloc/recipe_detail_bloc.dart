@@ -61,8 +61,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
 
     if (result != null) {
       _recipeController.add(RecipeAction(recipe: result, isAdd: true));
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.success(), isEdited: true));
+      emit(state.copyWith(screenStatus: const ScreenStatus.success()));
     } else {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.error(
@@ -83,7 +82,8 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
       _recipeController
           .add(RecipeAction(recipe: RecipeEntity(id: recipeId), isAdd: false));
       emit(state.copyWith(
-          screenStatus: const ScreenStatus.success(), isDeleted: true));
+        screenStatus: const ScreenStatus.success(),
+      ));
     }
   }
 }

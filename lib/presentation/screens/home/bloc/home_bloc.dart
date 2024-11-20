@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
 import 'package:nutri_teca/domain/repository_contracts/additive_repository_contract.dart';
+import 'package:nutri_teca/domain/repository_contracts/aliment_repository_contract.dart';
 import 'package:nutri_teca/domain/repository_contracts/monthly_spent_repository_contract.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_event.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_state.dart';
@@ -12,14 +13,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final MonthlySpentRepositoryContract _monthlySpentRepository;
   final AdditiveRepositoryContract _additiveRepositoryContract;
   final StreamController<MonthlySpentEntity> _monthlySpentController;
+  final AlimentRepositoryContract _alimentsRepository;
 
   HomeBloc({
     required MonthlySpentRepositoryContract monthlySpentRepository,
     required AdditiveRepositoryContract additiveRepositoryContract,
     required StreamController<MonthlySpentEntity> monthlySpentController,
+    required AlimentRepositoryContract alimentsRepository,
   })  : _monthlySpentRepository = monthlySpentRepository,
         _additiveRepositoryContract = additiveRepositoryContract,
         _monthlySpentController = monthlySpentController,
+        _alimentsRepository = alimentsRepository,
         super(HomeState.initial()) {
     on<HomeEvent>((event, emit) async {
       await event.when(
@@ -29,7 +33,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           deleteMonthlySpent: (id) => _deleteMonthlySpentEventToState(id, emit),
           refreshMonthlySpent: (monthlySpentEntity) =>
               _refreshMonthlySpentEventToState(monthlySpentEntity, emit),
-          checkMonthFirstDay: () => _checkIfIsMonthFirst());
+          checkMonthFirstDay: () => _checkIfIsMonthFirst(),
+          getAllAlimentsList: () => _getAlimentsEventToState(emit),
+          addMonthlySpent: (aliment) =>
+              _addMonthlySpentEventToState(emit, aliment));
     });
     _monthlySpentController.stream.listen((aliment) {
       add(HomeEvent.refreshMonthlySpent(aliment));
@@ -52,6 +59,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           monthlySpent: top10MonthlySpent.take(10).toList()));
     } else {
       emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+    }
+  }
+
+  Future<void> _getAlimentsEventToState(Emitter<HomeState> emit) async {
+    try {
+      emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
+
+      final aliments = await _alimentsRepository.getAllAliments();
+
+      emit(state.copyWith(
+        screenStatus: const ScreenStatus.success(),
+        aliments: aliments,
+      ));
+    } catch (e) {
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+    }
+  }
+
+  Future<void> _addMonthlySpentEventToState(
+      Emitter<HomeState> emit, MonthlySpentEntity monthlySpent) async {
+    emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
+    final data = await _monthlySpentRepository.createMonthlySpent(monthlySpent);
+
+    if (data == null) {
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
+    } else {
+      _monthlySpentController.add(data);
+      emit(state.copyWith(screenStatus: const ScreenStatus.success()));
     }
   }
 

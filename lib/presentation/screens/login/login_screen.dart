@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 TextField(
                   controller: emailController,
-                  style: TextStyle(color: AppColors.background),
+                  style: const TextStyle(color: AppColors.background),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.foreground,
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  style: TextStyle(color: AppColors.background),
+                  style: const TextStyle(color: AppColors.background),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.foreground,

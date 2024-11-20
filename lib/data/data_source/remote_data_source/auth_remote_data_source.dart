@@ -46,8 +46,18 @@ class AuthRemoteDataSource implements AuthDataSourceContract {
   }
 
   @override
-  Future<void> logout() async {
-    await _firebaseAuth.signOut();
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await _firebaseAuth.signOut();
+
+      await _sharedPreferences.remove('userId');
+
+      return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(Failure(message: _mapFirebaseError(e)));
+    } catch (_) {
+      return Left(Failure(message: 'Unexpected error occurred'));
+    }
   }
 
   String _mapFirebaseError(FirebaseAuthException e) {

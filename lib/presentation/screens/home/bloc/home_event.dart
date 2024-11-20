@@ -6,6 +6,9 @@ part 'home_event.freezed.dart';
 @freezed
 class HomeEvent with _$HomeEvent {
   const factory HomeEvent.getAllMonthlySpent() = _GetAllMonthlySpent;
+  const factory HomeEvent.getAllAlimentsList() = _GetAllAlimentsList;
+  const factory HomeEvent.addMonthlySpent(MonthlySpentEntity aliment) =
+      _AddAliment;
   const factory HomeEvent.getAdditives() = _GetAdditives;
   const factory HomeEvent.deleteMonthlySpent(int id) = _DeleteMonthlySpent;
   const factory HomeEvent.refreshMonthlySpent(MonthlySpentEntity monthlySpent) =

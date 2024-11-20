@@ -36,12 +36,7 @@ void _uiModulesInit() {
   );
 
   uiModulesDi.registerFactory(
-    () => BaseScreenBloc(
-      alimentRepositoryContract: uiModulesDi(),
-      monthlySpentRepository: uiModulesDi(),
-      monthlySpentNotificationController:
-          uiModulesDi(instanceName: 'monthlySpentNotificationController'),
-    ),
+    () => BaseScreenBloc(authRepositoryContract: uiModulesDi()),
   );
 
   uiModulesDi.registerFactory(
@@ -49,7 +44,8 @@ void _uiModulesInit() {
         monthlySpentRepository: uiModulesDi(),
         monthlySpentController:
             uiModulesDi(instanceName: 'monthlySpentNotificationController'),
-        additiveRepositoryContract: uiModulesDi()),
+        additiveRepositoryContract: uiModulesDi(),
+        alimentsRepository: uiModulesDi()),
   );
 
   uiModulesDi.registerFactory(

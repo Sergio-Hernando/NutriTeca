@@ -20,7 +20,7 @@ class AuthRepository implements AuthRepositoryContract {
   }
 
   @override
-  Future<void> logout() {
+  Future<Either<Failure, void>> logout() {
     return _authDataSourceContract.logout();
   }
 }

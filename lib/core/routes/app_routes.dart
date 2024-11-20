@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +8,15 @@ import 'package:nutri_teca/core/di/di.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
 import 'package:nutri_teca/domain/models/aliment_entity.dart';
-import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/add_aliment_screen.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
 import 'package:nutri_teca/presentation/screens/login/bloc/login_bloc.dart';
 import 'package:nutri_teca/presentation/screens/login/login_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/add_recipe_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliment_detail/aliment_detail_screen.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliment_detail/bloc/aliment_detail_bloc.dart';
-import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
-import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_event.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/filters/filters_screen.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_event.dart';
@@ -72,6 +71,7 @@ GoRouter appRoutes = GoRouter(
             GoRoute(
               path: 'login',
               name: 'Login',
+              onExit: (context, state) => exit(0),
               builder: (context, state) => BlocProvider(
                 create: (context) => LoginBloc(authRepository: uiModulesDi()),
                 child: LoginScreen(),
@@ -92,15 +92,8 @@ GoRouter appRoutes = GoRouter(
             // MainWrapper
             StatefulShellRoute.indexedStack(
               builder: (context, state, navigationShell) {
-                final baseScreenBloc = BaseScreenBloc(
-                  alimentRepositoryContract: uiModulesDi(),
-                  monthlySpentRepository: uiModulesDi(),
-                  monthlySpentNotificationController:
-                      uiModulesDi<StreamController<MonthlySpentEntity>>(
-                          instanceName: 'monthlySpentNotificationController'),
-                );
-
-                baseScreenBloc.add(const BaseScreenEvent.getAllAlimentsList());
+                final baseScreenBloc =
+                    BaseScreenBloc(authRepositoryContract: uiModulesDi());
 
                 return BlocProvider(
                   create: (context) => baseScreenBloc,
@@ -224,10 +217,12 @@ GoRouter appRoutes = GoRouter(
                                 monthlySpentController: uiModulesDi(
                                     instanceName:
                                         'monthlySpentNotificationController'),
-                                additiveRepositoryContract: uiModulesDi())
+                                additiveRepositoryContract: uiModulesDi(),
+                                alimentsRepository: uiModulesDi())
                               ..add(const HomeEvent.getAllMonthlySpent())
                               ..add(const HomeEvent.getAdditives())
-                              ..add(const HomeEvent.checkMonthFirstDay()),
+                              ..add(const HomeEvent.checkMonthFirstDay())
+                              ..add(const HomeEvent.getAllAlimentsList()),
                             child: child,
                           );
                         },

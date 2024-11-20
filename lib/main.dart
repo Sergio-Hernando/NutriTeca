@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,6 +7,7 @@ import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/core/database/database_handler.dart';
 import 'package:nutri_teca/core/providers/local_provider.dart';
 import 'package:nutri_teca/core/routes/app_routes.dart';
+import 'package:nutri_teca/firebase_options.dart';
 import 'package:nutri_teca/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:nutri_teca/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,9 @@ Future<void> main() async {
   MobileAds.instance.initialize();
   final db = DatabaseHandler();
   app_di.initDi(dbInstance: db);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainApp());
 }
 

@@ -10,6 +10,7 @@ import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/add_aliment_screen.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
+import 'package:nutri_teca/presentation/screens/login/login_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/add_recipe_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliment_detail/aliment_detail_screen.dart';
@@ -29,6 +30,7 @@ import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/recipes_
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/aliments_screen.dart';
+import 'package:nutri_teca/presentation/screens/register/register_screen.dart';
 import 'package:nutri_teca/presentation/screens/splash/splash_controller.dart';
 import 'package:nutri_teca/presentation/shared/aliment_action.dart';
 import 'package:nutri_teca/presentation/screens/base_screen/base_screen.dart';
@@ -64,7 +66,22 @@ GoRouter appRoutes = GoRouter(
           path: AppRoutesPath.main,
           builder: (context, state) => const SplashController(),
           routes: [
-            /// MainWrapper
+            // Ruta de Login
+            GoRoute(
+              path: 'login',
+              name: 'Login',
+              builder: (context, state) => LoginScreen(),
+              routes: [
+                // Ruta de Registro
+                GoRoute(
+                  path: 'register',
+                  name: 'Register',
+                  builder: (context, state) => RegisterScreen(),
+                ),
+              ],
+            ),
+
+            // MainWrapper
             StatefulShellRoute.indexedStack(
               builder: (context, state, navigationShell) {
                 final baseScreenBloc = BaseScreenBloc(

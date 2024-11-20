@@ -1,5 +1,9 @@
 class AppRoutesPath {
   static String main = '/';
+
+  static String login = '/login';
+  static String register = '$login/register';
+
   static String home = '/home';
 
   static String aliments = '/aliments';

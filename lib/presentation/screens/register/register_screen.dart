@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutri_teca/core/constants/app_colors.dart';
+import 'package:nutri_teca/presentation/screens/register/bloc/register_bloc.dart';
+import 'package:nutri_teca/presentation/screens/register/bloc/register_event.dart';
 
 class RegisterScreen extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +48,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   TextField(
+                    controller: nameController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.foreground,
@@ -51,6 +63,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.foreground,
@@ -65,6 +78,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
@@ -80,6 +94,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: confirmPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
@@ -102,7 +117,27 @@ class RegisterScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      //final name = nameController.text;
+                      final email = emailController.text;
+                      final password = passwordController.text;
+                      final confirmPassword = confirmPasswordController.text;
+
+                      // Validar las contraseñas
+                      if (password != confirmPassword) {
+                        // Mostrar error si las contraseñas no coinciden
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Las contraseñas no coinciden')),
+                        );
+                        return;
+                      }
+
+                      // Llamar al evento de registro
+                      context.read<RegisterBloc>().add(
+                            RegisterEvent.register(email, password),
+                          );
+                    },
                     child: const Text(
                       'Registrarse',
                       style: TextStyle(

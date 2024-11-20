@@ -8,10 +8,11 @@ class SplashState with _$SplashState {
   const factory SplashState({
     required ScreenStatus screenStatus,
     required bool splashed,
+    required String? userId,
   }) = _SplashState;
 
   factory SplashState.initial() {
     return const SplashState(
-        screenStatus: ScreenStatus.initial(), splashed: false);
+        screenStatus: ScreenStatus.initial(), splashed: false, userId: '');
   }
 }

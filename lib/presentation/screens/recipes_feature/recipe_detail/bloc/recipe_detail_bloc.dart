@@ -38,7 +38,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.success(), aliments: result));
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -50,7 +50,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.success(), recipe: result));
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -63,9 +63,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
       _recipeController.add(RecipeAction(recipe: result, isAdd: true));
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));
     } else {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error(
-              'El alimento no se ha eliminado correctamente')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -75,9 +73,7 @@ class RecipeDetailBloc extends Bloc<RecipeDetailEvent, RecipeDetailState> {
     final result = await _repository.deleteRecipe(recipeId);
 
     if (!result) {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error(
-              'El alimento no se ha eliminado correctamente')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     } else {
       _recipeController
           .add(RecipeAction(recipe: RecipeEntity(id: recipeId), isAdd: false));

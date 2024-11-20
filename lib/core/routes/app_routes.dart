@@ -10,6 +10,7 @@ import 'package:nutri_teca/domain/models/aliment_entity.dart';
 import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/add_aliment_screen.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/add_aliment/bloc/add_aliment_bloc.dart';
+import 'package:nutri_teca/presentation/screens/login/bloc/login_bloc.dart';
 import 'package:nutri_teca/presentation/screens/login/login_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/add_recipe_screen.dart';
 import 'package:nutri_teca/presentation/screens/recipes_feature/add_recipe/bloc/add_recipe_bloc.dart';
@@ -30,6 +31,7 @@ import 'package:nutri_teca/presentation/screens/recipes_feature/recipes/recipes_
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_bloc.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/bloc/aliments_event.dart';
 import 'package:nutri_teca/presentation/screens/aliments_feature/aliments/aliments_screen.dart';
+import 'package:nutri_teca/presentation/screens/register/bloc/register_bloc.dart';
 import 'package:nutri_teca/presentation/screens/register/register_screen.dart';
 import 'package:nutri_teca/presentation/screens/splash/splash_controller.dart';
 import 'package:nutri_teca/presentation/shared/aliment_action.dart';
@@ -70,13 +72,19 @@ GoRouter appRoutes = GoRouter(
             GoRoute(
               path: 'login',
               name: 'Login',
-              builder: (context, state) => LoginScreen(),
+              builder: (context, state) => BlocProvider(
+                create: (context) => LoginBloc(authRepository: uiModulesDi()),
+                child: LoginScreen(),
+              ),
               routes: [
-                // Ruta de Registro
                 GoRoute(
                   path: 'register',
                   name: 'Register',
-                  builder: (context, state) => RegisterScreen(),
+                  builder: (context, state) => BlocProvider(
+                    create: (context) =>
+                        RegisterBloc(authRepository: uiModulesDi()),
+                    child: RegisterScreen(),
+                  ),
                 ),
               ],
             ),

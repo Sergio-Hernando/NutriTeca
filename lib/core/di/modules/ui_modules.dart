@@ -25,6 +25,17 @@ void _uiModulesInit() {
   );
 
   uiModulesDi.registerFactory(
+    () => SplashBloc(splashRepositoryContract: uiModulesDi()),
+  );
+
+  uiModulesDi.registerFactory(
+    () => LoginBloc(authRepository: uiModulesDi()),
+  );
+  uiModulesDi.registerFactory(
+    () => RegisterBloc(authRepository: uiModulesDi()),
+  );
+
+  uiModulesDi.registerFactory(
     () => BaseScreenBloc(
       alimentRepositoryContract: uiModulesDi(),
       monthlySpentRepository: uiModulesDi(),
@@ -40,18 +51,17 @@ void _uiModulesInit() {
             uiModulesDi(instanceName: 'monthlySpentNotificationController'),
         additiveRepositoryContract: uiModulesDi()),
   );
+
   uiModulesDi.registerFactory(
-    () => SplashBloc(),
-  );
-  uiModulesDi.registerFactory(
-    () => AddAlimentBloc(
+    () => AlimentsBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),
     ),
   );
+
   uiModulesDi.registerFactory(
-    () => AlimentsBloc(
+    () => AddAlimentBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),

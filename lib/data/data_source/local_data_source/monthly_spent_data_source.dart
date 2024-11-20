@@ -1,4 +1,4 @@
-import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/data/models/monthly_spent_data_entity.dart';
 import 'package:nutri_teca/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 

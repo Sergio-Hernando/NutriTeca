@@ -51,7 +51,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         ));
       }
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 

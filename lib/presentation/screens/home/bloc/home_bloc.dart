@@ -51,9 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           screenStatus: const ScreenStatus.success(),
           monthlySpent: top10MonthlySpent.take(10).toList()));
     } else {
-      emit(state.copyWith(
-          screenStatus:
-              const ScreenStatus.error('Los gastos no se han recuperado')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -72,9 +70,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           screenStatus: const ScreenStatus.success(),
           monthlySpent: monthlySpent));
     } else {
-      emit(state.copyWith(
-          screenStatus:
-              const ScreenStatus.error('Los gastos no se han recuperado')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -99,9 +95,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.success(), additives: data));
     } else {
-      emit(state.copyWith(
-          screenStatus:
-              const ScreenStatus.error('Los aditivos no se han recuperado')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 

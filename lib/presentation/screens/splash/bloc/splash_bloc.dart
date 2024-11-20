@@ -1,13 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutri_teca/domain/repository_contracts/splash_repository_contract.dart';
 import 'package:nutri_teca/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:nutri_teca/presentation/screens/splash/bloc/splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  SplashBloc() : super(SplashState.initial()) {
+  final SplashRepositoryContract _splashRepositoryContract;
+  SplashBloc({required SplashRepositoryContract splashRepositoryContract})
+      : _splashRepositoryContract = splashRepositoryContract,
+        super(SplashState.initial()) {
     on<SplashEvent>((event, emit) async {
       await event.when(
           unSplashInMilliseconds: (milliseconds) =>
-              _unSplashInMilliseconds(event, emit, milliseconds));
+              _unSplashInMilliseconds(event, emit, milliseconds),
+          getUserId: () => _getUserIdEventToState(emit));
     });
   }
 
@@ -15,5 +20,10 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       SplashEvent event, Emitter<SplashState> emit, int milliseconds) async {
     await Future.delayed(Duration(milliseconds: milliseconds));
     emit(state.copyWith(splashed: true));
+  }
+
+  Future<void> _getUserIdEventToState(Emitter<SplashState> emit) async {
+    final userId = _splashRepositoryContract.getUserId();
+    emit(state.copyWith(userId: userId));
   }
 }

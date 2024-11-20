@@ -31,9 +31,7 @@ class AddAlimentBloc extends Bloc<AddAlimentEvent, AddAlimentState> {
     final data = await _repository.createAliment(aliment);
 
     if (data == null) {
-      emit(state.copyWith(
-          screenStatus:
-              const ScreenStatus.error('El alimento no se ha creado')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     } else {
       _alimentController.add(AlimentAction(aliment: aliment, isAdd: true));
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));

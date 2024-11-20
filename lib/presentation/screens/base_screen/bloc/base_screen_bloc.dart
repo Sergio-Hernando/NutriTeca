@@ -42,7 +42,7 @@ class BaseScreenBloc extends Bloc<BaseScreenEvent, BaseScreenState> {
         aliments: aliments,
       ));
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -52,8 +52,7 @@ class BaseScreenBloc extends Bloc<BaseScreenEvent, BaseScreenState> {
     final data = await _monthlySpentRepository.createMonthlySpent(monthlySpent);
 
     if (data == null) {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error('El gasto no se ha creado')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     } else {
       _monthlySpentNotificationController.add(data);
       emit(state.copyWith(screenStatus: const ScreenStatus.success()));

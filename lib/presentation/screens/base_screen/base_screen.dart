@@ -3,10 +3,15 @@ import 'dart:math';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nutri_teca/core/constants/app_colors.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/routes/app_paths.dart';
+import 'package:nutri_teca/core/types/screen_status.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_bloc.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_event.dart';
+import 'package:nutri_teca/presentation/screens/base_screen/bloc/base_screen_state.dart';
 import 'package:nutri_teca/presentation/screens/base_screen/widgets/app_bar.dart';
 import 'package:nutri_teca/presentation/widgets/common_dialog.dart';
 import 'package:go_router/go_router.dart';
@@ -37,79 +42,94 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (popDisposition) {
-        _showExitConfirmation(context);
+    return BlocListener<BaseScreenBloc, BaseScreenState>(
+      listener: (context, state) {
+        if (state.screenStatus.isSuccess()) {
+          context.go(AppRoutesPath.login);
+        }
+        if (state.screenStatus.isError()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No se ha podido hacer logout')),
+          );
+        }
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(
-          goHome: () {
-            setState(() {
-              _selectedIndex = 1;
-            });
-            _goBranch(1);
-          },
-          screenIndex: _selectedIndex,
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: widget.navigationShell,
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
-          backgroundColor: AppColors.foreground,
-          color: AppColors.background,
-          buttonBackgroundColor: AppColors.secondary,
-          height: 60,
-          animationDuration: const Duration(milliseconds: 300),
-          index: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-            _goBranch(_selectedIndex);
-          },
-          items: <Widget>[
-            SvgPicture.asset('assets/icons/nutrition_icon.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
-                )),
-            const Icon(
-              Icons.home,
-              size: 30,
-              color: Colors.white,
-            ),
-            const Icon(
-              Icons.book,
-              size: 30,
-              color: Colors.white,
-            ),
-          ],
-        ),
-        floatingActionButton: _selectedIndex == 1
-            ? null
-            : FloatingActionButton(
-                heroTag: 'add',
-                shape: const CircleBorder(),
-                onPressed: () => _navigateWithAd(context),
-                backgroundColor: AppColors.secondary,
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (popDisposition) {
+          _showExitConfirmation(context);
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: CustomAppBar(
+            goHome: () {
+              setState(() {
+                _selectedIndex = 1;
+              });
+              _goBranch(1);
+            },
+            screenIndex: _selectedIndex,
+            logOut: () => context
+                .read<BaseScreenBloc>()
+                .add(const BaseScreenEvent.logOut()),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: widget.navigationShell,
                 ),
               ),
+            ],
+          ),
+          bottomNavigationBar: CurvedNavigationBar(
+            key: _bottomNavigationKey,
+            backgroundColor: AppColors.foreground,
+            color: AppColors.background,
+            buttonBackgroundColor: AppColors.secondary,
+            height: 60,
+            animationDuration: const Duration(milliseconds: 300),
+            index: _selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+              _goBranch(_selectedIndex);
+            },
+            items: <Widget>[
+              SvgPicture.asset('assets/icons/nutrition_icon.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  )),
+              const Icon(
+                Icons.home,
+                size: 30,
+                color: Colors.white,
+              ),
+              const Icon(
+                Icons.book,
+                size: 30,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          floatingActionButton: _selectedIndex == 1
+              ? null
+              : FloatingActionButton(
+                  heroTag: 'add',
+                  shape: const CircleBorder(),
+                  onPressed: () => _navigateWithAd(context),
+                  backgroundColor: AppColors.secondary,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+        ),
       ),
     );
   }

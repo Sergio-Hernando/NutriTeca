@@ -35,7 +35,7 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
   Future<void> _searchRecipesEventToState(
       Emitter<AlimentDetailState> emit, int alimentId) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
-    final result = await _recipesRepository.getRecipesById(alimentId);
+    final result = await _recipesRepository.getRecipesByAlimentId(alimentId);
 
     emit(state.copyWith(
         screenStatus: const ScreenStatus.success(), recipes: result));
@@ -47,9 +47,7 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
     final result = await _repository.deleteAliment(alimentId);
 
     if (!result) {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error(
-              'El alimento no se ha eliminado correctamente')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     } else {
       _alimentController.add(
           AlimentAction(aliment: AlimentEntity(id: alimentId), isAdd: false));
@@ -67,9 +65,7 @@ class AlimentDetailBloc extends Bloc<AlimentDetailEvent, AlimentDetailState> {
       emit(state.copyWith(
           screenStatus: const ScreenStatus.success(), aliment: result));
     } else {
-      emit(state.copyWith(
-          screenStatus: const ScreenStatus.error(
-              'El alimento no se ha eliminado correctamente')));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 }

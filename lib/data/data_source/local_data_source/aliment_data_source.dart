@@ -1,4 +1,4 @@
-import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/data/models/aliment_data_entity.dart';
 import 'package:nutri_teca/data/data_source_contracts/aliment_data_source_contract.dart';
 
@@ -10,7 +10,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
   @override
   Future<AlimentDataEntity?> createAliment(AlimentDataEntity aliment) async {
     final db = await dbHandler.database;
-    final id = await db.insert('aliment', aliment.toMap());
+    final id = await db.insert('aliment', aliment.toJson());
     return getAliment(id);
   }
 
@@ -24,7 +24,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
     );
 
     if (maps.isNotEmpty) {
-      return AlimentDataEntity.fromMap(maps.first);
+      return AlimentDataEntity.fromJson(maps.first);
     } else {
       return null;
     }
@@ -35,7 +35,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
     final db = await dbHandler.database;
     final maps = await db.query('aliment');
 
-    return maps.map((map) => AlimentDataEntity.fromMap(map)).toList();
+    return maps.map((map) => AlimentDataEntity.fromJson(map)).toList();
   }
 
   @override
@@ -43,7 +43,7 @@ class AlimentDataSource implements AlimentDataSourceContract {
     final db = await dbHandler.database;
     await db.update(
       'aliment',
-      aliment.toMap(),
+      aliment.toJson(),
       where: 'id = ?',
       whereArgs: [aliment.id],
     );

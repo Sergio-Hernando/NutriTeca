@@ -25,12 +25,18 @@ void _uiModulesInit() {
   );
 
   uiModulesDi.registerFactory(
-    () => BaseScreenBloc(
-      alimentRepositoryContract: uiModulesDi(),
-      monthlySpentRepository: uiModulesDi(),
-      monthlySpentNotificationController:
-          uiModulesDi(instanceName: 'monthlySpentNotificationController'),
-    ),
+    () => SplashBloc(splashRepositoryContract: uiModulesDi()),
+  );
+
+  uiModulesDi.registerFactory(
+    () => LoginBloc(authRepository: uiModulesDi()),
+  );
+  uiModulesDi.registerFactory(
+    () => RegisterBloc(authRepository: uiModulesDi()),
+  );
+
+  uiModulesDi.registerFactory(
+    () => BaseScreenBloc(authRepositoryContract: uiModulesDi()),
   );
 
   uiModulesDi.registerFactory(
@@ -38,20 +44,20 @@ void _uiModulesInit() {
         monthlySpentRepository: uiModulesDi(),
         monthlySpentController:
             uiModulesDi(instanceName: 'monthlySpentNotificationController'),
-        additiveRepositoryContract: uiModulesDi()),
+        additiveRepositoryContract: uiModulesDi(),
+        alimentsRepository: uiModulesDi()),
   );
+
   uiModulesDi.registerFactory(
-    () => SplashBloc(),
-  );
-  uiModulesDi.registerFactory(
-    () => AddAlimentBloc(
+    () => AlimentsBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),
     ),
   );
+
   uiModulesDi.registerFactory(
-    () => AlimentsBloc(
+    () => AddAlimentBloc(
       repositoryContract: uiModulesDi(),
       alimentAddedController:
           uiModulesDi(instanceName: 'alimentEventController'),

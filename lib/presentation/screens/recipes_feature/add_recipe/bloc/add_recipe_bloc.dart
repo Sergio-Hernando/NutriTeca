@@ -41,7 +41,7 @@ class AddRecipeBloc extends Bloc<AddRecipeEvent, AddRecipeState> {
         aliments: aliments,
       ));
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 
@@ -53,16 +53,14 @@ class AddRecipeBloc extends Bloc<AddRecipeEvent, AddRecipeState> {
       final result = await _repository.createRecipe(recipe);
 
       if (result == null) {
-        emit(state.copyWith(
-            screenStatus:
-                const ScreenStatus.error('El alimento no se ha creado')));
+        emit(state.copyWith(screenStatus: const ScreenStatus.error()));
       } else {
         _recipeNotificationController
             .add(RecipeAction(recipe: result, isAdd: true));
         emit(state.copyWith(screenStatus: const ScreenStatus.success()));
       }
     } catch (e) {
-      emit(state.copyWith(screenStatus: ScreenStatus.error(e.toString())));
+      emit(state.copyWith(screenStatus: const ScreenStatus.error()));
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/data/models/monthly_spent_data_entity.dart';
 import 'package:nutri_teca/data/data_source_contracts/monthly_spent_data_source_contract.dart';
 
@@ -11,11 +11,10 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   Future<MonthlySpentDataEntity?> createMonthlySpent(
       MonthlySpentDataEntity monthlySpent) async {
     final db = await dbHandler.database;
-    final id = await db.insert('spent', monthlySpent.toMap());
+    final id = await db.insert('spent', monthlySpent.toJson());
     return getMonthlySpent(id);
   }
 
-  @override
   Future<MonthlySpentDataEntity?> getMonthlySpent(int id) async {
     final db = await dbHandler.database;
     final maps = await db.query(
@@ -25,7 +24,7 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
     );
 
     if (maps.isNotEmpty) {
-      return MonthlySpentDataEntity.fromMap(maps.first);
+      return MonthlySpentDataEntity.fromJson(maps.first);
     } else {
       return null;
     }
@@ -36,7 +35,7 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
     final db = await dbHandler.database;
     final maps = await db.query('spent');
 
-    return maps.map((map) => MonthlySpentDataEntity.fromMap(map)).toList();
+    return maps.map((map) => MonthlySpentDataEntity.fromJson(map)).toList();
   }
 
   @override
@@ -51,7 +50,7 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
   }
 
   @override
-  Future<bool> deleteSpentIfNewMonth() async {
+  Future<int> deleteSpentIfNewMonth() async {
     var result = 0;
     final DateTime now = DateTime.now();
     if (now.day == 1) {
@@ -59,6 +58,6 @@ class MonthlySpentDataSource implements MonthlySpentDataSourceContract {
       result = await db.delete('spent');
     }
 
-    return result > 0 ? true : false;
+    return result;
   }
 }

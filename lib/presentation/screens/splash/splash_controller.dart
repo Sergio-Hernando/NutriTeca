@@ -14,7 +14,11 @@ class SplashController extends StatelessWidget {
     return BlocConsumer<SplashBloc, SplashState>(
         listener: (context, state) {
           if (state.splashed) {
-            context.go(AppRoutesPath.home);
+            if (state.userId != null && state.userId != '') {
+              context.go(AppRoutesPath.home);
+            } else {
+              context.go(AppRoutesPath.login);
+            }
           }
         },
         builder: (context, state) => const SplashScreen());

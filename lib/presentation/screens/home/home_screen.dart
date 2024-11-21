@@ -6,10 +6,13 @@ import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/core/extensions/context_extension.dart';
 import 'package:nutri_teca/core/types/screen_status.dart';
 import 'package:nutri_teca/domain/models/additive_entity.dart';
+import 'package:nutri_teca/domain/models/monthly_spent_entity.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:nutri_teca/presentation/screens/home/bloc/home_event.dart';
 import 'package:nutri_teca/presentation/screens/home/bloc/home_state.dart';
 import 'package:nutri_teca/presentation/screens/home/widgets/additive_card.dart';
 import 'package:nutri_teca/presentation/screens/home/widgets/monthly_spent_chart.dart';
+import 'package:nutri_teca/presentation/widgets/aliments_selection_dialog.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -90,6 +93,50 @@ class _HomeScreenState extends State<HomeScreen> {
     overlay.insert(overlayEntry);
   }
 
+  void _showSelectAlimentDialog(BuildContext buildContext) {
+    final state = buildContext.read<HomeBloc>().state;
+
+    if (state.screenStatus.isLoading()) {
+      showDialog(
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsLoading),
+        ),
+      );
+    } else if (state.screenStatus.isError()) {
+      showDialog(
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsError),
+        ),
+      );
+    } else if (state.aliments.isEmpty) {
+      showDialog(
+        context: buildContext,
+        builder: (context) => AlertDialog(
+          content: Text(context.localizations.alimentsNotAvailable),
+        ),
+      );
+    } else {
+      showDialog(
+        context: buildContext,
+        builder: (context) => AlimentSelectionDialog(
+          aliments: state.aliments,
+          onSelectAliment: (int alimentId, String name, int quantity) {
+            buildContext.read<HomeBloc>().add(
+                  HomeEvent.addMonthlySpent(MonthlySpentEntity(
+                    alimentId: alimentId,
+                    alimentName: name,
+                    date: DateTime.now().toIso8601String(),
+                    quantity: quantity,
+                  )),
+                );
+          },
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,10 +201,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Column(
                     children: [
-                      Text(
-                        context.localizations.monthlySpentChart,
-                        style: const TextStyle(
-                            color: AppColors.background, fontSize: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            context.localizations.monthlySpentChart,
+                            style: const TextStyle(
+                                color: AppColors.background, fontSize: 30),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.shopping_bag_outlined,
+                              color: AppColors.background,
+                            ),
+                            onPressed: () => _showSelectAlimentDialog(context),
+                          )
+                        ],
                       ),
                       MonthlySpentChart(tooltip: _tooltip, chartData: chartData)
                     ],

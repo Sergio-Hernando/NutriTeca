@@ -9,9 +9,16 @@ void _apiModulesInit() {
     return dioClient.getDio();
   });
 
-  /* apiModulesDi.registerLazySingleton(
-    () => HomeApi(
-      apiModulesDi(),
-      baseUrl: AppUrls.baseUrl),
-  ); */
+  apiModulesDi.registerLazySingleton(
+    () => AlimentApi(apiModulesDi(), baseUrl: AppUrls.baseUrl),
+  );
+  apiModulesDi.registerLazySingleton(
+    () => AdditivesApi(apiModulesDi(), baseUrl: AppUrls.baseUrl),
+  );
+  apiModulesDi.registerLazySingleton(
+    () => MonthlySpentApi(apiModulesDi(), baseUrl: AppUrls.baseUrl),
+  );
+  apiModulesDi.registerLazySingleton(
+    () => RecipeApi(apiModulesDi(), baseUrl: AppUrls.baseUrl),
+  );
 }

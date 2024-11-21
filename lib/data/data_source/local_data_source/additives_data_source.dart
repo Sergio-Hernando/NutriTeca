@@ -1,4 +1,4 @@
-import 'package:nutri_teca/core/database/database_handler.dart';
+import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/data/data_source_contracts/additives_data_source_contract.dart';
 import 'package:nutri_teca/data/models/additives_data_entity.dart';
 

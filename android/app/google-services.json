@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "625799291256",
+    "project_id": "nutriteca-604f0",
+    "storage_bucket": "nutriteca-604f0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625799291256:android:36713d1f75505b738be88d",
+        "android_client_info": {
+          "package_name": "com.shcdevelopment.nutri_teca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625799291256-fbqfmuebiicv82dcg2mf4334t69mpj7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shcdevelopment.nutri_teca",
+            "certificate_hash": "ca75979ee8bab33def6cfb43956402ed6421e988"
+          }
+        },
+        {
+          "client_id": "625799291256-aapr3stb8auvh9uu0lspgbqho0057tbk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoivC_HAnWUQx31b70ya52W7tgUTPAlSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625799291256-579fm56fnvvn1njmmc0urgdd81u0s793.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

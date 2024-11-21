@@ -13,7 +13,7 @@ class MonthlySpentDataEntity {
     required this.quantity,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'id_aliment': alimentId,
@@ -23,7 +23,7 @@ class MonthlySpentDataEntity {
     };
   }
 
-  factory MonthlySpentDataEntity.fromMap(Map<String, dynamic> map) {
+  factory MonthlySpentDataEntity.fromJson(Map<String, dynamic> map) {
     return MonthlySpentDataEntity(
       id: map['id'],
       alimentId: map['id_aliment'],

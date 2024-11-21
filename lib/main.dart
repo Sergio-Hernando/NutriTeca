@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nutri_teca/core/constants/app_theme.dart';
 import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/core/providers/local_provider.dart';
@@ -25,7 +26,13 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final fbAuth = FirebaseAuth.instance;
-  app_di.initDi(dbInstance: db, firebaseAuth: fbAuth, sharedPreferences: sp);
+  final googleAuth = GoogleSignIn();
+  app_di.initDi(
+    dbInstance: db,
+    firebaseAuth: fbAuth,
+    sharedPreferences: sp,
+    googleAuth: googleAuth,
+  );
   runApp(const MainApp());
 }
 

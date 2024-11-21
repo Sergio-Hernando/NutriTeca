@@ -13,6 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEvent>((event, emit) async {
       await event.when(
         login: (email, password) => _loginEventToState(email, password, emit),
+        loginWithGoogle: () => _loginWithGoogleEventToState(emit),
       );
     });
   }
@@ -21,6 +22,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       String email, String password, Emitter<LoginState> emit) async {
     emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
     final result = await _authRepository.login(email, password);
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+          screenStatus: const ScreenStatus.error(),
+          errorMessage: failure.message)),
+      (success) => emit(state.copyWith(
+          screenStatus: const ScreenStatus.success(), errorMessage: null)),
+    );
+  }
+
+  Future<void> _loginWithGoogleEventToState(Emitter<LoginState> emit) async {
+    emit(state.copyWith(screenStatus: const ScreenStatus.loading()));
+    final result = await _authRepository.loginWithGoogle();
 
     result.fold(
       (failure) => emit(state.copyWith(

@@ -4,6 +4,7 @@ final remoteModulesDi = GetIt.instance;
 
 void _remoteDataSourceModulesInit(
     {required FirebaseAuth firebaseAuth,
+    required GoogleSignIn googleAuth,
     required SharedPreferences sharedPreferences}) {
   remoteModulesDi.registerSingleton<FirebaseAuth>(firebaseAuth);
 
@@ -12,6 +13,6 @@ void _remoteDataSourceModulesInit(
 
   remoteModulesDi.registerLazySingleton<AuthDataSourceContract>(
     () => AuthRemoteDataSource(
-        remoteModulesDi<FirebaseAuth>(), sharedPreferences),
+        remoteModulesDi<FirebaseAuth>(), sharedPreferences, googleAuth),
   );
 }

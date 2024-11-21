@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nutri_teca/core/constants/app_urls.dart';
 import 'package:nutri_teca/data/database_handler.dart';
 import 'package:nutri_teca/core/network/dio_http_client.dart';
@@ -56,10 +57,13 @@ part 'modules/ui_modules.dart';
 void initDi(
     {required DatabaseHandler dbInstance,
     required FirebaseAuth firebaseAuth,
+    required GoogleSignIn googleAuth,
     required SharedPreferences sharedPreferences}) {
   _apiModulesInit();
   _remoteDataSourceModulesInit(
-      firebaseAuth: firebaseAuth, sharedPreferences: sharedPreferences);
+      firebaseAuth: firebaseAuth,
+      sharedPreferences: sharedPreferences,
+      googleAuth: googleAuth);
   _localDataSourceModulesInit(dbInstance: dbInstance);
   _repositoryModulesInit(sharedPreferences: sharedPreferences);
   _uiModulesInit();

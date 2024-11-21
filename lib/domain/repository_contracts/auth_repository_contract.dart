@@ -4,6 +4,7 @@ import 'package:nutri_teca/domain/errors/failure.dart';
 
 abstract class AuthRepositoryContract {
   Future<Either<Failure, User>> login(String email, String password);
+  Future<Either<Failure, User>> loginWithGoogle();
   Future<Either<Failure, User>> register(String email, String password);
   Future<Either<Failure, void>> logout();
 }

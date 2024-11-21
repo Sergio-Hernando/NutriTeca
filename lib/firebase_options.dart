@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'nutriteca-604f0',
     storageBucket: 'nutriteca-604f0.firebasestorage.app',
   );
+
 }

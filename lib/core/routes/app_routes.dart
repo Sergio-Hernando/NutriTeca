@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,10 +70,9 @@ GoRouter appRoutes = GoRouter(
             GoRoute(
               path: 'login',
               name: 'Login',
-              onExit: (context, state) => exit(0),
               builder: (context, state) => BlocProvider(
                 create: (context) => LoginBloc(authRepository: uiModulesDi()),
-                child: LoginScreen(),
+                child: const LoginScreen(),
               ),
               routes: [
                 GoRoute(

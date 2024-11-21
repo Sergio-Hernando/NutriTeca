@@ -15,6 +15,11 @@ class AuthRepository implements AuthRepositoryContract {
   }
 
   @override
+  Future<Either<Failure, User>> loginWithGoogle() {
+    return _authDataSourceContract.loginWithGoogle();
+  }
+
+  @override
   Future<Either<Failure, User>> register(String email, String password) {
     return _authDataSourceContract.register(email, password);
   }
